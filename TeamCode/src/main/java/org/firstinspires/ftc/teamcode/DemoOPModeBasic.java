@@ -1,5 +1,5 @@
 /*
-Demo TeleOP code created by Will Richards for FTC 2019(Old Bot)
+Demo TeleOP code created by Will Richards for FTC 2019(Old 2018 Bot)
 
 !!!IMPORTANT!!! This code is a demo, the comments are excessive on purpose don't comment this much normally but defiantly comment your code because there are 4-5 of you
 Comment large blocks of code that need description, or anything that needs a description
