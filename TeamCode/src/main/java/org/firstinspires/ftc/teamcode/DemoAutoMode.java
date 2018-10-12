@@ -2,17 +2,24 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 @Autonomous(name = "DemoAutoMode", group = "Demo")
-public class DemoAutoMode extends LinearOpMode {
+public class DemoAutoMode extends OpMode {
 
-    public void runOpMode(){
+    public void init(){
 
-        //All drive code goes here
-        while (opModeIsActive()){
+    }
 
-        }
+    public void start(){
+
+    }
+
+    public void loop(){
+
+    }
+
+    public void stop(){
+
     }
 }
