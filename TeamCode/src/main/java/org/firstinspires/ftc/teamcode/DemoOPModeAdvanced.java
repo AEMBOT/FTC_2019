@@ -16,16 +16,8 @@ public class DemoOPModeAdvanced extends OpMode {
 
     //All variables are declared with the modifier "private"
     //The following are the variables that will contain the drive motors and each of their respective data
-    private DcMotor MotorLeftFront;
-    private DcMotor MotorRightFront;
     private DcMotor MotorLeftBack;
     private DcMotor MotorRightBack;
-
-    //Creates a list to store all of the motor variables
-    private List<DcMotor> Motors = new ArrayList<DcMotor>();
-
-    //Always separate each set of variable types... it just looks nicer
-    private Servo DemoServo;
 
     private ColorSensor DemoColorSensor;
 
@@ -39,14 +31,8 @@ public class DemoOPModeAdvanced extends OpMode {
         MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
-        //Assigns each motor to a list to allow for the values to change easier using a for loop
-        Motors.add(MotorLeftFront);
-        Motors.add(MotorRightBack);
-        Motors.add(MotorLeftBack);
-        Motors.add(MotorRightBack);
-
         //Needs to be reversed to move forward
-
+        MotorRightBack.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.addData("Robot Status: ", "Initialized");
     }
@@ -58,9 +44,8 @@ public class DemoOPModeAdvanced extends OpMode {
     public void loop(){
         //Should in theory work, however I haven't touched this code in a year so it might take some time to get this working again
         //Basically what this does is set the power of the motor to the y value on the stick corresponding to that side thus creating tank drive(In theory)
-        //MotorRightFront.setPower(gamepad1.right_stick_y);
-        MotorRightBack.setPower(-gamepad1.right_stick_y);
-        //MotorLeftFront.setPower(gamepad1.left_stick_y);
+
+        MotorRightBack.setPower(gamepad1.right_stick_y);
         MotorLeftBack.setPower(gamepad1.left_stick_y);
 
 
@@ -79,22 +64,6 @@ public class DemoOPModeAdvanced extends OpMode {
             //Works much like a System.out.println(); or a print(""); or a Console.writeln(""); only difference is it prints it on the RobotDriverStation
             telemetry.addData("Value of A: ", "Pushed");
         }
-
-        //region Servo Controller
-        //A servos position can range between 0 and 1 and works similar to the motors however it can be set to an exact spot as opposed to go, at this speed
-        //The following code will increment the current servo position by 0.05 while it is pressed
-       // if (gamepad1.right_bumper)
-       // {
-       //     DemoServo.setPosition(DemoServo.getPosition() + 0.05);
-       // }
-//
-//
-       // //This will lower the servo when left bumper is pressed
-       // if(gamepad1.left_bumper)
-       // {
-       //     DemoServo.setPosition(DemoServo.getPosition() - 0.05);
-       // }
-        //endregion
     }
 
     //Code that runs once the stop button is pushed(Eg. Break Wheels)
