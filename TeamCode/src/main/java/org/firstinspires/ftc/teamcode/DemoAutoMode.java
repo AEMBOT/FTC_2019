@@ -18,10 +18,6 @@ public class DemoAutoMode extends LinearOpMode {
     //Creates a constant variable with the value of 288 or one revolution
     private final int REV_TICK_COUNT = 288;
 
-    //revCount variable will change how many revolutions you want the wheel to make
-    private double revCount = 0.5;
-    private double distance = REV_TICK_COUNT * revCount;
-
     public void runOpMode(){
 
         //Initializes motor variables
@@ -44,13 +40,25 @@ public class DemoAutoMode extends LinearOpMode {
         //Waits until the start button is pressed
         waitForStart();
 
+        //Drives straight forward roughly 12 inches
+        DriveToDistance(1, 1);
+    }
+
+
+    public void TurnToDegrees(double degrees, double motorSpeed){
+
+    }
+
+    public void DriveToDistance(double revCount, double motorSpeed){
+        double distance = REV_TICK_COUNT * revCount;
+
         //!!! 1 revolution(288 ticks) equals 1ft !!! Then it tells the encoders how many times the wheel needs to spin based on the variable values assigned above
         MotorLeftBack.setTargetPosition((int)distance);
         MotorRightBack.setTargetPosition((int)distance);
 
         //It then sets the power to one and moves forward
-        MotorLeftBack.setPower(1);
-        MotorRightBack.setPower(1);
+        MotorLeftBack.setPower(motorSpeed);
+        MotorRightBack.setPower(motorSpeed);
 
         //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
         while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy()) {
