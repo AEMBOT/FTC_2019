@@ -7,7 +7,7 @@ Also if you have alot of unorganized code somewhere insert //region [NAME HERE] 
 */
 
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.DemoCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
