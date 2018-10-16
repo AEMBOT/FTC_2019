@@ -46,6 +46,25 @@ public class DemoAutoMode extends LinearOpMode {
 
 
     public void TurnToDegrees(double degrees, double motorSpeed){
+        final double CONVERSION_FACTOR = 0.8;
+        double steps = (degrees * CONVERSION_FACTOR);
+
+        //Sets the number of ticks the motor needs to move while setting
+        MotorLeftBack.setTargetPosition(-(int)steps);
+        MotorRightBack.setTargetPosition((int)steps);
+
+        //It then sets the power to one and moves forward
+        MotorLeftBack.setPower(motorSpeed);
+        MotorRightBack.setPower(motorSpeed);
+
+        //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
+        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy()) {
+            idle();
+        }
+
+        //After it has moved the desired amount break the wheels
+        MotorRightBack.setPower(0);
+        MotorLeftBack.setPower(0);
 
     }
 
