@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name = "DemoAutoMode", group = "Demo")
 public class DemoAutoMode extends LinearOpMode {
 
-
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;
     private DcMotor MotorRightBack;
@@ -27,7 +26,6 @@ public class DemoAutoMode extends LinearOpMode {
         //Sets the left motor to
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
 
-
         //So when "Init" is pressed on the control it stops the encoders and resets the encoders to their default value
         MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -36,23 +34,34 @@ public class DemoAutoMode extends LinearOpMode {
         MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-
         //Waits until the start button is pressed
         waitForStart();
 
         //Drives straight forward roughly 12 inches
         DriveToDistance(1, 1);
+
+        //SHOULD turn 90 degrees to the right
+        TurnToDegrees(90, 1, true);
     }
 
 
-    public void TurnToDegrees(double degrees, double motorSpeed){
+    private void TurnToDegrees(double degrees, double motorSpeed, boolean turnRight){
+
+        //Converts degrees into ticks
         final double CONVERSION_FACTOR = 0.8;
-        double steps = (degrees * CONVERSION_FACTOR);
+        double ticks = (degrees * CONVERSION_FACTOR);
 
-        //Sets the number of ticks the motor needs to move while setting
-        MotorLeftBack.setTargetPosition(-(int)steps);
-        MotorRightBack.setTargetPosition((int)steps);
+        if(turnRight) {
+            //Sets the number of ticks the motor needs to move while setting
+            MotorLeftBack.setTargetPosition((int) ticks);
+            MotorRightBack.setTargetPosition(-(int) ticks);
+        }
 
+        else {
+            //Sets the number of ticks the motor needs to move while setting
+            MotorLeftBack.setTargetPosition(-(int) ticks);
+            MotorRightBack.setTargetPosition((int) ticks);
+        }
         //It then sets the power to one and moves forward
         MotorLeftBack.setPower(motorSpeed);
         MotorRightBack.setPower(motorSpeed);
@@ -68,7 +77,7 @@ public class DemoAutoMode extends LinearOpMode {
 
     }
 
-    public void DriveToDistance(double revCount, double motorSpeed){
+    private void DriveToDistance(double revCount, double motorSpeed){
         double distance = REV_TICK_COUNT * revCount;
 
         //!!! 1 revolution(288 ticks) equals 1ft !!! Then it tells the encoders how many times the wheel needs to spin based on the variable values assigned above
