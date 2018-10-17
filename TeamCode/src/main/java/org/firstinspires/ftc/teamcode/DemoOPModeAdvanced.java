@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.DemoCode;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;

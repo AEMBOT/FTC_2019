@@ -6,9 +6,9 @@ Comment large blocks of code that need description, or anything that needs a des
 Also if you have alot of unorganized code somewhere insert //region [NAME HERE] at the start and //endregion at the end and it will allow you to collapse that specific section of code
 */
 
+package org.firstinspires.ftc.teamcode;
 
-package org.firstinspires.ftc.teamcode.DemoCode;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
