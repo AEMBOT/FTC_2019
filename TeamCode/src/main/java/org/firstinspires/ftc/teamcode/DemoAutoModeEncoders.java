@@ -1,6 +1,8 @@
 /*
 Demo autonomous code created by Will Richards for FTC 2019
 
+The following code is a demo of controlling the robot during the auto period using encoders to control the distance of the robot
+
 !!!IMPORTANT!!! This code is a demo, the comments are excessive on purpose don't comment this much normally but defiantly comment your code
 Comment large blocks of code that need description, or anything that needs a description... Be concise
 Also if you have alot of unorganized code somewhere insert //region [NAME HERE] at the start and //endregion at the end and it will allow you to collapse that specific section of code
@@ -16,8 +18,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "DemoAutoMode", group = "Demo")
-public class DemoAutoMode extends LinearOpMode {
+@Autonomous(name = "DemoAutoModeEncoders", group = "Demo")
+public class DemoAutoModeEncoders extends LinearOpMode {
 
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;

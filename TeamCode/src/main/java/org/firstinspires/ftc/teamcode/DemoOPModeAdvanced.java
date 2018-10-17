@@ -1,6 +1,8 @@
 /*
 Demo TeleOP code created by Will Richards for FTC 2019
 
+A driver controlled program the allows for more control than the basic but is slightly more advanced
+
 !!!IMPORTANT!!! This code is a demo, the comments are excessive on purpose don't comment this much normally but defiantly comment your code
 Comment large blocks of code that need description, or anything that needs a description... Be concise
 Also if you have alot of unorganized code somewhere insert //region [NAME HERE] at the start and //endregion at the end and it will allow you to collapse that specific section of code

@@ -1,6 +1,8 @@
 /*
 Demo TeleOP code created by Will Richards for FTC 2019
 
+Bare bones driver controlled teleop code
+
 !!!IMPORTANT!!! This code is a demo, the comments are excessive on purpose don't comment this much normally but defiantly comment your code
 Comment large blocks of code that need description, or anything that needs a description... Be concise
 Also if you have alot of unorganized code somewhere insert //region [NAME HERE] at the start and //endregion at the end and it will allow you to collapse that specific section of code
@@ -18,7 +20,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 //Declares This is a drive controlled TeleOp mode
-//@Autonomous(name = "DemoAutoMode", group = "Demo") this is what a autonomous mode would look like
+//@Autonomous(name = "DemoAutoModeEncoders", group = "Demo") this is what a autonomous mode would look like
 @TeleOp(name = "DemoTeleOpModeBasic", group = "Demo")
 public class DemoOPModeBasic extends LinearOpMode {
 
@@ -26,8 +28,6 @@ public class DemoOPModeBasic extends LinearOpMode {
     //The following are the variables that will contain the drive motors and each of their respective data
     private DcMotor MotorLeftBack;
     private DcMotor MotorRightBack;
-
-    private DcMotor ArmMotor;
 
     //Always separate each set of variable types... it just looks nicer
     private ColorSensor DemoColorSensor;
@@ -40,7 +40,6 @@ public class DemoOPModeBasic extends LinearOpMode {
         //!!!IMPORTANT!!! If the names are changed on the phones such as "MotorLF" is changed to "MotorLeftFront" the code following must be updated
         MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
-        ArmMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
 
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
         //Needs to be reversed to move forward
