@@ -32,52 +32,61 @@ public class DemoAutoMode extends LinearOpMode {
         //Drives straight forward roughly 12 inches
         DriveToDistance(1, 1);
 
+        //Waits 2 seconds
         Thread.sleep(2000);
 
-        //SHOULD turn 90 degrees to the right
+        //Turns 90 degrees to the right
         TurnToDegrees(90, 1, true);
 
+        //Waits 2 seconds
         Thread.sleep(2000);
 
+        //Drives directly backwards one revolution or 12 inches
         DriveToDistance(1,-1);
 
+        //Waits 2 seconds
         Thread.sleep(2000);
 
+        //Turns to the left 90 degrees
         TurnToDegrees(90,1,false);
-
-
     }
 
 
     private void TurnToDegrees(double degrees, double motorSpeed, boolean turnRight){
         //Converts degrees into ticks
-        final double CONVERSION_FACTOR = 1.25 * 2;
+        final double CONVERSION_FACTOR = 2.5;
 
+        //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);
 
+        //Resets encoder values
         MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //Then it switches the encoders in a mode where it will drive the specified distance no matter what
+        //Sets the encoders back up for accepting input
         MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        //Checks if it is meant to turn right
         if(turnRight)
         {
-            //Sets the number of ticks the motor needs to move while setting
+            //Sets the number of ticks the motor needs to move
             MotorLeftBack.setTargetPosition((int)ticks );
             MotorRightBack.setTargetPosition(-(int)ticks);
 
-            //It then sets the power to one and moves forward
+            //It then sets the power of the motors accordingly to turn the robot to the right
             MotorLeftBack.setPower(motorSpeed);
             MotorRightBack.setPower(-motorSpeed);
         }
+
+        //If false turn left
         else {
-            //Sets the number of ticks the motor needs to move while setting
+
+            //Sets the number of ticks the motor needs to turn left
             MotorLeftBack.setTargetPosition(-(int)ticks );
             MotorRightBack.setTargetPosition((int)ticks);
 
-            //It then sets the power to one and moves forward
+            //It then sets the power of the motors to turn left
             MotorLeftBack.setPower(-motorSpeed);
             MotorRightBack.setPower(motorSpeed);
         }
@@ -88,7 +97,7 @@ public class DemoAutoMode extends LinearOpMode {
             idle();
         }
 
-        //After it has moved the desired amount break the wheels
+        //After it has moved the desired amount brake the wheels
         MotorRightBack.setPower(0);
         MotorLeftBack.setPower(0);
 
@@ -97,27 +106,32 @@ public class DemoAutoMode extends LinearOpMode {
     private void DriveToDistance(double revCount, double motorSpeed){
         double distance = REV_TICK_COUNT * revCount;
 
+        //Stops and resets encoders
         MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
 
         //Then it switches the encoders in a mode where it will drive the specified distance no matter what
         MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        //Will check if the robot should be in reverse if so set encoder target accordingly
         if(motorSpeed < 0){
-            //!!! 1 revolution(288 ticks) equals 1ft !!! Then it tells the encoders how many times the wheel needs to spin based on the variable values assigned above
+
+            //Sets the number of ticks to negative to allow for reverse
             MotorLeftBack.setTargetPosition(-(int)distance);
             MotorRightBack.setTargetPosition(-(int)distance);
         }
+
+        //Will run if robot is set to move forward
         else{
-            //!!! 1 revolution(288 ticks) equals 1ft !!! Then it tells the encoders how many times the wheel needs to spin based on the variable values assigned above
+
+            //Roughly the same as the code above but this will move forward
             MotorLeftBack.setTargetPosition((int)distance);
             MotorRightBack.setTargetPosition((int)distance);
         }
 
 
-        //It then sets the power to one and moves forward
+        //It then sets the power to the motors to allow for forward movement
         MotorLeftBack.setPower(motorSpeed);
         MotorRightBack.setPower(motorSpeed);
 
@@ -126,8 +140,8 @@ public class DemoAutoMode extends LinearOpMode {
             idle();
         }
 
-        //After it has moved the desired amount break the wheels
-       MotorRightBack.setPower(0);
-       MotorLeftBack.setPower(0);
+        //After it has moved the desired amount brake the wheels
+        MotorRightBack.setPower(0);
+        MotorLeftBack.setPower(0);
     }
 }
