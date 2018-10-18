@@ -116,8 +116,11 @@ public class DemoAutoModeEncoders extends LinearOpMode {
 
     }
 
-    private void DriveToDistance(double revCount, double motorSpeed){
-        double distance = REV_TICK_COUNT * revCount;
+    private void DriveToDistance(double distance, double motorSpeed){
+
+        //! 1 rev is 12.56 inches !
+        double totalDistance = REV_TICK_COUNT * distance;
+
 
         //Stops and resets encoders
         MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -131,16 +134,16 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         if(motorSpeed < 0){
 
             //Sets the number of ticks to negative to allow for reverse
-            MotorLeftBack.setTargetPosition(-(int)distance);
-            MotorRightBack.setTargetPosition(-(int)distance);
+            MotorLeftBack.setTargetPosition(-(int)totalDistance);
+            MotorRightBack.setTargetPosition(-(int)totalDistance);
         }
 
         //Will run if robot is set to move forward
         else{
 
             //Roughly the same as the code above but this will move forward
-            MotorLeftBack.setTargetPosition((int)distance);
-            MotorRightBack.setTargetPosition((int)distance);
+            MotorLeftBack.setTargetPosition((int)totalDistance);
+            MotorRightBack.setTargetPosition((int)totalDistance);
         }
 
 
