@@ -16,8 +16,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "DemoAutoModeColorSensor", group = "Demo")
-public class DemoAutoModeColorSensor extends LinearOpMode {
+@Autonomous(name = "ColorSensorDemo", group = "Demo")
+public class ColorSensorDemo extends LinearOpMode {
 
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;
@@ -38,15 +38,29 @@ public class DemoAutoModeColorSensor extends LinearOpMode {
         waitForStart();
 
         //Turn on the LED (if it has one) at the start of the match
-        ColorSensor.enableLed(true);
+        //ColorSensor.enableLed(true);
+        String color = "None";
 
         while (opModeIsActive()) {
+
 
             //Output the reads for the RGB values of the color sensor and update them while robot is running
             telemetry.addData("Red Value: ", ColorSensor.red());
             telemetry.addData("Green Value: ", ColorSensor.green());
             telemetry.addData("Blue Value: ", ColorSensor.blue());
+            telemetry.addData("Color: ", color);
             telemetry.update();
+
+            if(ColorSensor.blue() > 100 && ColorSensor.red() > 100 && ColorSensor.green() > 100){
+                color = "White";
+            }
+            else if(ColorSensor.blue() < 100 && ColorSensor.blue() > 50){
+                color = "Yellow";
+            }
+            else{
+                color = "None";
+            }
+
         }
 
         //Example use of ColorSensor.red() in a situation
