@@ -25,6 +25,8 @@ public class DemoAutoModeEncoders extends LinearOpMode {
     private DcMotor MotorLeftBack;
     private DcMotor MotorRightBack;
 
+    public enum TurnDirection {RIGHT, LEFT}
+
     //Creates a constant variable with the value of 288 or one revolution
     private final int REV_TICK_COUNT = 288;
 
@@ -47,7 +49,7 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         Thread.sleep(2000);
 
         //Turns 90 degrees to the right
-        TurnToDegrees(90, 1, true);
+        TurnToDegrees(90, 1, TurnDirection.RIGHT);
 
         //Waits 2 seconds
         Thread.sleep(2000);
@@ -59,11 +61,11 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         Thread.sleep(2000);
 
         //Turns to the left 90 degrees
-        TurnToDegrees(90,1,false);
+        TurnToDegrees(90,1, TurnDirection.LEFT);
     }
 
 
-    private void TurnToDegrees(double degrees, double motorSpeed, boolean turnRight){
+    private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
 
@@ -79,7 +81,7 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Checks if it is meant to turn right
-        if(turnRight)
+        if(turnDirection == TurnDirection.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
             MotorLeftBack.setTargetPosition((int)ticks );
