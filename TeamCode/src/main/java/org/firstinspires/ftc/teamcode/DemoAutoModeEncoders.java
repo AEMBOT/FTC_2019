@@ -43,7 +43,7 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         waitForStart();
 
         //Drives straight forward roughly 12 inches
-        DriveToDistance(1, 1);
+        DriveToDistance(12, 1);
 
         //Waits 2 seconds
         Thread.sleep(2000);
@@ -55,7 +55,7 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         Thread.sleep(2000);
 
         //Drives directly backwards one revolution or 12 inches
-        DriveToDistance(1,-1);
+        DriveToDistance(12,-1);
 
         //Waits 2 seconds
         Thread.sleep(2000);
@@ -119,7 +119,7 @@ public class DemoAutoModeEncoders extends LinearOpMode {
     private void DriveToDistance(double distance, double motorSpeed){
 
         //! 1 rev is 12.56 inches !
-        double totalDistance = REV_TICK_COUNT * distance;
+        double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
 
 
         //Stops and resets encoders
