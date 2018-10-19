@@ -39,29 +39,39 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         //Sets the left motor to
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
 
+        //Declare speed variable (double)
+        double motorSpeed = 0.5;
+
         //Waits until the start button is pressed
         waitForStart();
 
-        //Drives straight forward roughly 12 inches
-        DriveToDistance(12, 1);
+        //Drives straight forward roughly 24 inches
+        DriveToDistance(20, motorSpeed);
 
         //Waits 2 seconds
         Thread.sleep(2000);
 
-        //Turns 90 degrees to the right
-        TurnToDegrees(90, 1, TurnDirection.RIGHT);
+        //Turns 60 degrees to the right
+        TurnToDegrees(60, motorSpeed / 2, TurnDirection.RIGHT);
 
         //Waits 2 seconds
         Thread.sleep(2000);
 
-        //Drives directly backwards one revolution or 12 inches
-        DriveToDistance(12,-1);
+        //Drives directly backwards 34 inches
+        DriveToDistance(34,motorSpeed);
 
         //Waits 2 seconds
         Thread.sleep(2000);
 
-        //Turns to the left 90 degrees
-        TurnToDegrees(90,1, TurnDirection.LEFT);
+        //Turns to the left 30 degrees
+        TurnToDegrees(30, motorSpeed , TurnDirection.RIGHT);
+
+        DriveToDistance(18, -motorSpeed);
+
+        //See if color sensor senses yellow (gold) here
+
+
+
     }
 
 
