@@ -45,7 +45,9 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         //Waits until the start button is pressed
         waitForStart();
 
-        //Drives straight forward roughly 24 inches
+        //Robot landing code will go here
+
+        //Drives straight forward roughly 20 inches
         DriveToDistance(20, motorSpeed);
 
         //Waits 2 seconds
@@ -57,7 +59,7 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         //Waits 2 seconds
         Thread.sleep(2000);
 
-        //Drives directly backwards 34 inches
+        //Drives directly forward 34 inches
         DriveToDistance(34,motorSpeed);
 
         //Waits 2 seconds
@@ -66,12 +68,54 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         //Turns to the left 30 degrees
         TurnToDegrees(30, motorSpeed , TurnDirection.RIGHT);
 
+        //Backwards 18 degrees
         DriveToDistance(18, -motorSpeed);
 
         //See if color sensor senses yellow (gold) here
 
+        //Backwards 14.5 Inches
+        DriveToDistance(14.5, -motorSpeed);
 
+        //Sense if yellow
 
+        //Backwards 14.5 Inches
+        DriveToDistance(14.5, -motorSpeed);
+
+        //Sense if yellow
+        DriveToDistance(24, motorSpeed);
+
+        //Turn right 90 degrees
+        TurnToDegrees(30, motorSpeed , TurnDirection.RIGHT);
+
+        //Drive Forward 26 inches
+        DriveToDistance(26, motorSpeed);
+
+        //Sense Yellow
+
+        //Drives to next object, 14.5 inches
+        DriveToDistance(14.5, motorSpeed);
+
+        //Sense Yellow
+
+        //Drives to next object, 14.5 inches
+        DriveToDistance(14.5, motorSpeed);
+
+        //Sense Yellow
+
+        //Forward 26
+        DriveToDistance(26, motorSpeed);
+
+        //Turn Left 26 degrees
+        TurnToDegrees(45, motorSpeed, TurnDirection.LEFT);
+
+        //Drives Backwards 18 Inches
+        DriveToDistance(18, -motorSpeed);
+
+        //Turns 18 degrees Left
+        TurnToDegrees(90, motorSpeed, turnDirection.LEFT);
+
+        //Forward 96 inches
+        DriveToDistance(96, motorSpeed);
     }
 
 
