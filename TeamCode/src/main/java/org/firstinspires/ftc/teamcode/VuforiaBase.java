@@ -1,7 +1,7 @@
 /*
 *  Spaghetti code copied and pasted from the demo
 *  I would advise against altering this because it works and like I said prior this is spaghetti code
-*  Just create an instance in your Main auto mode and call the runOpMode() method from it
+*  Just create an instance in your Main auto mode and call the ScanForVuMarks() method from it and assign it to a string
 *  ~ Will
 */
 
