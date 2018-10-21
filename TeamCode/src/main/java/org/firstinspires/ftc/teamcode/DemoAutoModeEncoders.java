@@ -15,6 +15,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -24,6 +25,8 @@ public class DemoAutoModeEncoders extends LinearOpMode {
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;
     private DcMotor MotorRightBack;
+
+    private ColorSensor ColorSensor;
 
     public enum TurnDirection {RIGHT, LEFT}
 
@@ -35,12 +38,15 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         //Initializes motor variables
         MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
+        ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
         //Sets the left motor to
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
 
         //Declare speed variable (double)
         double motorSpeed = 0.5;
+
+        boolean hasFlipped = false;
 
         //Waits until the start button is pressed
         waitForStart();
@@ -72,53 +78,82 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         DriveToDistance(18, -motorSpeed);
 
         //See if color sensor senses yellow (gold) here
+        if(SenseYellow() && !hasFlipped){
+            //Flip Code
+            hasFlipped = true;
+        }
 
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
 
         //Sense if yellow
+        if(SenseYellow() && !hasFlipped){
+            //Flip Code here
+            hasFlipped = true;
+        }
 
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
 
         //Sense if yellow
+        if(SenseYellow() && !hasFlipped){
+            //Flip Code here
+            hasFlipped = true;
+        }
+
+        //Reset has flipped value
+        hasFlipped = false;
+        //endregion
+
+        //Drive Forward 24 inches
         DriveToDistance(24, motorSpeed);
-
-        //Turn right 90 degrees
-        TurnToDegrees(30, motorSpeed , TurnDirection.RIGHT);
-
+        //Turn right 30 degrees
+        TurnToDegrees(30, motorSpeed, TurnDirection.RIGHT);
         //Drive Forward 26 inches
         DriveToDistance(26, motorSpeed);
 
+
         //Sense Yellow
+        if(SenseYellow() && !hasFlipped){
+            //Flip Code here
+            hasFlipped = true;
+        }
 
         //Drives to next object, 14.5 inches
         DriveToDistance(14.5, motorSpeed);
 
         //Sense Yellow
-
+        if(SenseYellow() && !hasFlipped){
+            //Flipper code
+            hasFlipped = true;
+        }
         //Drives to next object, 14.5 inches
         DriveToDistance(14.5, motorSpeed);
 
         //Sense Yellow
+        if(SenseYellow() && !hasFlipped){
+            //Flipper code
+            hasFlipped = true;
+        }
 
         //Forward 26
         DriveToDistance(26, motorSpeed);
 
-        //Turn Left 26 degrees
+        //Turn Left 45 degrees
         TurnToDegrees(45, motorSpeed, TurnDirection.LEFT);
 
         //Drives Backwards 18 Inches
         DriveToDistance(18, -motorSpeed);
 
-        //Turns 18 degrees Left
-        TurnToDegrees(90, motorSpeed, turnDirection.LEFT);
+        //Turns 90 degrees Left
+        TurnToDegrees(90, motorSpeed, TurnDirection.LEFT);
 
         //Forward 96 inches
         DriveToDistance(96, motorSpeed);
     }
 
 
+    //This method can be called when you want the robot to turn to a set degrees value at a certain speed and direction
     private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
@@ -170,6 +205,7 @@ public class DemoAutoModeEncoders extends LinearOpMode {
 
     }
 
+    //This method can be called when you want the robot to drive a certain distance in INCHES at a certain speed
     private void DriveToDistance(double distance, double motorSpeed){
 
         //! 1 rev is 12.56 inches !
@@ -213,5 +249,27 @@ public class DemoAutoModeEncoders extends LinearOpMode {
         //After it has moved the desired amount brake the wheels
         MotorRightBack.setPower(0);
         MotorLeftBack.setPower(0);
+    }
+
+    //This method will use the color sensor to sense if the ball is yellow or white and returns a boolean value accordingly
+    private boolean SenseYellow(){
+        boolean isYellow;
+
+        //The color sensed was white
+        if(ColorSensor.blue() > 100 && ColorSensor.red() > 100 && ColorSensor.green() > 100){
+            isYellow = false;
+            return isYellow;
+        }
+
+        //The color sensed was yellow
+        else if(ColorSensor.blue() < 100 && ColorSensor.blue() > 50){
+            isYellow = true;
+        }
+
+        //It did not sense a valid color
+        else{
+            isYellow = false;
+        }
+        return isYellow;
     }
 }
