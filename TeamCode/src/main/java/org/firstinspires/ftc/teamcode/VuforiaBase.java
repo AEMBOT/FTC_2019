@@ -1,16 +1,18 @@
+/*
+*  Spaghetti code copied and pasted from the demo
+*  I would advise against altering this because it works and like I said prior this is spaghetti code
+*  Just create an instance in your Main auto mode and call the runOpMode() method from it
+*  ~ Will
+*/
+
+
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -27,14 +29,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 
-@Autonomous(name = "VuforiaBase", group = "Demo")
 public class VuforiaBase extends LinearOpMode {
-
-    //Variables created for the two back motors
-    private DcMotor MotorLeftBack;
-    private DcMotor MotorRightBack;
-
-    private ColorSensor ColorSensor;
 
     //region Terible Copy And Pasted Vuforia Variables
     private static final String VUFORIA_KEY = "ARPnwvL/////AAABmU8cv9I3aEzKjxGctX2I9SmLT1IJYqXFLj75/2RURADBuzVjM+5SBvMe1VaqA0+APYVLHnDIedmmqIbKdO5IPHRVJmW05OacgGhRcOikZ3wBeQnup7/J9DnV7Rp5So0wNutA4L1BuRdEwpd1EA9vH1x2vvsAIgnEpUoOVzwOLsiFXwd9X4RmO6zaQsI0YLWWj50GXyOPSwFc1+U+RbGCC+tQkpILPFR4BTyds5HMXyyzB9153iT720jWPm2Qv/qCHAXe5GGMgyNJ9sbgyFjwdeRl5uHbFRluhq7RFfNxv54t1hoN+/rX1Aj2PX+B/EE/nnMaGN20eY4rPAfEsiVdqKj1ZnXhntnfwKQVPOrgyAPU";
@@ -65,17 +60,7 @@ public class VuforiaBase extends LinearOpMode {
     //endregion
 
     public void runOpMode() {
-
-        //Initializes motor variables
-        MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
-        ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
-
-        //Sets the left motor to
-        MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
         SetupVuforia();
-
-        waitForStart();
 
         ScanForVuMarks();
     }
