@@ -17,8 +17,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AutoModeMain", group = "Demo")
-public class DemoAutoModeMain extends LinearOpMode {
+@Autonomous(name = "AutoModeMain", group = "Main")
+public class AutoModeMain extends LinearOpMode {
 
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;
@@ -37,6 +37,9 @@ public class DemoAutoModeMain extends LinearOpMode {
         MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
+
+        //Creates a local reference to VuforiaBase
+        VuforiaBase vuforiaBase = new VuforiaBase();
 
         //Sets the left motor to
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
