@@ -19,8 +19,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "DemoAutoModeEncoders", group = "Demo")
-public class DemoAutoModeEncoders extends LinearOpMode {
+@Autonomous(name = "AutoModeMain", group = "Demo")
+public class DemoAutoModeMain extends LinearOpMode {
 
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;
