@@ -78,30 +78,32 @@ public class AutoModeMain extends LinearOpMode {
         //Backwards 18 degrees
         DriveToDistance(18, -motorSpeed);
 
+        /*
         //See if color sensor senses yellow (gold) here
         if(SenseYellow() && !hasFlipped){
             //Flip Code
             hasFlipped = true;
         }
-
+        */
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
-
+        /*
         //Sense if yellow
         if(SenseYellow() && !hasFlipped){
             //Flip Code here
             hasFlipped = true;
         }
-
+        */
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
 
+        /*
         //Sense if yellow
         if(SenseYellow() && !hasFlipped){
             //Flip Code here
             hasFlipped = true;
         }
-
+        */
         //Reset has flipped value
         hasFlipped = false;
         //endregion
@@ -113,29 +115,33 @@ public class AutoModeMain extends LinearOpMode {
         //Drive Forward 26 inches
         DriveToDistance(26, motorSpeed);
 
-
+        /*
         //Sense Yellow
         if(SenseYellow() && !hasFlipped){
             //Flip Code here
             hasFlipped = true;
         }
-
+        */
         //Drives to next object, 14.5 inches
         DriveToDistance(14.5, motorSpeed);
 
+        /*
         //Sense Yellow
         if(SenseYellow() && !hasFlipped){
             //Flipper code
             hasFlipped = true;
         }
+        */
         //Drives to next object, 14.5 inches
         DriveToDistance(14.5, motorSpeed);
 
+        /*
         //Sense Yellow
         if(SenseYellow() && !hasFlipped){
             //Flipper code
             hasFlipped = true;
         }
+        */
 
         //Forward 26
         DriveToDistance(26, motorSpeed);

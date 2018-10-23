@@ -67,6 +67,7 @@ public class VuforiaBase extends LinearOpMode{
     public String ScanForVuMarks(){
         SetupVuforia();
         String trackableName = "";
+
         /** Start tracking the data sets we care about. */
         targetsRoverRuckus.activate();
         while (!targetVisible) {
