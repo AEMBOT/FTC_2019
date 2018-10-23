@@ -47,7 +47,7 @@ public class VuforiaBase extends LinearOpMode{
     // Valid choices are:  BACK or FRONT
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
-    VuforiaTrackables targetsRoverRuckus = this.vuforia.loadTrackablesFromAsset("RoverRuckus");
+    VuforiaTrackables targetsRoverRuckus;
     List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
 
     private OpenGLMatrix lastLocation = null;
@@ -107,6 +107,7 @@ public class VuforiaBase extends LinearOpMode{
 
         // Load the data sets that for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
+        targetsRoverRuckus = this.vuforia.loadTrackablesFromAsset("RoverRuckus");
         VuforiaTrackable blueRover = targetsRoverRuckus.get(0);
         blueRover.setName("Blue-Rover");
         VuforiaTrackable redFootprint = targetsRoverRuckus.get(1);
