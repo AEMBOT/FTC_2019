@@ -39,7 +39,7 @@ public class AutoModeMain extends LinearOpMode {
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
         //Creates a local reference to VuforiaBase
-        VuforiaBase vuforiaBase = new VuforiaBase();
+        //VuforiaBase vuforiaBase = new VuforiaBase();
 
         //Sets the left motor to
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
@@ -48,6 +48,7 @@ public class AutoModeMain extends LinearOpMode {
         double motorSpeed = 0.5;
 
         boolean hasFlipped = false;
+
 
         //Waits until the start button is pressed
         waitForStart();
@@ -67,7 +68,8 @@ public class AutoModeMain extends LinearOpMode {
         Thread.sleep(2000);
 
         //Drives directly forward 34 inches
-        DriveToDistance(34,motorSpeed);
+        //This part is inconsistent and sometimes overshoots; Work in progress
+        DriveToDistance(32, motorSpeed);
 
         //Waits 2 seconds
         Thread.sleep(2000);
@@ -78,70 +80,79 @@ public class AutoModeMain extends LinearOpMode {
         //Backwards 18 degrees
         DriveToDistance(18, -motorSpeed);
 
-        /*
         //See if color sensor senses yellow (gold) here
         if(SenseYellow() && !hasFlipped){
             //Flip Code
             hasFlipped = true;
         }
-        */
-        //Backwards 14.5 Inches
-        DriveToDistance(14.5, -motorSpeed);
-        /*
-        //Sense if yellow
-        if(SenseYellow() && !hasFlipped){
-            //Flip Code here
-            hasFlipped = true;
-        }
-        */
+
+        //pause to check for yellow
+        Thread.sleep(1000);
+
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
 
-        /*
         //Sense if yellow
         if(SenseYellow() && !hasFlipped){
             //Flip Code here
             hasFlipped = true;
         }
-        */
+
+        //pause to check for yellow
+        Thread.sleep(1000);
+
+        //Backwards 14.5 Inches
+        DriveToDistance(14.5, -motorSpeed);
+
+        //Sense if yellow
+        if(SenseYellow() && !hasFlipped){
+            //Flip Code here
+            hasFlipped = true;
+        }
+
+        //pause to check for yellow
+        Thread.sleep(1000);
+
         //Reset has flipped value
         hasFlipped = false;
         //endregion
 
+        //This is where errors have started - Troy
+        //Try to calibrate TurnToDegrees? - Zane
+
+        //Drive backward 24 inches
+        DriveToDistance(24, -motorSpeed);
+
+        //Turn right 75 degrees
+        TurnToDegrees(75, motorSpeed, TurnDirection.RIGHT);
+
         //Drive Forward 24 inches
         DriveToDistance(24, motorSpeed);
-        //Turn right 30 degrees
-        TurnToDegrees(30, motorSpeed, TurnDirection.RIGHT);
-        //Drive Forward 26 inches
-        DriveToDistance(26, motorSpeed);
 
-        /*
+
         //Sense Yellow
         if(SenseYellow() && !hasFlipped){
+
             //Flip Code here
             hasFlipped = true;
         }
-        */
+
         //Drives to next object, 14.5 inches
         DriveToDistance(14.5, motorSpeed);
 
-        /*
         //Sense Yellow
         if(SenseYellow() && !hasFlipped){
             //Flipper code
             hasFlipped = true;
         }
-        */
         //Drives to next object, 14.5 inches
         DriveToDistance(14.5, motorSpeed);
 
-        /*
         //Sense Yellow
         if(SenseYellow() && !hasFlipped){
             //Flipper code
             hasFlipped = true;
         }
-        */
 
         //Forward 26
         DriveToDistance(26, motorSpeed);
@@ -157,6 +168,9 @@ public class AutoModeMain extends LinearOpMode {
 
         //Forward 96 inches
         DriveToDistance(96, motorSpeed);
+
+        //Claim Code will go here
+
     }
 
 
@@ -164,9 +178,17 @@ public class AutoModeMain extends LinearOpMode {
     private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
+        final double ticksToDegrees = 90 / 85;
 
         //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);
+        double turnDegrees = ticks * ticksToDegrees;
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+
+        }
 
         //Resets encoder values
         MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -180,8 +202,8 @@ public class AutoModeMain extends LinearOpMode {
         if(turnDirection == TurnDirection.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
-            MotorLeftBack.setTargetPosition((int)ticks );
-            MotorRightBack.setTargetPosition(-(int)ticks);
+            MotorLeftBack.setTargetPosition((int)turnDegrees );
+            MotorRightBack.setTargetPosition(-(int)turnDegrees);
 
             //It then sets the power of the motors accordingly to turn the robot to the right
             MotorLeftBack.setPower(motorSpeed);
@@ -192,8 +214,8 @@ public class AutoModeMain extends LinearOpMode {
         else {
 
             //Sets the number of ticks the motor needs to turn left
-            MotorLeftBack.setTargetPosition(-(int)ticks );
-            MotorRightBack.setTargetPosition((int)ticks);
+            MotorLeftBack.setTargetPosition(-(int)turnDegrees );
+            MotorRightBack.setTargetPosition((int)turnDegrees);
 
             //It then sets the power of the motors to turn left
             MotorLeftBack.setPower(-motorSpeed);
@@ -214,6 +236,12 @@ public class AutoModeMain extends LinearOpMode {
 
     //This method can be called when you want the robot to drive a certain distance in INCHES at a certain speed
     private void DriveToDistance(double distance, double motorSpeed){
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+
+        }
 
         //! 1 rev is 12.56 inches !
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
