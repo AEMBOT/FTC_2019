@@ -45,7 +45,7 @@ public class AutoModeMain extends LinearOpMode {
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
 
         //Declare speed variable (double)
-        double motorSpeed = 0.5;
+        double motorSpeed = 1;
 
         boolean hasFlipped = false;
 
@@ -59,20 +59,20 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(20, motorSpeed);
 
         //Waits 2 seconds
-        Thread.sleep(2000);
+        //Thread.sleep(2000);
 
         //Turns 60 degrees to the right
         TurnToDegrees(60, motorSpeed / 2, TurnDirection.RIGHT);
 
         //Waits 2 seconds
-        Thread.sleep(2000);
+        //Thread.sleep(2000);
 
         //Drives directly forward 34 inches
         //This part is inconsistent and sometimes overshoots; Work in progress
         DriveToDistance(32, motorSpeed);
 
         //Waits 2 seconds
-        Thread.sleep(2000);
+       // Thread.sleep(2000);
 
         //Turns to the left 30 degrees
         TurnToDegrees(30, motorSpeed , TurnDirection.RIGHT);
@@ -87,7 +87,7 @@ public class AutoModeMain extends LinearOpMode {
         }
 
         //pause to check for yellow
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
 
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
@@ -99,7 +99,7 @@ public class AutoModeMain extends LinearOpMode {
         }
 
         //pause to check for yellow
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
 
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
@@ -111,7 +111,7 @@ public class AutoModeMain extends LinearOpMode {
         }
 
         //pause to check for yellow
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
 
         //Reset has flipped value
         hasFlipped = false;
@@ -119,6 +119,7 @@ public class AutoModeMain extends LinearOpMode {
 
         //This is where errors have started - Troy
         //Try to calibrate TurnToDegrees? - Zane
+        //The calibration didn't seem to work - Troy
 
         //Drive backward 24 inches
         DriveToDistance(24, -motorSpeed);
