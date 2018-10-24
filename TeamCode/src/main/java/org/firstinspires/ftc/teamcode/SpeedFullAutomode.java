@@ -17,8 +17,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AutoModeMain", group = "Main")
-public class AutoModeMain extends LinearOpMode {
+@Autonomous(name = "SpeedFullAutomode", group = "Main")
+public class SpeedFullAutomode extends LinearOpMode {
 
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;
@@ -45,14 +45,13 @@ public class AutoModeMain extends LinearOpMode {
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
 
         //Declare speed variable (double)
-        double motorSpeed = .5;
+        double motorSpeed = 1;
 
         boolean hasFlipped = false;
 
 
         //Waits until the start button is pressed
         waitForStart();
-
 
         //Robot landing code will go here
 
@@ -76,14 +75,13 @@ public class AutoModeMain extends LinearOpMode {
         // Thread.sleep(2000);
 
         //Turns to the left 30 degrees
-        TurnToDegrees(30, motorSpeed, TurnDirection.RIGHT);
+        TurnToDegrees(30, motorSpeed , TurnDirection.RIGHT);
 
-        //Backwards 18 inches
+        //Backwards 18 degrees
         DriveToDistance(18, -motorSpeed);
 
-
         //See if color sensor senses yellow (gold) here
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flip Code
             hasFlipped = true;
         }
@@ -95,7 +93,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(14.5, -motorSpeed);
 
         //Sense if yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flip Code here
             hasFlipped = true;
         }
@@ -107,7 +105,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(14.5, -motorSpeed);
 
         //Sense if yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flip Code here
             hasFlipped = true;
         }
@@ -118,7 +116,6 @@ public class AutoModeMain extends LinearOpMode {
         //Reset has flipped value
         hasFlipped = false;
         //endregion
-
 
         //This is where errors have started - Troy
         //Try to calibrate TurnToDegrees? - Zane
@@ -135,7 +132,7 @@ public class AutoModeMain extends LinearOpMode {
 
 
         //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
 
             //Flip Code here
             hasFlipped = true;
@@ -145,7 +142,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(14.5, motorSpeed);
 
         //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flipper code
             hasFlipped = true;
         }
@@ -153,7 +150,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(14.5, motorSpeed);
 
         //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flipper code
             hasFlipped = true;
         }
@@ -312,3 +309,4 @@ public class AutoModeMain extends LinearOpMode {
         return isYellow;
     }
 }
+
