@@ -44,8 +44,11 @@ public class SpeedFullAutomode extends LinearOpMode {
         //Sets the left motor to
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
 
-        //Declare speed variable (double)
+        //Declare motor speed variable
         double motorSpeed = 1;
+
+        //Defines turn speed to be half of regular motor speed (may change)
+        double turnSpeed = motorSpeed / 2;
 
         boolean hasFlipped = false;
 
