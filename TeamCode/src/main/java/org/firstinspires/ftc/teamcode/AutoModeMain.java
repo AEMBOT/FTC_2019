@@ -120,6 +120,7 @@ public class AutoModeMain extends LinearOpMode {
         //This is where errors have started - Troy
         //Try to calibrate TurnToDegrees? - Zane
         //The calibration didn't seem to work - Troy
+        //I think I fixed it. I inverted the conversion factor, which may have affected things. - Zane 10/24 8:14pm
 
         //Drive backward 24 inches
         DriveToDistance(24, -motorSpeed);
@@ -179,7 +180,7 @@ public class AutoModeMain extends LinearOpMode {
     private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
-        final double ticksToDegrees = 90 / 85;
+        final double ticksToDegrees = 85 / 90;
 
         //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);
