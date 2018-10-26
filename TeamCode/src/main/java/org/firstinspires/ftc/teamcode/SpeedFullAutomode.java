@@ -17,8 +17,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AutoModeMain", group = "Main")
-public class AutoModeMain extends LinearOpMode {
+@Autonomous(name = "SpeedFullAutomode", group = "Main")
+public class SpeedFullAutomode extends LinearOpMode {
 
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;
@@ -44,15 +44,17 @@ public class AutoModeMain extends LinearOpMode {
         //Sets the left motor to
         MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
 
-        //Declare speed variable (double)
-        double motorSpeed = .5;
+        //Declare motor speed variable
+        double motorSpeed = 1;
+
+        //Defines turn speed to be half of regular motor speed (may change)
+        double turnSpeed = motorSpeed / 2;
 
         boolean hasFlipped = false;
 
 
         //Waits until the start button is pressed
         waitForStart();
-
 
         //Robot landing code will go here
 
@@ -63,7 +65,7 @@ public class AutoModeMain extends LinearOpMode {
         //Thread.sleep(2000);
 
         //Turns 60 degrees to the right
-        TurnToDegrees(60, motorSpeed / 2, TurnDirection.RIGHT);
+        TurnToDegrees(60, turnSpeed, TurnDirection.RIGHT);
 
         //Waits 2 seconds
         //Thread.sleep(2000);
@@ -76,14 +78,13 @@ public class AutoModeMain extends LinearOpMode {
         // Thread.sleep(2000);
 
         //Turns to the left 30 degrees
-        TurnToDegrees(30, motorSpeed, TurnDirection.RIGHT);
+        TurnToDegrees(30, motorSpeed , TurnDirection.RIGHT);
 
-        //Backwards 18 inches
+        //Backwards 18 degrees
         DriveToDistance(18, -motorSpeed);
 
-
         //See if color sensor senses yellow (gold) here
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flip Code
             hasFlipped = true;
         }
@@ -95,7 +96,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(14.5, -motorSpeed);
 
         //Sense if yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flip Code here
             hasFlipped = true;
         }
@@ -107,7 +108,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(14.5, -motorSpeed);
 
         //Sense if yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flip Code here
             hasFlipped = true;
         }
@@ -119,11 +120,9 @@ public class AutoModeMain extends LinearOpMode {
         hasFlipped = false;
         //endregion
 
-
         //This is where errors have started - Troy
         //Try to calibrate TurnToDegrees? - Zane
         //The calibration didn't seem to work - Troy
-        //I think I fixed it. I inverted the conversion factor, which may have affected things. - Zane 10/24 8:14pm
 
         //Drive backward 24 inches
         DriveToDistance(24, -motorSpeed);
@@ -136,7 +135,7 @@ public class AutoModeMain extends LinearOpMode {
 
 
         //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
 
             //Flip Code here
             hasFlipped = true;
@@ -146,7 +145,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(14.5, motorSpeed);
 
         //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flipper code
             hasFlipped = true;
         }
@@ -154,7 +153,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(14.5, motorSpeed);
 
         //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
+        if(SenseYellow() && !hasFlipped){
             //Flipper code
             hasFlipped = true;
         }
@@ -163,13 +162,13 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(26, motorSpeed);
 
         //Turn Left 45 degrees
-        TurnToDegrees(45, motorSpeed, TurnDirection.LEFT);
+        TurnToDegrees(45, turnSpeed, TurnDirection.LEFT);
 
         //Drives Backwards 18 Inches
         DriveToDistance(18, -motorSpeed);
 
         //Turns 90 degrees Left
-        TurnToDegrees(90, motorSpeed, TurnDirection.LEFT);
+        TurnToDegrees(90, turnSpeed, TurnDirection.LEFT);
 
         //Forward 96 inches
         DriveToDistance(96, motorSpeed);
@@ -313,3 +312,4 @@ public class AutoModeMain extends LinearOpMode {
         return isYellow;
     }
 }
+
