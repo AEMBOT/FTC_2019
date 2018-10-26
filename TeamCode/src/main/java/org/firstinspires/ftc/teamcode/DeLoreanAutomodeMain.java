@@ -1,14 +1,9 @@
 /*
-Demo autonomous code created by Will Richards for FTC 2019
-
-The following code is a demo of controlling the robot during the auto period using encoders to control the distance of the robot
-
-!!!IMPORTANT!!! This code is a demo, the comments are excessive on purpose don't comment this much normally but defiantly comment your code
-Comment large blocks of code that need description, or anything that needs a description... Be concise
-Also if you have alot of unorganized code somewhere insert //region [NAME HERE] at the start and //endregion at the end and it will allow you to collapse that specific section of code
-Try to keep use of regions to a minimal
-*/
-
+Code Stolen From Will Richards by Troy Lopez for the Delorean bot.
+As of 10/25 code is written for babybot motor lay-out. This will need to change.
+This is currently skeleton code since we need to have motors defined before we can write
+code for that and frankly as of 10/25 i have no ide how to do that.
+ */
 package org.firstinspires.ftc.teamcode;
 
 
@@ -17,8 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "SpeedFullAutomode", group = "Main")
-public class SpeedFullAutomode extends LinearOpMode {
+@Autonomous(name = "DeloreanAutomodeMain", group = "Main")
+public class DeLoreanAutomodeMain extends LinearOpMode {
 
     //Variables created for the two back motors
     private DcMotor MotorLeftBack;
@@ -34,6 +29,7 @@ public class SpeedFullAutomode extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         //Initializes motor variables
+        //We'll need to Int the 4 new motors for landing and full wheel drive
         MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
@@ -56,133 +52,71 @@ public class SpeedFullAutomode extends LinearOpMode {
         //Waits until the start button is pressed
         waitForStart();
 
-        //Robot landing code will go here
+        //STARTS
 
-        //Drives straight forward roughly 20 inches
+        //Robot landing code will go here (drop wheel set 1, then Wheel set 2)
+
+        //Strafe 2 inches left
+
+        //Drives up to left cube set.
+        DriveToDistance (36, motorSpeed);
+
+        //Color sense for both sensors, L & R
+
+        /*Start if situation
+        // L'wood: If either sensor is yellow, flip corresponding flipper out and back
+
+        //If neither sensor detects yellow, move right
+        //Strafe right 15
+        //Right flipper flip+back
+        //End If situation
+        */
+
+        //Claim Code here
+
+        /* Another complicated if function-thing, Courtesy L'wood
+        If the cube was in position 1 or 2 from the left, strafe right 8.
+        If not, strafe left 8
+         */
+
+        //Approach claim site
         DriveToDistance(20, motorSpeed);
 
-        //Waits 2 seconds
-        //Thread.sleep(2000);
+        //Drop Marker (motor run, then back)
 
-        //Turns 60 degrees to the right
-        TurnToDegrees(60, turnSpeed, TurnDirection.RIGHT);
+        //strafe right 15
 
-        //Waits 2 seconds
-        //Thread.sleep(2000);
+        //this will need to rotate across the center axis
+        TurnToDegrees(135, turnSpeed, AutoModeMain.TurnDirection.RIGHT);
 
-        //Drives directly forward 34 inches
-        //This part is inconsistent and sometimes overshoots; Work in progress
-        DriveToDistance(32, motorSpeed);
+        //drives towards crater straight
+        DriveToDistance(40, motorSpeed);
 
-        //Waits 2 seconds
-        // Thread.sleep(2000);
+        //Turns 45 RIGHT
+        TurnToDegrees(45, turnSpeed, AutoModeMain.TurnDirection.RIGHT);
 
-        //Turns to the left 30 degrees
-        TurnToDegrees(30, motorSpeed , TurnDirection.RIGHT);
+        //25 Straight
+        DriveToDistance(25, motorSpeed);
 
-        //Backwards 18 degrees
-        DriveToDistance(18, -motorSpeed);
+        //Turns 90 left
+        TurnToDegrees(90, motorSpeed, AutoModeMain.TurnDirection.LEFT);
 
-        //See if color sensor senses yellow (gold) here
-        if(SenseYellow() && !hasFlipped){
-            //Flip Code
-            hasFlipped = true;
-        }
+        //
 
-        //pause to check for yellow
-        //Thread.sleep(1000);
+        //
 
-        //Backwards 14.5 Inches
-        DriveToDistance(14.5, -motorSpeed);
-
-        //Sense if yellow
-        if(SenseYellow() && !hasFlipped){
-            //Flip Code here
-            hasFlipped = true;
-        }
-
-        //pause to check for yellow
-        //Thread.sleep(1000);
-
-        //Backwards 14.5 Inches
-        DriveToDistance(14.5, -motorSpeed);
-
-        //Sense if yellow
-        if(SenseYellow() && !hasFlipped){
-            //Flip Code here
-            hasFlipped = true;
-        }
-
-        //pause to check for yellow
-        //Thread.sleep(1000);
-
-        //Reset has flipped value
-        hasFlipped = false;
-        //endregion
-
-        //This is where errors have started - Troy
-        //Try to calibrate TurnToDegrees? - Zane
-        //The calibration didn't seem to work - Troy
-
-        //Drive backward 24 inches
-        DriveToDistance(24, -motorSpeed);
-
-        //Turn right 75 degrees
-        TurnToDegrees(75, motorSpeed, TurnDirection.RIGHT);
-
-        //Drive Forward 24 inches
-        DriveToDistance(24, motorSpeed);
-
-
-        //Sense Yellow
-        if(SenseYellow() && !hasFlipped){
-
-            //Flip Code here
-            hasFlipped = true;
-        }
-
-        //Drives to next object, 14.5 inches
-        DriveToDistance(14.5, motorSpeed);
-
-        //Sense Yellow
-        if(SenseYellow() && !hasFlipped){
-            //Flipper code
-            hasFlipped = true;
-        }
-        //Drives to next object, 14.5 inches
-        DriveToDistance(14.5, motorSpeed);
-
-        //Sense Yellow
-        if(SenseYellow() && !hasFlipped){
-            //Flipper code
-            hasFlipped = true;
-        }
-
-        //Forward 26
-        DriveToDistance(26, motorSpeed);
-
-        //Turn Left 45 degrees
-        TurnToDegrees(45, turnSpeed, TurnDirection.LEFT);
-
-        //Drives Backwards 18 Inches
-        DriveToDistance(18, -motorSpeed);
-
-        //Turns 90 degrees Left
-        TurnToDegrees(90, turnSpeed, TurnDirection.LEFT);
-
-        //Forward 96 inches
-        DriveToDistance(96, motorSpeed);
-
-        //Claim Code will go here
+        //
 
     }
 
 
+
+
     //This method can be called when you want the robot to turn to a set degrees value at a certain speed and direction
-    private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection){
+    private void TurnToDegrees(double degrees, double motorSpeed, AutoModeMain.TurnDirection turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
-        final double ticksToDegrees = 85 / 90;
+        final double ticksToDegrees = 90 / 85;
 
         //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);
@@ -203,7 +137,7 @@ public class SpeedFullAutomode extends LinearOpMode {
         MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Checks if it is meant to turn right
-        if(turnDirection == TurnDirection.RIGHT)
+        if(turnDirection == AutoModeMain.TurnDirection.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
             MotorLeftBack.setTargetPosition((int)turnDegrees );
@@ -312,4 +246,3 @@ public class SpeedFullAutomode extends LinearOpMode {
         return isYellow;
     }
 }
-
