@@ -74,6 +74,7 @@ public class TeleOpMode extends LinearOpMode {
                 //Works much like a System.out.println(); or a print(""); or a Console.writeln(""); only difference is it prints it on the RobotDriverStation
                 telemetry.addData("Value of A: ", "Pushed");
                 telemetry.update();
+
             } */
             if(gamepad1.y) {
                 // move to 0 degrees.
