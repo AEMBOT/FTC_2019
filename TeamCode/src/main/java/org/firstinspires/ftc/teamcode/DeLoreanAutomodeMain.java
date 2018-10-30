@@ -1,8 +1,6 @@
 /*
 Code Stolen From Will Richards by Troy Lopez for the Delorean bot.
-As of 10/25 code is written for babybot motor lay-out. This will need to change.
-This is currently skeleton code since we need to have motors defined before we can write
-code for that and frankly as of 10/25 i have no ide how to do that.
+Still a work in progress, need more motor definitions.
  */
 package org.firstinspires.ftc.teamcode;
 
@@ -22,7 +20,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     private DcMotor MotorLeftFront;
     private DcMotor MotorRightFront;
 
-    private ColorSensor ColorSensor;
+    private ColorSensor ColorSensorL;
+    private ColorSensor ColorSensorR;
 
     public enum TurnDirection {RIGHT, LEFT}
     public enum StrafeDirection {RIGHT, LEFT}
@@ -39,7 +38,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         MotorLeftFront = hardwareMap.get(DcMotor.class, "MotorLF");
         MotorRightFront = hardwareMap.get(DcMotor.class, "MotorRF");
 
-        ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
+        ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
+        ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
 
         //Creates a local reference to VuforiaBase
         //VuforiaBase vuforiaBase = new VuforiaBase();
@@ -58,26 +58,31 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         waitForStart();
 
         //STARTS
-
+        //Flipper R&L refers to the flippers to re-locate the cube
         //Robot landing code will go here (drop wheel set 1, then Wheel set 2)
 
         //Strafe 2 inches left
+        Strafe(2, motorSpeed, StrafeDirection.RIGHT);
 
         //Drives up to left cube set.
         DriveToDistance (36, motorSpeed);
 
-        //Color sense for both sensors, L & R
+       // Senses if either is yellow, if neither is then moves
+        if(SenseYellow(ColorSensorL)) {
+            //flipperL runs
 
-        /*Start if situation
-        // L'wood: If either sensor is yellow, flip corresponding flipper out and back
+        }
+        else if(SenseYellow(ColorSensorR)){
+            //FlipperR runs
+        }
+        else {
+            Strafe(15, motorSpeed, StrafeDirection.RIGHT);
+            //FlipperR runs
+        }
 
-        //If neither sensor detects yellow, move right
-        //Strafe right 15
-        //Right flipper flip+back
-        //End If situation
-        */
 
-        //Claim Code here
+
+        //Claim Code here?
 
         /* Another complicated if function-thing, Courtesy L'wood
         If the cube was in position 1 or 2 from the left, strafe right 8.
@@ -359,17 +364,17 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     }
 
     //This method will use the color sensor to sense if the ball is yellow or white and returns a boolean value accordingly
-    private boolean SenseYellow(){
+    private boolean SenseYellow(ColorSensor sensor){
         boolean isYellow;
 
         //The color sensed was white
-        if(ColorSensor.blue() > 100 && ColorSensor.red() > 100 && ColorSensor.green() > 100){
+        if(sensor.blue() > 100 && sensor.red() > 100 && sensor.green() > 100){
             isYellow = false;
-            return isYellow;
+            //return isYellow; | Again, why do we need two "return isYellow;" statements? - Zane
         }
 
         //The color sensed was yellow
-        else if(ColorSensor.blue() < 100 && ColorSensor.blue() > 50){
+        else if(sensor.blue() < 100 && sensor.blue() > 50){
             isYellow = true;
         }
 

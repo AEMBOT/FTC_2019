@@ -16,17 +16,25 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "AutoModeMain", group = "Main")
 public class AutoModeMain extends LinearOpMode {
 
-    //Variables created for the two back motors
+    //Create motor variables
     private DcMotor MotorLeftBack;
     private DcMotor MotorRightBack;
+    private DcMotor MotorLiftUp;
+    private DcMotor MotorLiftDown;
+    private Servo FlipperMotor;
 
+    //Create sensor variables
     private ColorSensor ColorSensor;
 
     public enum TurnDirection {RIGHT, LEFT}
+
+    //Declare boolean hasFlipped for flipper
+    public boolean hasFlipped;
 
     //Creates a constant variable with the value of 288 or one revolution
     private final int REV_TICK_COUNT = 288;
@@ -36,6 +44,13 @@ public class AutoModeMain extends LinearOpMode {
         //Initializes motor variables
         MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorLiftUp = hardwareMap.get(DcMotor.class, "LiftUp");
+        MotorLiftDown = hardwareMap.get(DcMotor.class, "LiftDown");
+
+        //Initialize flipper servo
+        FlipperMotor = hardwareMap.get(Servo.class, "Flipper");
+
+        //Initialize sensor
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
         //Creates a local reference to VuforiaBase
@@ -47,7 +62,7 @@ public class AutoModeMain extends LinearOpMode {
         //Declare speed variable (double)
         double motorSpeed = .5;
 
-        boolean hasFlipped = false;
+        hasFlipped = false;
 
 
         //Waits until the start button is pressed
@@ -56,40 +71,44 @@ public class AutoModeMain extends LinearOpMode {
 
         //Robot landing code will go here
 
+
         //Drives straight forward roughly 20 inches
         DriveToDistance(20, motorSpeed);
 
         //Waits 2 seconds
         //Thread.sleep(2000);
 
-        //Turns 60 degrees to the right
+        //Turns 60 degrees to the right, subject to change
         TurnToDegrees(60, motorSpeed / 2, TurnDirection.RIGHT);
 
         //Waits 2 seconds
         //Thread.sleep(2000);
 
-        //Drives directly forward 34 inches
+        //Drives directly forward 33 inches
         //This part is inconsistent and sometimes overshoots; Work in progress
-        DriveToDistance(32, motorSpeed);
+        DriveToDistance(33, motorSpeed);
 
         //Waits 2 seconds
-        // Thread.sleep(2000);
+        Thread.sleep(500);
 
-        //Turns to the left 30 degrees
-        TurnToDegrees(30, motorSpeed, TurnDirection.RIGHT);
+        //Turns to the left 40 degrees, may change
+        TurnToDegrees(40, motorSpeed, TurnDirection.RIGHT);
 
         //Backwards 18 inches
         DriveToDistance(18, -motorSpeed);
 
 
+        //Thread.sleep(500);
+
         //See if color sensor senses yellow (gold) here
         if (SenseYellow() && !hasFlipped) {
             //Flip Code
-            hasFlipped = true;
+            runFlipper(0.8);
+            //hasFlipped = true;
         }
 
         //pause to check for yellow
-        //Thread.sleep(1000);
+        Thread.sleep(500);
 
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
@@ -97,11 +116,12 @@ public class AutoModeMain extends LinearOpMode {
         //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
             //Flip Code here
-            hasFlipped = true;
+            runFlipper(0.8);
+            //hasFlipped = true;
         }
 
         //pause to check for yellow
-        //Thread.sleep(1000);
+        Thread.sleep(50);
 
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
@@ -109,8 +129,16 @@ public class AutoModeMain extends LinearOpMode {
         //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
             //Flip Code here
-            hasFlipped = true;
+            runFlipper(0.8);
+            //hasFlipped = true;
         }
+
+        //Parking code will start here
+
+        DriveToDistance(2, motorSpeed);
+        TurnToDegrees(90, motorSpeed, TurnDirection.RIGHT);
+        DriveToDistance(6, motorSpeed);
+
 
         //pause to check for yellow
         //Thread.sleep(1000);
@@ -119,7 +147,7 @@ public class AutoModeMain extends LinearOpMode {
         hasFlipped = false;
         //endregion
 
-
+        /*
         //This is where errors have started - Troy
         //Try to calibrate TurnToDegrees? - Zane
         //The calibration didn't seem to work - Troy
@@ -174,7 +202,7 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(96, motorSpeed);
 
         //Claim Code will go here
-
+        */
     }
 
 
@@ -297,7 +325,7 @@ public class AutoModeMain extends LinearOpMode {
         //The color sensed was white
         if(ColorSensor.blue() > 100 && ColorSensor.red() > 100 && ColorSensor.green() > 100){
             isYellow = false;
-            return isYellow;
+            //return isYellow; Why are there two of these? - Zane
         }
 
         //The color sensed was yellow
@@ -310,5 +338,15 @@ public class AutoModeMain extends LinearOpMode {
             isYellow = false;
         }
         return isYellow;
+    }
+    private void runFlipper(double position) {
+        //Set flipper position to 90 degrees
+        FlipperMotor.setPosition(position);
+
+        //Set hasFlipped variable to true
+        hasFlipped = true;
+
+        //Reset flipper motor
+        FlipperMotor.setPosition(0);
     }
 }
