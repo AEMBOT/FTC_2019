@@ -65,7 +65,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Flipper R&L refers to the flippers to re-locate the cube and their respective sides
         //Robot landing code will go here (drop each wheel set at different times)
 
-        //Strafe 2 inches left to unhook latch from landwer
+        //Strafe 2 inches left to unhook latch from lander
         Strafe(2, motorSpeed, StrafeDirection.RIGHT);
 
         //Drives up to left cube set.

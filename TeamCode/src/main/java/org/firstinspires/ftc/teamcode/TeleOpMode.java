@@ -19,23 +19,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-//Declares This is a drive controlled TeleOp mode
+//Declares a drive controlled TeleOp mode
 //@Autonomous(name = "AutoModeMain", group = "Demo") this is what a autonomous mode would look like
 @TeleOp(name = "TeleOpMode", group = "Main")
 public class TeleOpMode extends LinearOpMode {
 
     //All variables are declared with the modifier "private"
     //The following are the variables that will contain the drive motors and each of their respective data
+
+    //REV Motors
     private DcMotor MotorLB;
     private DcMotor MotorRB;
     private DcMotor MotorUp;
     private DcMotor MotorDown;
 
+    //Servos
     private Servo ServoFlipper;
-    //Always separate each set of variable types... it just looks nicer
+
+    //Sensors
     private ColorSensor DemoColorSensor;
 
-    //Where the majority of your code will go some variables are defined above this outside the runOpMode method
+    //Assigns Motors to match the configuration
     public void runOpMode()
     {
 
@@ -45,7 +49,7 @@ public class TeleOpMode extends LinearOpMode {
         MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
         MotorUp = hardwareMap.get(DcMotor.class, "LiftUp");
         MotorDown = hardwareMap.get(DcMotor.class, "LiftDown");
-        ServoFlipper = hardwareMap.servo.get("Flipper");
+        ServoFlipper = hardwareMap.get(Servo.class, "Flipper");
 
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
         //Needs to be reversed to move forward
@@ -59,33 +63,35 @@ public class TeleOpMode extends LinearOpMode {
         //Will loop until the stop button is pressed on the controller
         while (opModeIsActive())
         {
-            //Should in theory work, however I haven't touched this code in a year so it might take some time to get this working again
-            //Basically what this does is set the power of the motor to the y value on the stick corresponding to that side thus creating tank drive(In theory)
+            //Button Mapping to analog sticks
+
+            //Wheels
             MotorRB.setPower(gamepad1.right_stick_y);
             MotorLB.setPower(gamepad1.left_stick_y);
-            MotorUp.setPower(gamepad2.left_stick_y);
-            MotorDown.setPower(gamepad2.left_stick_y);
-            //Sets lift to be conrolled by second gamepad.
 
+            //lift
+            MotorUp.setPower(gamepad2.left_stick_y / 2);
+            MotorDown.setPower(gamepad2.left_stick_y / 2);
 
+            //Why is this here Will?
             //Will be called if A on controller 1 is pressed
             /* if(gamepad1.a)
             {
                 //Works much like a System.out.println(); or a print(""); or a Console.writeln(""); only difference is it prints it on the RobotDriverStation
                 telemetry.addData("Value of A: ", "Pushed");
                 telemetry.update();
-
-
             } */
-            if(gamepad1.y) {
+
+            //Flipper code.
+            if(gamepad1.a) {
                 // move to 0 degrees.
                 ServoFlipper.setPosition(0);
             } else if (gamepad1.x || gamepad1.b) {
                 // move to 90 degrees.
-                ServoFlipper.setPosition(0.5);
-            } else if (gamepad1.a) {
+                ServoFlipper.setPosition(90/*may be .5*/);
+            } else if (gamepad1.y) {
                 // move to 180 degrees.
-                ServoFlipper.setPosition(1);
+                ServoFlipper.setPosition(180/*may be 1 */);
             }
             telemetry.addData("Servo Position", ServoFlipper.getPosition());
 
