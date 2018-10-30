@@ -16,11 +16,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @Autonomous(name = "DeloreanAutomodeMain", group = "DeLorean")
 public class DeLoreanAutomodeMain extends LinearOpMode {
 
-    //Variables created for the two back motors
+    //Variables created for the four motors and wheel tucking motors
     private DcMotor MotorLB;
     private DcMotor MotorRB;
     private DcMotor MotorLF;
     private DcMotor MotorRF;
+    private DcMotor MotorWheelR;
+    private DcMotor MotorWheelL;
 
     private ColorSensor ColorSensorL;
     private ColorSensor ColorSensorR;
@@ -29,7 +31,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     public enum StrafeDirection {RIGHT, LEFT}
 
     //Creates a constant variable with the value of 288 or one revolution
-    private final int REV_TICK_COUNT = 288;
+    private final int REV_TICK_COUNT = 288; //Different tick count for DeLorean motors?
 
     public void runOpMode() throws InterruptedException {
 
@@ -120,7 +122,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     private void Strafe(double distance, double motorSpeed, StrafeDirection strafeDirection){
 
         //Converts degrees into ticks
-        double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
+        double totalDistance = (REV_TICK_COUNT / 12.566) * distance; //totalDistance is never used. Remove it?
 
         //Resets encoder values
         MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -138,10 +140,10 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         if(strafeDirection == StrafeDirection.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
-            MotorLB.setTargetPosition((int)distance );
-            MotorRB.setTargetPosition(-(int)distance);
-            MotorLF.setTargetPosition(-(int)distance );
-            MotorRF.setTargetPosition((int)distance);
+            MotorLB.setTargetPosition((int)totalDistance);
+            MotorRB.setTargetPosition(-(int)totalDistance);
+            MotorLF.setTargetPosition(-(int)totalDistance);
+            MotorRF.setTargetPosition((int)totalDistance);
 
             //It then sets the power of the motors accordingly to turn the robot to the right
             MotorLB.setPower(motorSpeed);
@@ -154,10 +156,10 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         else {
 
             //Sets the number of ticks the motor needs to turn left
-            MotorLB.setTargetPosition((int)distance);
-            MotorRB.setTargetPosition(-(int)distance);
-            MotorLF.setTargetPosition(-(int)distance);
-            MotorRF.setTargetPosition((int)distance);
+            MotorLB.setTargetPosition((int)totalDistance);
+            MotorRB.setTargetPosition(-(int)totalDistance);
+            MotorLF.setTargetPosition(-(int)totalDistance);
+            MotorRF.setTargetPosition((int)totalDistance);
 
             //It then sets the power of the motors to turn left
             MotorLB.setPower(motorSpeed);
@@ -185,7 +187,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 5;
-        final double ticksToDegrees = 90 / 85;
+        final double ticksToDegrees = 85 / 90; //changes with DeLorean? - Zane
 
         //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);
@@ -252,7 +254,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     private void TurnToDegrees(double degrees, double motorSpeed, AutoModeMain.TurnDirection turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
-        final double ticksToDegrees = 90 / 85;
+        final double ticksToDegrees = 90 / 85; //Again, changes with Mecanum wheels? - Zane
 
         //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);

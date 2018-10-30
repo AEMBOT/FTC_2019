@@ -63,8 +63,9 @@ public class AutoModeMain extends LinearOpMode {
         //Sets the left motor to
         MotorLB.setDirection(DcMotor.Direction.REVERSE);
 
-        //Declare speed variable (double)
+        //Declare speed variables
         double motorSpeed = .5;
+        double turnSpeed = motorSpeed * (2 / 3);
 
         hasFlipped = false;
 
@@ -81,7 +82,7 @@ public class AutoModeMain extends LinearOpMode {
         //Thread.sleep(2000);
 
         //Turns 60 degrees to the right
-        TurnToDegrees(60, motorSpeed / 2, TurnDirection.RIGHT);
+        TurnToDegrees(60, turnSpeed, TurnDirection.RIGHT);
 
         //Waits 2 seconds
         //Thread.sleep(2000);
@@ -94,7 +95,7 @@ public class AutoModeMain extends LinearOpMode {
         Thread.sleep(500);
 
         //Turns to the left 40 degrees
-        TurnToDegrees(40, motorSpeed, TurnDirection.RIGHT);
+        TurnToDegrees(40, turnSpeed, TurnDirection.RIGHT);
 
         //Backwards 18 inches
         DriveToDistance(18, -motorSpeed);
@@ -104,7 +105,6 @@ public class AutoModeMain extends LinearOpMode {
 
         //See if color sensor senses yellow (gold) here
         if (SenseYellow() && !hasFlipped) {
-            //Flip Code
             runFlipper(0.8);
             //hasFlipped = true;
         }
@@ -117,20 +117,18 @@ public class AutoModeMain extends LinearOpMode {
 
         //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
-            //Flip Code here
             runFlipper(0.8);
             //hasFlipped = true;
         }
 
         //pause to check for yellow
-        Thread.sleep(50);
+        Thread.sleep(500);
 
         //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
 
         //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
-            //Flip Code here
             runFlipper(0.8);
             //hasFlipped = true;
         }
