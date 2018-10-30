@@ -1,6 +1,8 @@
 /*
 Code Stolen From Will Richards by Troy Lopez for the Delorean bot.
 Still a work in progress, need more motor definitions.
+Over commented
+Made for 2019 FTC
  */
 package org.firstinspires.ftc.teamcode;
 
@@ -37,6 +39,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         MotorRB = hardwareMap.get(DcMotor.class, "RightBack");
         MotorLF = hardwareMap.get(DcMotor.class, "FrontLeft");
         MotorRF = hardwareMap.get(DcMotor.class, "FrontRight");
+
+
 
         ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
         ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
@@ -84,8 +88,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         //Claim Code here?
 
-        /* Another complicated if function-thing, Courtesy L'wood
-        If the cube was in position 1 or 2 from the left, strafe right 8.
+        /*  The cube was in position 1 or 2 from the left, strafe right 8.
         If not, strafe left 8
          */
 
