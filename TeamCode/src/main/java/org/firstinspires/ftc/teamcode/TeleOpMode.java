@@ -28,6 +28,9 @@ public class TeleOpMode extends LinearOpMode {
     //The following are the variables that will contain the drive motors and each of their respective data
     private DcMotor MotorLB;
     private DcMotor MotorRB;
+    private DcMotor MotorUp;
+    private DcMotor MotorDown;
+
 
     //Always separate each set of variable types... it just looks nicer
     private ColorSensor DemoColorSensor;
@@ -40,6 +43,8 @@ public class TeleOpMode extends LinearOpMode {
         //!!!IMPORTANT!!! If the names are changed on the phones such as "MotorLF" is changed to "MotorLF" the code following must be updated
         MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorUp = hardwareMap.get(DcMotor.class, "LiftUp");
+        MotorDown = hardwareMap.get(DcMotor.class, "LiftDown");
 
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
         //Needs to be reversed to move forward
@@ -57,6 +62,9 @@ public class TeleOpMode extends LinearOpMode {
             //Basically what this does is set the power of the motor to the y value on the stick corresponding to that side thus creating tank drive(In theory)
             MotorRB.setPower(gamepad1.right_stick_y);
             MotorLB.setPower(gamepad1.left_stick_y);
+            MotorUp.setPower(gamepad2.left_stick_y);
+            MotorDown.setPower(gamepad2.left_stick_y);
+
 
 
             //Will be called if A on controller 1 is pressed
