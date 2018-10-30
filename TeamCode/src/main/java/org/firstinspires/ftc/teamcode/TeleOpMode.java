@@ -31,7 +31,7 @@ public class TeleOpMode extends LinearOpMode {
     private DcMotor MotorUp;
     private DcMotor MotorDown;
 
-
+    private Servo ServoFlipper;
     //Always separate each set of variable types... it just looks nicer
     private ColorSensor DemoColorSensor;
 
@@ -45,6 +45,7 @@ public class TeleOpMode extends LinearOpMode {
         MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
         MotorUp = hardwareMap.get(DcMotor.class, "LiftUp");
         MotorDown = hardwareMap.get(DcMotor.class, "LiftDown");
+        ServoFlipper = hardwareMap.servo.get("Flipper");
 
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
         //Needs to be reversed to move forward
@@ -68,12 +69,24 @@ public class TeleOpMode extends LinearOpMode {
 
 
             //Will be called if A on controller 1 is pressed
-            if(gamepad1.a)
+            /* if(gamepad1.a)
             {
                 //Works much like a System.out.println(); or a print(""); or a Console.writeln(""); only difference is it prints it on the RobotDriverStation
                 telemetry.addData("Value of A: ", "Pushed");
                 telemetry.update();
+            } */
+            if(gamepad1.y) {
+                // move to 0 degrees.
+                ServoFlipper.setPosition(0);
+            } else if (gamepad1.x || gamepad1.b) {
+                // move to 90 degrees.
+                ServoFlipper.setPosition(0.5);
+            } else if (gamepad1.a) {
+                // move to 180 degrees.
+                ServoFlipper.setPosition(1);
             }
+            telemetry.addData("Servo Position", ServoFlipper.getPosition());
+
 
         }
     }
