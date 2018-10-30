@@ -15,10 +15,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class DeLoreanAutomodeMain extends LinearOpMode {
 
     //Variables created for the two back motors
-    private DcMotor MotorLeftBack;
-    private DcMotor MotorRightBack;
-    private DcMotor MotorLeftFront;
-    private DcMotor MotorRightFront;
+    private DcMotor MotorLB;
+    private DcMotor MotorRB;
+    private DcMotor MotorLF;
+    private DcMotor MotorRF;
 
     private ColorSensor ColorSensorL;
     private ColorSensor ColorSensorR;
@@ -33,10 +33,10 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         //Initializes motor variables
         //We'll need to Int the 4 new motors for landing and full wheel drive
-        MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
-        MotorLeftFront = hardwareMap.get(DcMotor.class, "MotorLF");
-        MotorRightFront = hardwareMap.get(DcMotor.class, "MotorRF");
+        MotorLB = hardwareMap.get(DcMotor.class, "LeftBack");
+        MotorRB = hardwareMap.get(DcMotor.class, "RightBack");
+        MotorLF = hardwareMap.get(DcMotor.class, "FrontLeft");
+        MotorRF = hardwareMap.get(DcMotor.class, "FrontRight");
 
         ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
         ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
@@ -45,8 +45,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //VuforiaBase vuforiaBase = new VuforiaBase();
 
         //Sets the motor to reverse
-        MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
-        MotorLeftFront.setDirection(DcMotor.Direction.REVERSE);
+        MotorLB.setDirection(DcMotor.Direction.REVERSE);
+        MotorLF.setDirection(DcMotor.Direction.REVERSE);
 
         //Declare motor speed variable
         double motorSpeed = 1;
@@ -58,10 +58,10 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         waitForStart();
 
         //STARTS
-        //Flipper R&L refers to the flippers to re-locate the cube
-        //Robot landing code will go here (drop wheel set 1, then Wheel set 2)
+        //Flipper R&L refers to the flippers to re-locate the cube and their respective sides
+        //Robot landing code will go here (drop each wheel set at different times)
 
-        //Strafe 2 inches left
+        //Strafe 2 inches left to unhook latch from landwer
         Strafe(2, motorSpeed, StrafeDirection.RIGHT);
 
         //Drives up to left cube set.
@@ -120,61 +120,61 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
 
         //Resets encoder values
-        MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets the encoders back up for accepting input
-        MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Checks if it is meant to turn right
         if(strafeDirection == StrafeDirection.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
-            MotorLeftBack.setTargetPosition((int)distance );
-            MotorRightBack.setTargetPosition(-(int)distance);
-            MotorLeftFront.setTargetPosition(-(int)distance );
-            MotorRightFront.setTargetPosition((int)distance);
+            MotorLB.setTargetPosition((int)distance );
+            MotorRB.setTargetPosition(-(int)distance);
+            MotorLF.setTargetPosition(-(int)distance );
+            MotorRF.setTargetPosition((int)distance);
 
             //It then sets the power of the motors accordingly to turn the robot to the right
-            MotorLeftBack.setPower(motorSpeed);
-            MotorRightBack.setPower(-motorSpeed);
-            MotorLeftFront.setPower(-motorSpeed);
-            MotorRightFront.setPower(motorSpeed);
+            MotorLB.setPower(motorSpeed);
+            MotorRB.setPower(-motorSpeed);
+            MotorLF.setPower(-motorSpeed);
+            MotorRF.setPower(motorSpeed);
         }
 
         //If false turn left
         else {
 
             //Sets the number of ticks the motor needs to turn left
-            MotorLeftBack.setTargetPosition((int)distance);
-            MotorRightBack.setTargetPosition(-(int)distance);
-            MotorLeftFront.setTargetPosition(-(int)distance);
-            MotorRightFront.setTargetPosition((int)distance);
+            MotorLB.setTargetPosition((int)distance);
+            MotorRB.setTargetPosition(-(int)distance);
+            MotorLF.setTargetPosition(-(int)distance);
+            MotorRF.setTargetPosition((int)distance);
 
             //It then sets the power of the motors to turn left
-            MotorLeftBack.setPower(motorSpeed);
-            MotorRightBack.setPower(-motorSpeed);
-            MotorLeftFront.setPower(-motorSpeed);
-            MotorRightFront.setPower(motorSpeed);
+            MotorLB.setPower(motorSpeed);
+            MotorRB.setPower(-motorSpeed);
+            MotorLF.setPower(-motorSpeed);
+            MotorRF.setPower(motorSpeed);
 
         }
 
 
         //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy() && MotorLeftFront.isBusy() && MotorRightFront.isBusy()) {
+        while (opModeIsActive() && MotorLB.isBusy() && MotorRB.isBusy() && MotorLF.isBusy() && MotorRF.isBusy()) {
             idle();
         }
 
         //After it has moved the desired amount brake the wheels
-        MotorRightBack.setPower(0);
-        MotorLeftBack.setPower(0);
-        MotorRightFront.setPower(0);
-        MotorLeftFront.setPower(0);
+        MotorRB.setPower(0);
+        MotorLB.setPower(0);
+        MotorRF.setPower(0);
+        MotorLF.setPower(0);
     }
 
     //This method is called when you want the robot to turn on the spot in a specified direction
@@ -189,60 +189,60 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         double turnDegrees = ticks * ticksToDegrees;
 
         //Resets encoder values
-        MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets the encoders back up for accepting input
-        MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Checks if it is meant to turn right
         if(turnDirection == TurnDirection.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
-            MotorLeftBack.setTargetPosition((int)turnDegrees );
-            MotorRightBack.setTargetPosition(-(int)turnDegrees);
-            MotorLeftFront.setTargetPosition((int)turnDegrees );
-            MotorRightFront.setTargetPosition(-(int)turnDegrees);
+            MotorLB.setTargetPosition((int)turnDegrees );
+            MotorRB.setTargetPosition(-(int)turnDegrees);
+            MotorLF.setTargetPosition((int)turnDegrees );
+            MotorRF.setTargetPosition(-(int)turnDegrees);
 
             //It then sets the power of the motors accordingly to turn the robot to the right
-            MotorLeftBack.setPower(motorSpeed);
-            MotorRightBack.setPower(-motorSpeed);
-            MotorLeftFront.setPower(motorSpeed);
-            MotorRightFront.setPower(-motorSpeed);
+            MotorLB.setPower(motorSpeed);
+            MotorRB.setPower(-motorSpeed);
+            MotorLF.setPower(motorSpeed);
+            MotorRF.setPower(-motorSpeed);
         }
 
         //If false turn left
         else {
 
             //Sets the number of ticks the motor needs to turn left
-            MotorLeftBack.setTargetPosition(-(int)turnDegrees);
-            MotorRightBack.setTargetPosition((int)turnDegrees);
-            MotorLeftFront.setTargetPosition(-(int)turnDegrees);
-            MotorRightFront.setTargetPosition((int)turnDegrees);
+            MotorLB.setTargetPosition(-(int)turnDegrees);
+            MotorRB.setTargetPosition((int)turnDegrees);
+            MotorLF.setTargetPosition(-(int)turnDegrees);
+            MotorRF.setTargetPosition((int)turnDegrees);
 
             //It then sets the power of the motors to turn left
-            MotorLeftBack.setPower(-motorSpeed);
-            MotorRightBack.setPower(motorSpeed);
-            MotorLeftFront.setPower(-motorSpeed);
-            MotorRightFront.setPower(motorSpeed);
+            MotorLB.setPower(-motorSpeed);
+            MotorRB.setPower(motorSpeed);
+            MotorLF.setPower(-motorSpeed);
+            MotorRF.setPower(motorSpeed);
         }
 
 
         //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy() && MotorLeftFront.isBusy() && MotorRightFront.isBusy()) {
+        while (opModeIsActive() && MotorLB.isBusy() && MotorRB.isBusy() && MotorLF.isBusy() && MotorRF.isBusy()) {
             idle();
         }
 
         //After it has moved the desired amount brake the wheels
-        MotorRightBack.setPower(0);
-        MotorLeftBack.setPower(0);
-        MotorRightFront.setPower(0);
-        MotorLeftFront.setPower(0);
+        MotorRB.setPower(0);
+        MotorLB.setPower(0);
+        MotorRF.setPower(0);
+        MotorLF.setPower(0);
     }
 
     //This method can be called when you want the robot to turn to a set degrees value at a certain speed and direction
@@ -262,46 +262,46 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         }
 
         //Resets encoder values
-        MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets the encoders back up for accepting input
-        MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Checks if it is meant to turn right
         if(turnDirection == AutoModeMain.TurnDirection.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
-            MotorLeftBack.setTargetPosition((int)turnDegrees );
-            MotorRightBack.setTargetPosition(-(int)turnDegrees);
+            MotorLB.setTargetPosition((int)turnDegrees );
+            MotorRB.setTargetPosition(-(int)turnDegrees);
 
             //It then sets the power of the motors accordingly to turn the robot to the right
-            MotorLeftBack.setPower(motorSpeed);
-            MotorRightBack.setPower(-motorSpeed);
+            MotorLB.setPower(motorSpeed);
+            MotorRB.setPower(-motorSpeed);
         }
 
         //If false turn left
         else {
 
             //Sets the number of ticks the motor needs to turn left
-            MotorLeftBack.setTargetPosition(-(int)turnDegrees );
-            MotorRightBack.setTargetPosition((int)turnDegrees);
+            MotorLB.setTargetPosition(-(int)turnDegrees );
+            MotorRB.setTargetPosition((int)turnDegrees);
 
             //It then sets the power of the motors to turn left
-            MotorLeftBack.setPower(-motorSpeed);
-            MotorRightBack.setPower(motorSpeed);
+            MotorLB.setPower(-motorSpeed);
+            MotorRB.setPower(motorSpeed);
         }
 
 
         //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy()) {
+        while (opModeIsActive() && MotorLB.isBusy() && MotorRB.isBusy()) {
             idle();
         }
 
         //After it has moved the desired amount brake the wheels
-        MotorRightBack.setPower(0);
-        MotorLeftBack.setPower(0);
+        MotorRB.setPower(0);
+        MotorLB.setPower(0);
 
     }
 
@@ -313,54 +313,54 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
 
         //Stops and resets encoders
-        MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Then it switches the encoders in a mode where it will drive the specified distance no matter what
-        MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Will check if the robot should be in reverse if so set encoder target accordingly
         if(motorSpeed < 0){
 
             //Sets the number of ticks to negative to allow for reverse
-            MotorLeftBack.setTargetPosition(-(int)totalDistance);
-            MotorRightBack.setTargetPosition(-(int)totalDistance);
-            MotorLeftFront.setTargetPosition(-(int)totalDistance);
-            MotorRightFront.setTargetPosition(-(int)totalDistance);
+            MotorLB.setTargetPosition(-(int)totalDistance);
+            MotorRB.setTargetPosition(-(int)totalDistance);
+            MotorLF.setTargetPosition(-(int)totalDistance);
+            MotorRF.setTargetPosition(-(int)totalDistance);
         }
 
         //Will run if robot is set to move forward
         else{
 
             //Roughly the same as the code above but this will move forward
-            MotorLeftBack.setTargetPosition((int)totalDistance);
-            MotorRightBack.setTargetPosition((int)totalDistance);
-            MotorLeftFront.setTargetPosition((int)totalDistance);
-            MotorRightFront.setTargetPosition((int)totalDistance);
+            MotorLB.setTargetPosition((int)totalDistance);
+            MotorRB.setTargetPosition((int)totalDistance);
+            MotorLF.setTargetPosition((int)totalDistance);
+            MotorRF.setTargetPosition((int)totalDistance);
         }
 
 
         //It then sets the power to the motors to allow for forward movement
-        MotorLeftBack.setPower(motorSpeed);
-        MotorRightBack.setPower(motorSpeed);
-        MotorLeftFront.setPower(motorSpeed);
-        MotorRightFront.setPower(motorSpeed);
+        MotorLB.setPower(motorSpeed);
+        MotorRB.setPower(motorSpeed);
+        MotorLF.setPower(motorSpeed);
+        MotorRF.setPower(motorSpeed);
 
         //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy()) {
+        while (opModeIsActive() && MotorLB.isBusy() && MotorRB.isBusy()) {
             idle();
         }
 
         //After it has moved the desired amount brake the wheels
-        MotorRightBack.setPower(0);
-        MotorLeftBack.setPower(0);
-        MotorLeftFront.setPower(0);
-        MotorRightFront.setPower(0);
+        MotorRB.setPower(0);
+        MotorLB.setPower(0);
+        MotorLF.setPower(0);
+        MotorRF.setPower(0);
     }
 
     //This method will use the color sensor to sense if the ball is yellow or white and returns a boolean value accordingly

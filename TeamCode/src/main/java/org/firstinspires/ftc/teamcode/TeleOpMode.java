@@ -26,8 +26,8 @@ public class TeleOpMode extends LinearOpMode {
 
     //All variables are declared with the modifier "private"
     //The following are the variables that will contain the drive motors and each of their respective data
-    private DcMotor MotorLeftBack;
-    private DcMotor MotorRightBack;
+    private DcMotor MotorLB;
+    private DcMotor MotorRB;
 
     //Always separate each set of variable types... it just looks nicer
     private ColorSensor DemoColorSensor;
@@ -37,14 +37,14 @@ public class TeleOpMode extends LinearOpMode {
     {
 
         //The following assigns the corresponding motor variable to the  variable name on the phone which corresponds to a motor connection # on the REV hub
-        //!!!IMPORTANT!!! If the names are changed on the phones such as "MotorLF" is changed to "MotorLeftFront" the code following must be updated
-        MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
+        //!!!IMPORTANT!!! If the names are changed on the phones such as "MotorLF" is changed to "MotorLF" the code following must be updated
+        MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
+        MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
 
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
         //Needs to be reversed to move forward
 
-        MotorRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        MotorRB.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //After initialization of variables has completed wait until the game starts(The play button is pressed)
         waitForStart();
@@ -55,8 +55,8 @@ public class TeleOpMode extends LinearOpMode {
         {
             //Should in theory work, however I haven't touched this code in a year so it might take some time to get this working again
             //Basically what this does is set the power of the motor to the y value on the stick corresponding to that side thus creating tank drive(In theory)
-            MotorRightBack.setPower(gamepad1.right_stick_y);
-            MotorLeftBack.setPower(gamepad1.left_stick_y);
+            MotorRB.setPower(gamepad1.right_stick_y);
+            MotorLB.setPower(gamepad1.left_stick_y);
 
 
             //Will be called if A on controller 1 is pressed

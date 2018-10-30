@@ -20,8 +20,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class ColorSensorDemo extends LinearOpMode {
 
     //Variables created for the two back motors
-    private DcMotor MotorLeftBack;
-    private DcMotor MotorRightBack;
+    private DcMotor MotorLB;
+    private DcMotor MotorRB;
 
     //Color sensor variables
     private ColorSensor ColorSensor;
@@ -29,8 +29,8 @@ public class ColorSensorDemo extends LinearOpMode {
     public void runOpMode(){
 
         //Initializes motor variables
-        MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
+        MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
 
         //Init color sensor
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
