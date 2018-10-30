@@ -31,7 +31,11 @@ public class AutoModeMain extends LinearOpMode {
     //Create sensor variables
     private ColorSensor ColorSensor;
 
+    //Declare TurnDirection enum
     public enum TurnDirection {RIGHT, LEFT}
+
+    //Declare LiftDirection enum
+    public enum LiftDirection {UP, DOWN}
 
     //Declare boolean hasFlipped for flipper
     public boolean hasFlipped;
@@ -346,5 +350,10 @@ public class AutoModeMain extends LinearOpMode {
 
         //Reset flipper motor
         FlipperMotor.setPosition(0);
+    }
+    private void moveLift(LiftDirection liftDirection, double liftMotorSpeed) {
+        if(liftDirection == LiftDirection.UP) {
+
+        }
     }
 }

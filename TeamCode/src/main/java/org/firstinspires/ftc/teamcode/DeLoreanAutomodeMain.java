@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Autonomous(name = "DeloreanAutomodeMain", group = "Main")
+@Autonomous(name = "DeloreanAutomodeMain", group = "DeLorean")
 public class DeLoreanAutomodeMain extends LinearOpMode {
 
     //Variables created for the two back motors

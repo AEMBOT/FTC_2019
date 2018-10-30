@@ -22,15 +22,19 @@ import com.qualcomm.robotcore.hardware.Servo;
 //Declares This is a drive controlled TeleOp mode
 //@Autonomous(name = "AutoModeMain", group = "Demo") this is what a autonomous mode would look like
 @TeleOp(name = "TeleOpMode", group = "Main")
-public class TeleOpMode extends LinearOpMode {
+public class TeleOpMode extends LinearOpMode
+{
 
     //All variables are declared with the modifier "private"
     //The following are the variables that will contain the drive motors and each of their respective data
     private DcMotor MotorLB;
     private DcMotor MotorRB;
+    private DcMotor MotorLF;
+    private DcMotor MotorRF;
 
     //Always separate each set of variable types... it just looks nicer
-    private ColorSensor DemoColorSensor;
+    private ColorSensor ColorSensorR;
+    private ColorSensor ColorSensorL;
 
     //Where the majority of your code will go some variables are defined above this outside the runOpMode method
     public void runOpMode()
@@ -38,17 +42,16 @@ public class TeleOpMode extends LinearOpMode {
 
         //The following assigns the corresponding motor variable to the  variable name on the phone which corresponds to a motor connection # on the REV hub
         //!!!IMPORTANT!!! If the names are changed on the phones such as "MotorLF" is changed to "MotorLF" the code following must be updated
-        MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorLB = hardwareMap.get(DcMotor.class, "LeftBack");
+        MotorRB = hardwareMap.get(DcMotor.class, "RightBack");
 
-        DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
+        ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensor");
+
         //Needs to be reversed to move forward
+        MotorLB.setDirection(DcMotor.Direction.REVERSE);
 
-        MotorRB.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        //After initialization of variables has completed wait until the game starts(The play button is pressed)
+        //After initialization of variables has completed, wait until the game starts (The play button is pressed)
         waitForStart();
-
 
         //Will loop until the stop button is pressed on the controller
         while (opModeIsActive())
@@ -58,7 +61,7 @@ public class TeleOpMode extends LinearOpMode {
             MotorRB.setPower(gamepad1.right_stick_y);
             MotorLB.setPower(gamepad1.left_stick_y);
 
-
+            /*
             //Will be called if A on controller 1 is pressed
             if(gamepad1.a)
             {
@@ -66,7 +69,7 @@ public class TeleOpMode extends LinearOpMode {
                 telemetry.addData("Value of A: ", "Pushed");
                 telemetry.update();
             }
-
+            */
         }
     }
 }
