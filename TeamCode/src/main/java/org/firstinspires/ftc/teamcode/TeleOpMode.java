@@ -64,7 +64,7 @@ public class TeleOpMode extends LinearOpMode {
             MotorLB.setPower(gamepad1.left_stick_y);
             MotorUp.setPower(gamepad2.left_stick_y);
             MotorDown.setPower(gamepad2.left_stick_y);
-
+            //Sets lift to be conrolled by second gamepad.
 
 
             //Will be called if A on controller 1 is pressed
