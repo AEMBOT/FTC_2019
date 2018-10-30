@@ -70,8 +70,8 @@ public class TeleOpMode extends LinearOpMode {
             MotorLB.setPower(gamepad1.left_stick_y);
 
             //lift
-            MotorUp.setPower(gamepad2.left_stick_y / 2);
-            MotorDown.setPower(gamepad2.left_stick_y / 2);
+            MotorUp.setPower(gamepad2.left_stick_y / 3);
+            MotorDown.setPower(gamepad2.left_stick_y / 3);
 
             //Why is this here Will?
             //Will be called if A on controller 1 is pressed
@@ -95,7 +95,7 @@ public class TeleOpMode extends LinearOpMode {
             }
             telemetry.addData("Servo Position", ServoFlipper.getPosition());
 
-            //comment added so I can push
+
         }
     }
 }
