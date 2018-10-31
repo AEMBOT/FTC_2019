@@ -23,9 +23,10 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     private DcMotor MotorRF;
     private DcMotor MotorWheelR;
     private DcMotor MotorWheelL;
-
+   /*
     private ColorSensor ColorSensorL;
     private ColorSensor ColorSensorR;
+    */
 
     public enum TurnDirection {RIGHT, LEFT}
     public enum StrafeDirection {RIGHT, LEFT}
@@ -37,15 +38,15 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         //Initializes motor variables
         //We'll need to Int the 4 new motors for landing and full wheel drive
-        MotorLB = hardwareMap.get(DcMotor.class, "LeftBack");
-        MotorRB = hardwareMap.get(DcMotor.class, "RightBack");
+        MotorLB = hardwareMap.get(DcMotor.class, "BackLeft");
+        MotorRB = hardwareMap.get(DcMotor.class, "BackRight");
         MotorLF = hardwareMap.get(DcMotor.class, "FrontLeft");
         MotorRF = hardwareMap.get(DcMotor.class, "FrontRight");
 
 
 
-        ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
-        ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
+        //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
+        //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
 
         //Creates a local reference to VuforiaBase
         //VuforiaBase vuforiaBase = new VuforiaBase();
@@ -74,6 +75,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         DriveToDistance (36, motorSpeed);
 
        // Senses if either is yellow, if neither is then moves
+        /*
         if(SenseYellow(ColorSensorL)) {
             //flipperL runs
 
@@ -85,7 +87,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
             Strafe(15, motorSpeed, StrafeDirection.RIGHT);
             //FlipperR runs
         }
-
+        */
 
 
         //Claim Code here?
