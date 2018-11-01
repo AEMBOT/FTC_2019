@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 @TeleOp(name = "DeLoreanTeleOpModeMain", group = "DeLorean")
 public class DeLoreanTeleOpModeMain extends LinearOpMode {
     //Declare DC motor variables
-    private DcMotor BackLeft ;
+    private DcMotor BackLeft;
     private DcMotor BackRight;
     private DcMotor FrontLeft;
     private DcMotor FrontRight;
