@@ -315,6 +315,17 @@ public class AutoModeMain extends LinearOpMode {
             idle();
         }
 
+        for(int i=0; i < 10; i++){
+            try{
+                Thread.sleep(100);
+            }
+            catch (InterruptedException e){
+            }
+
+            MotorRB.setPower(MotorRB.getPower() - 0.1);
+            MotorLB.setPower(MotorLB.getPower() - 0.1);
+        }
+
         //After it has moved the desired amount brake the wheels
         MotorRB.setPower(0);
         MotorLB.setPower(0);
@@ -341,6 +352,7 @@ public class AutoModeMain extends LinearOpMode {
         }
         return isYellow;
     }
+
     private void RunFlipper(double position) {
         //Set flipper position to 90 degrees
         FlipperMotor.setPosition(position);
@@ -351,6 +363,7 @@ public class AutoModeMain extends LinearOpMode {
         //Reset flipper motor
         FlipperMotor.setPosition(0);
     }
+
     private void LandRobot(double rotations) {
         double ticks = rotations * REV_TICK_COUNT;
 
