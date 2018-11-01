@@ -88,10 +88,10 @@ public class TeleOpMode extends LinearOpMode {
                 ServoFlipper.setPosition(0);
             } else if (gamepad1.x || gamepad1.b) {
                 // move to 90 degrees.
-                ServoFlipper.setPosition(90/*may be .5*/);
+                ServoFlipper.setPosition(.5/*may be .5*/);
             } else if (gamepad1.y) {
                 // move to 180 degrees.
-                ServoFlipper.setPosition(180/*may be 1 */);
+                ServoFlipper.setPosition(1/*may be 1 */);
             }
             telemetry.addData("Servo Position", ServoFlipper.getPosition());
 

@@ -75,6 +75,8 @@ public class AutoModeMain extends LinearOpMode {
 
         //Robot landing code will go here
 
+        LandRobot(1); //Change number of rotations later (1 is just an estimate)
+
         //Drives straight forward roughly 20 inches
         DriveToDistance(20, motorSpeed);
 
@@ -105,7 +107,7 @@ public class AutoModeMain extends LinearOpMode {
 
         //See if color sensor senses yellow (gold) here
         if (SenseYellow() && !hasFlipped) {
-            runFlipper(0.8);
+            RunFlipper(0.8);
             //hasFlipped = true;
         }
 
@@ -117,7 +119,7 @@ public class AutoModeMain extends LinearOpMode {
 
         //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
-            runFlipper(0.8);
+            RunFlipper(0.8);
             //hasFlipped = true;
         }
 
@@ -129,7 +131,7 @@ public class AutoModeMain extends LinearOpMode {
 
         //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
-            runFlipper(0.8);
+            RunFlipper(0.8);
             //hasFlipped = true;
         }
 
@@ -339,7 +341,7 @@ public class AutoModeMain extends LinearOpMode {
         }
         return isYellow;
     }
-    private void runFlipper(double position) {
+    private void RunFlipper(double position) {
         //Set flipper position to 90 degrees
         FlipperMotor.setPosition(position);
 
@@ -349,9 +351,27 @@ public class AutoModeMain extends LinearOpMode {
         //Reset flipper motor
         FlipperMotor.setPosition(0);
     }
-    private void moveLift(LiftDirection liftDirection, double liftMotorSpeed) {
-        if(liftDirection == LiftDirection.UP) {
+    private void LandRobot(double rotations) {
+        double ticks = rotations * REV_TICK_COUNT;
 
+        //Reset encoders
+        MotorLiftDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLiftUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Make it so motors run to position
+        MotorLiftDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLiftUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //Set motor target position
+        MotorLiftDown.setTargetPosition((int)ticks);
+        MotorLiftUp.setTargetPosition((int)ticks);
+
+        //Run motors until they reach target positon (ticks)
+        MotorLiftDown.setPower(0.5);
+        MotorLiftUp.setPower(0.5);
+
+        while(MotorLiftDown.isBusy() && MotorLiftUp.isBusy() && opModeIsActive()) {
+            idle();
         }
     }
 }
