@@ -35,7 +35,7 @@ public class AutoModeMain extends LinearOpMode {
     public enum TurnDirection {RIGHT, LEFT}
 
     //Declare LiftDirection enum
-    public enum LiftDirection {UP, DOWN}
+    //public enum LiftDirection {UP, DOWN}
 
     //Declare boolean hasFlipped for flipper
     public boolean hasFlipped;
@@ -73,9 +73,11 @@ public class AutoModeMain extends LinearOpMode {
         //Waits until the start button is pressed
         waitForStart();
 
-        //Robot landing code will go here
+        //Lands
+        LandRobot(0.5); //Change number of rotations later (.5 is just an estimate)
 
-        LandRobot(1); //Change number of rotations later (1 is just an estimate)
+        //should set flipper parallel to robot
+        FlipperMotor.setPosition(.3);
 
         //Drives straight forward roughly 20 inches
         DriveToDistance(20, motorSpeed);
@@ -102,7 +104,6 @@ public class AutoModeMain extends LinearOpMode {
         //Backwards 18 inches
         DriveToDistance(18, -motorSpeed);
 
-        //
         Thread.sleep(500);
 
         //See if color sensor senses yellow (gold) here
@@ -120,7 +121,6 @@ public class AutoModeMain extends LinearOpMode {
         //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
             RunFlipper(0.8);
-            //hasFlipped = true;
         }
 
         //pause to check for yellow
@@ -132,7 +132,6 @@ public class AutoModeMain extends LinearOpMode {
         //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
             RunFlipper(0.8);
-            //hasFlipped = true;
         }
 
         //Parking code will start here
@@ -145,13 +144,13 @@ public class AutoModeMain extends LinearOpMode {
         //Drive 6 inches forward and park on crater
         DriveToDistance(6, motorSpeed);
 
+        //region Commented Code
 
         //pause to check for yellow
         //Thread.sleep(1000);
 
         //Reset has flipped value
         //hasFlipped = false;
-        //endregion
 
         /*
         //Drive backward 24 inches
@@ -205,6 +204,7 @@ public class AutoModeMain extends LinearOpMode {
 
         //Claim Code will go here
         */
+        //endregion
     }
 
 
@@ -218,11 +218,7 @@ public class AutoModeMain extends LinearOpMode {
         double ticks = (degrees * CONVERSION_FACTOR);
         double turnDegrees = ticks * ticksToDegrees;
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
 
-        }
 
         //Resets encoder values
         MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -239,6 +235,18 @@ public class AutoModeMain extends LinearOpMode {
             MotorLB.setTargetPosition((int)turnDegrees );
             MotorRB.setTargetPosition(-(int)turnDegrees);
 
+            //Slowly starts the motors
+            for(int i=0; i < 10; i++){
+                try{
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e){
+                }
+
+                MotorLB.setPower(MotorRB.getPower() + 0.1);
+                MotorRB.setPower(-(MotorLB.getPower() + 0.1));
+            }
+
             //It then sets the power of the motors accordingly to turn the robot to the right
             MotorLB.setPower(motorSpeed);
             MotorRB.setPower(-motorSpeed);
@@ -251,9 +259,21 @@ public class AutoModeMain extends LinearOpMode {
             MotorLB.setTargetPosition(-(int)turnDegrees );
             MotorRB.setTargetPosition((int)turnDegrees);
 
+            //Slowly starts the motors
+            for(int i=0; i < 10; i++){
+                try{
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e){
+                }
+
+                MotorLB.setPower(-(MotorRB.getPower() + 0.1));
+                MotorRB.setPower(MotorLB.getPower() + 0.1);
+            }
+
             //It then sets the power of the motors to turn left
-            MotorLB.setPower(-motorSpeed);
-            MotorRB.setPower(motorSpeed);
+            //MotorLB.setPower(-motorSpeed);
+            //MotorRB.setPower(motorSpeed);
         }
 
 
@@ -270,12 +290,6 @@ public class AutoModeMain extends LinearOpMode {
 
     //This method can be called when you want the robot to drive a certain distance in INCHES at a certain speed
     private void DriveToDistance(double distance, double motorSpeed){
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-
-        }
 
         //! 1 rev is 12.56 inches !
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
@@ -305,16 +319,6 @@ public class AutoModeMain extends LinearOpMode {
             MotorRB.setTargetPosition((int)totalDistance);
         }
 
-
-        //It then sets the power to the motors to allow for forward movement
-        MotorLB.setPower(motorSpeed);
-        MotorRB.setPower(motorSpeed);
-
-        //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLB.isBusy() && MotorRB.isBusy()) {
-            idle();
-        }
-
         for(int i=0; i < 10; i++){
             try{
                 Thread.sleep(100);
@@ -322,8 +326,17 @@ public class AutoModeMain extends LinearOpMode {
             catch (InterruptedException e){
             }
 
-            MotorRB.setPower(MotorRB.getPower() - 0.1);
-            MotorLB.setPower(MotorLB.getPower() - 0.1);
+            MotorRB.setPower(MotorRB.getPower() + 0.1);
+            MotorLB.setPower(MotorLB.getPower() + 0.1);
+        }
+
+        //It then sets the power to the motors to allow for forward movement
+        //MotorLB.setPower(motorSpeed);
+        //MotorRB.setPower(motorSpeed);
+
+        //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
+        while (opModeIsActive() && MotorLB.isBusy() && MotorRB.isBusy()) {
+            idle();
         }
 
         //After it has moved the desired amount brake the wheels
@@ -364,7 +377,7 @@ public class AutoModeMain extends LinearOpMode {
         FlipperMotor.setPosition(0);
     }
 
-    private void LandRobot(double rotations) {
+    void LandRobot(double rotations) {
         double ticks = rotations * REV_TICK_COUNT;
 
         //Reset encoders
@@ -380,11 +393,14 @@ public class AutoModeMain extends LinearOpMode {
         MotorLiftUp.setTargetPosition((int)ticks);
 
         //Run motors until they reach target positon (ticks)
-        MotorLiftDown.setPower(0.5);
-        MotorLiftUp.setPower(0.5);
+        MotorLiftDown.setPower(1);
+        MotorLiftUp.setPower(1);
 
         while(MotorLiftDown.isBusy() && MotorLiftUp.isBusy() && opModeIsActive()) {
             idle();
         }
+
+        MotorLiftDown.setPower(0);
+        MotorLiftUp.setPower(0);
     }
 }

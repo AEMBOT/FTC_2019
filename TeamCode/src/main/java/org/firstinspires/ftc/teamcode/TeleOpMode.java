@@ -70,8 +70,8 @@ public class TeleOpMode extends LinearOpMode {
             MotorLB.setPower(gamepad1.left_stick_y);
 
             //lift
-            MotorUp.setPower(gamepad2.left_stick_y / 3);
-            MotorDown.setPower(gamepad2.left_stick_y / 3);
+            //MotorUp.setPower(gamepad2.left_stick_y / 3);
+            //MotorDown.setPower(gamepad2.left_stick_y / 3);
 
             //Why is this here Will?
             //Will be called if A on controller 1 is pressed
@@ -81,6 +81,14 @@ public class TeleOpMode extends LinearOpMode {
                 telemetry.addData("Value of A: ", "Pushed");
                 telemetry.update();
             } */
+
+            if (gamepad2.y) {
+                MoveLift(12.5, 1);
+            }
+
+            if (gamepad2.a) {
+                MoveLift(-12.5, 1);
+            }
 
             //Flipper code.
             if(gamepad1.a) {
@@ -97,5 +105,40 @@ public class TeleOpMode extends LinearOpMode {
 
 
         }
+    }
+
+    private final int REV_TICK_COUNT = 288;
+    void MoveLift(double rotations, double motorSpeed) {
+        double ticks = rotations * REV_TICK_COUNT;
+
+        //Reset encoders
+        MotorDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Make it so motors run to position
+        MotorDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //Set motor target position
+
+        if(motorSpeed < 0){
+            MotorDown.setTargetPosition(-(int) ticks);
+            MotorUp.setTargetPosition(-(int) ticks);
+        }
+        else {
+            MotorDown.setTargetPosition((int) ticks);
+            MotorUp.setTargetPosition((int) ticks);
+        }
+
+        //Run motors until they reach target positon (ticks)
+        MotorDown.setPower(motorSpeed);
+        MotorUp.setPower(motorSpeed);
+
+        while(MotorDown.isBusy() && MotorUp.isBusy() && opModeIsActive()) {
+            idle();
+        }
+
+        MotorDown.setPower(0);
+        MotorUp.setPower(0);
     }
 }
