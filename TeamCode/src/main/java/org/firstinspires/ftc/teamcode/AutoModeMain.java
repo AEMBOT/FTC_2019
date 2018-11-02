@@ -12,6 +12,8 @@ Try to keep use of regions to a minimal
 package org.firstinspires.ftc.teamcode;
 
 
+import android.media.tv.TvInputService;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -23,8 +25,8 @@ public class AutoModeMain extends LinearOpMode {
 
     private DcMotor MotorLB;
     private DcMotor MotorRB;
-    //private DcMotor MotorLiftUp;
-    //private DcMotor MotorLiftDown;
+    private DcMotor MotorLiftUp;
+    private DcMotor MotorLiftDown;
     private Servo FlipperMotor;
 
     private ColorSensor ColorSensor;
@@ -41,8 +43,8 @@ public class AutoModeMain extends LinearOpMode {
 
         MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
-        //MotorLiftUp = hardwareMap.get(DcMotor.class, "LiftUp");
-        //MotorLiftDown = hardwareMap.get(DcMotor.class, "LiftDown");
+        MotorLiftUp = hardwareMap.get(DcMotor.class, "LiftUp");
+        MotorLiftDown = hardwareMap.get(DcMotor.class, "LiftDown");
         FlipperMotor = hardwareMap.get(Servo.class, "Flipper");
 
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
@@ -59,26 +61,26 @@ public class AutoModeMain extends LinearOpMode {
 
         waitForStart();
 
-        //should set flipper parallel to robot
-        FlipperMotor.setPosition(0.2);
+        //LandRobot(5);
 
-        DriveToDistance(20, motorSpeed);
-        TurnToDegrees(60, turnSpeed, Direction.RIGHT);
-        DriveToDistance(33, turnSpeed);
-        TurnToDegrees(40, turnSpeed, Direction.RIGHT);
-        DriveToDistance(18, -motorSpeed);
+        //Should set flipper parallel to robot
+        //FlipperMotor.setPosition(0.2);
+        FlipperMotor.setPosition(-0.2);
 
-        for(int i = 0; i <= 2; i++) {
-            if(hasFlipped == true) {
-                break;
-            }
-            else if(SenseYellow()) {
-                RunFlipper(0.8);
-            }
-            else {
-                DriveToDistance(14.5, -motorSpeed / 1.5);
-            }
-        }
+        DriveToDistance(44, motorSpeed);
+        //TurnToDegrees(60, turnSpeed, Direction.RIGHT);
+        //DriveToDistance(33, turnSpeed);
+        //TurnToDegrees(45, turnSpeed, Direction.RIGHT);
+        //DriveToDistance(16, -motorSpeed);
+//
+        //while (opModeIsActive()) {
+        //    if(!SenseYellow()) {
+        //        DriveToDistance(0.1, motorSpeed);
+        //    }
+        //    else {
+        //        break;
+        //    }
+        //}
 
         //region For loop replaced
         /*
@@ -101,9 +103,9 @@ public class AutoModeMain extends LinearOpMode {
         //endregion
 
         //Park on crater
-        DriveToDistance(2, motorSpeed);
-        TurnToDegrees(270, motorSpeed, Direction.RIGHT);
-        DriveToDistance(6, motorSpeed);
+        //DriveToDistance(2, motorSpeed);
+        //TurnToDegrees(270, motorSpeed, Direction.RIGHT);
+        //DriveToDistance(6, motorSpeed);
 
         //region Commented Code
 
@@ -172,7 +174,7 @@ public class AutoModeMain extends LinearOpMode {
     //This method can be called when you want the robot to turn to a set degrees value at a certain speed and direction
     private void TurnToDegrees(double degrees, double motorSpeed, Direction turnDirection) {
         //Converts degrees into ticks
-        final double CONVERSION_FACTOR = 6;
+        final double CONVERSION_FACTOR = 2.5;
         //final double ticksToDegrees = 85 / 90;
 
         //Multiplies the number of degrees by the conversion fa-ctor to get the number of ticks for the specified degrees
@@ -198,15 +200,9 @@ public class AutoModeMain extends LinearOpMode {
             MotorLB.setTargetPosition((int)ticks);
             MotorRB.setTargetPosition(-(int)ticks);
 
-            for(int i=0; i < 2; i++){
-                sleep(50);
-                MotorLB.setPower(MotorLB.getPower() +  0.5);
-                MotorRB.setPower(MotorRB.getPower() + -(0.5));
-            }
-
-            //It then sets the power of the motors acco00rdingly to turn the robot to the right
-            //MotorLB.setPower(motorSpeed);
-            //MotorRB.setPower(-motorSpeed);
+            //It then sets the power of the motors accordingly to turn the robot to the right
+            MotorLB.setPower(motorSpeed);
+            MotorRB.setPower(-motorSpeed);
         }
 
         //If false turn left
@@ -216,14 +212,9 @@ public class AutoModeMain extends LinearOpMode {
             MotorLB.setTargetPosition(-(int)ticks);
             MotorRB.setTargetPosition((int)ticks);
 
-            for(int i=0; i < 10; i++){
-                sleep(50);
-                MotorLB.setPower(MotorLB.getPower() + -(0.5));
-                MotorRB.setPower(MotorRB.getPower() +  0.5);
-            }
             //It then sets the power of the motors to turn left
-            //MotorLB.setPower(-motorSpeed);
-            //MotorRB.setPower(motorSpeed);
+            MotorLB.setPower(-motorSpeed);
+            MotorRB.setPower(motorSpeed);
         }
 
 
@@ -243,17 +234,18 @@ public class AutoModeMain extends LinearOpMode {
         //1 rev is 12.566 inches
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
 
-        //Reset motor encoders
-        MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //Reset motor encoders
+            MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            MotorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        MotorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            MotorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            MotorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
         if(motorSpeed < 0){
             //Negative for reversing
             MotorLB.setTargetPosition(-(int)totalDistance);
-            MotorRB.setTargetPosition(-(int)totalDistance);
+            MotorRB.setTargetPosition( -(int)totalDistance);
             for(int i = 0; i < 5; i++){
                 sleep(50);
                 MotorLB.setPower(MotorLB.getPower() +  0.1);
@@ -279,26 +271,25 @@ public class AutoModeMain extends LinearOpMode {
         MotorRB.setPower(0);
         MotorLB.setPower(0);
     }
+
     private boolean SenseYellow(){
         boolean isYellow;
 
-        //Sensed white
-        if(ColorSensor.blue() > 100 && ColorSensor.red() > 100 && ColorSensor.green() > 100){
-            isYellow = false;
-            //return isYellow; Why are there two of these? - Zane
-        }
-
+        telemetry.addData("Blue: ", ColorSensor.blue());
+        telemetry.addData("Green: ", ColorSensor.green());
+        telemetry.addData("Red: ", ColorSensor.red());
+        telemetry.update();
         //Sensed yellow
-        else if(ColorSensor.blue() < 100 && ColorSensor.blue() > 50){
+        if(ColorSensor.blue() - 15 < ColorSensor.red() && ColorSensor.blue() - 15 < ColorSensor.green()){
             isYellow = true;
         }
-
         //Invalid color
         else{
             isYellow = false;
         }
         return isYellow;
     }
+
     private void RunFlipper(double position) {
         FlipperMotor.setPosition(position);
 
@@ -307,8 +298,9 @@ public class AutoModeMain extends LinearOpMode {
         //Reset flipper motor to parallel to robot
         FlipperMotor.setPosition(0.3);
     }
+
     //region LandRobot function
-    /*
+
     private void LandRobot(double rotations) {
         double ticks = rotations * REV_TICK_COUNT;
 
@@ -321,12 +313,12 @@ public class AutoModeMain extends LinearOpMode {
         MotorLiftUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Set motor target position
-        MotorLiftDown.setTargetPosition((int)ticks);
+        MotorLiftDown.setTargetPosition(-(int)ticks);
         MotorLiftUp.setTargetPosition((int)ticks);
 
-        //Run motors until they reach target positon (ticks)
-        MotorLiftDown.setPower(1);
-        MotorLiftUp.setPower(1);
+        //Run motors until they reach target position (ticks)
+        MotorLiftDown.setPower(0.5);
+        MotorLiftUp.setPower(0.5);
 
         while(opModeIsActive() && MotorLiftDown.isBusy() && MotorLiftUp.isBusy()) {
             idle();
@@ -335,6 +327,6 @@ public class AutoModeMain extends LinearOpMode {
         MotorLiftDown.setPower(0);
         MotorLiftUp.setPower(0);
     }
-    */
+
     //endregion
 }
