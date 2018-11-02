@@ -55,10 +55,22 @@ public class TeleOpMode extends LinearOpMode {
             MotorLB.setPower(gamepad1.left_stick_y);
 
             if (gamepad2.y) {
-                MoveLift(12.5, 1);
+                MotorUp.setPower(-0.75);
+                MotorDown.setPower(0.75);
             }
             if (gamepad2.a) {
-                MoveLift(-12.5, 1);
+                MotorUp.setPower(0.75);
+                MotorDown.setPower(-0.75);
+            }
+            if (gamepad2.b) {
+                MotorDown.setPower(0.25);
+            }
+            if (gamepad2.x) {
+                MotorDown.setPower(-0.25);
+            }
+            else {
+                MotorUp.setPower(0);
+                MotorDown.setPower(0);
             }
 
             //Flipper code
@@ -78,14 +90,14 @@ public class TeleOpMode extends LinearOpMode {
     }
 
     private final int REV_TICK_COUNT = 288;
-    private void MoveLift(double rotations, double motorSpeed) {
-        double ticks = rotations * REV_TICK_COUNT;
-
+    private void MoveLift(double motorSpeed) {
+        /*
         MotorDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         MotorUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         MotorDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         MotorUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
         if(motorSpeed < 0){
             MotorDown.setTargetPosition(-(int) ticks);
@@ -95,15 +107,9 @@ public class TeleOpMode extends LinearOpMode {
             MotorDown.setTargetPosition((int) ticks);
             MotorUp.setTargetPosition((int) ticks);
         }
+        */
 
         MotorDown.setPower(motorSpeed);
         MotorUp.setPower(motorSpeed);
-
-        while(MotorDown.isBusy() && MotorUp.isBusy() && opModeIsActive()) {
-            idle();
-        }
-
-        MotorDown.setPower(0);
-        MotorUp.setPower(0);
     }
 }

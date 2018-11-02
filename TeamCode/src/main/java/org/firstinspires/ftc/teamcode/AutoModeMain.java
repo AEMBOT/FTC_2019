@@ -60,7 +60,7 @@ public class AutoModeMain extends LinearOpMode {
         waitForStart();
 
         //should set flipper parallel to robot
-        FlipperMotor.setPosition(0.3);
+        FlipperMotor.setPosition(0.2);
 
         DriveToDistance(20, motorSpeed);
         TurnToDegrees(60, turnSpeed, Direction.RIGHT);
@@ -68,18 +68,15 @@ public class AutoModeMain extends LinearOpMode {
         TurnToDegrees(40, turnSpeed, Direction.RIGHT);
         DriveToDistance(18, -motorSpeed);
 
-        for(int i = 0; i < 3; i++) {
+        for(int i = 0; i <= 2; i++) {
             if(hasFlipped == true) {
                 break;
             }
             else if(SenseYellow()) {
                 RunFlipper(0.8);
             }
-            else if(i == 2) {
-                break;
-            }
             else {
-                DriveToDistance(14.5, -motorSpeed);
+                DriveToDistance(14.5, -motorSpeed / 1.5);
             }
         }
 
@@ -175,10 +172,10 @@ public class AutoModeMain extends LinearOpMode {
     //This method can be called when you want the robot to turn to a set degrees value at a certain speed and direction
     private void TurnToDegrees(double degrees, double motorSpeed, Direction turnDirection) {
         //Converts degrees into ticks
-        final double CONVERSION_FACTOR = 2.5;
+        final double CONVERSION_FACTOR = 6;
         //final double ticksToDegrees = 85 / 90;
 
-        //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
+        //Multiplies the number of degrees by the conversion fa-ctor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);
         //double turnDegrees = ticks * ticksToDegrees;
 
@@ -201,13 +198,13 @@ public class AutoModeMain extends LinearOpMode {
             MotorLB.setTargetPosition((int)ticks);
             MotorRB.setTargetPosition(-(int)ticks);
 
-            for(int i=0; i < 5; i++){
+            for(int i=0; i < 2; i++){
                 sleep(50);
-                MotorLB.setPower(MotorLB.getPower() +  0.1);
-                MotorRB.setPower(MotorRB.getPower() + -(0.1));
+                MotorLB.setPower(MotorLB.getPower() +  0.5);
+                MotorRB.setPower(MotorRB.getPower() + -(0.5));
             }
 
-            //It then sets the power of the motors accordingly to turn the robot to the right
+            //It then sets the power of the motors acco00rdingly to turn the robot to the right
             //MotorLB.setPower(motorSpeed);
             //MotorRB.setPower(-motorSpeed);
         }
@@ -219,10 +216,10 @@ public class AutoModeMain extends LinearOpMode {
             MotorLB.setTargetPosition(-(int)ticks);
             MotorRB.setTargetPosition((int)ticks);
 
-            for(int i=0; i < 5; i++){
+            for(int i=0; i < 10; i++){
                 sleep(50);
-                MotorLB.setPower(MotorLB.getPower() + -(0.1));
-                MotorRB.setPower(MotorRB.getPower() +  0.1);
+                MotorLB.setPower(MotorLB.getPower() + -(0.5));
+                MotorRB.setPower(MotorRB.getPower() +  0.5);
             }
             //It then sets the power of the motors to turn left
             //MotorLB.setPower(-motorSpeed);
