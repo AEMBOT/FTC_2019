@@ -387,7 +387,7 @@ public class AutoModeMain extends LinearOpMode {
         MotorLiftDown.setPower(1);
         MotorLiftUp.setPower(1);
 
-        while(MotorLiftDown.isBusy() && MotorLiftUp.isBusy() && opModeIsActive()) {
+        while(opModeIsActive() && MotorLiftDown.isBusy() && MotorLiftUp.isBusy()) {
             idle();
         }
 
