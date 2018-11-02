@@ -52,10 +52,10 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
              FrontLeft.setPower(gamepad1.left_stick_y);
 
              if(gamepad1.dpad_left) {
-                 Strafe(1, DeLoreanAutomodeMain.StrafeDirection.LEFT);
+                 Strafe(1, DeLoreanAutomodeMain.Direction.LEFT);
              }
              else if(gamepad1.dpad_right) {
-                 Strafe(1, DeLoreanAutomodeMain.StrafeDirection.RIGHT);
+                 Strafe(1, DeLoreanAutomodeMain.Direction.RIGHT);
              }
              else {
                  BackRight.setPower(0);
@@ -65,7 +65,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
              }
          }
     }
-    private void Strafe(double motorSpeed, DeLoreanAutomodeMain.StrafeDirection strafeDirection){
+    private void Strafe(double motorSpeed, DeLoreanAutomodeMain.Direction strafeDirection){
 
         //Converts degrees into ticks
         //double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
@@ -83,7 +83,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         */
         //Checks if it is meant to turn right
-        if(strafeDirection == DeLoreanAutomodeMain.StrafeDirection.RIGHT)
+        if(strafeDirection == DeLoreanAutomodeMain.Direction.RIGHT)
         {
             /*
             //Sets the number of ticks the motor needs to move
