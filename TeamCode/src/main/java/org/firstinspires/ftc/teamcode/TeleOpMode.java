@@ -19,15 +19,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-//Declares a drive controlled TeleOp mode
-//@Autonomous(name = "AutoModeMain", group = "Demo") this is what a autonomous mode would look like
 @TeleOp(name = "TeleOpMode", group = "Main")
 public class TeleOpMode extends LinearOpMode {
 
-    //All variables are declared with the modifier "private"
-    //The following are the variables that will contain the drive motors and each of their respective data
-
-    //REV Motors
+    //DC Motors
     private DcMotor MotorLB;
     private DcMotor MotorRB;
     private DcMotor MotorUp;
@@ -39,12 +34,9 @@ public class TeleOpMode extends LinearOpMode {
     //Sensors
     private ColorSensor DemoColorSensor;
 
-    //Assigns Motors to match the configuration
     public void runOpMode()
     {
 
-        //The following assigns the corresponding motor variable to the  variable name on the phone which corresponds to a motor connection # on the REV hub
-        //!!!IMPORTANT!!! If the names are changed on the phones such as "MotorLF" is changed to "MotorLF" the code following must be updated
         MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
         MotorUp = hardwareMap.get(DcMotor.class, "LiftUp");
@@ -52,45 +44,24 @@ public class TeleOpMode extends LinearOpMode {
         ServoFlipper = hardwareMap.get(Servo.class, "Flipper");
 
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
-        //Needs to be reversed to move forward
 
         MotorRB.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //After initialization of variables has completed wait until the game starts(The play button is pressed)
         waitForStart();
 
-
-        //Will loop until the stop button is pressed on the controller
-        while (opModeIsActive())
-        {
-            //Button Mapping to analog sticks
-
+        while (opModeIsActive()) {
             //Wheels
             MotorRB.setPower(gamepad1.right_stick_y);
             MotorLB.setPower(gamepad1.left_stick_y);
 
-            //lift
-            //MotorUp.setPower(gamepad2.left_stick_y / 3);
-            //MotorDown.setPower(gamepad2.left_stick_y / 3);
-
-            //Why is this here Will?
-            //Will be called if A on controller 1 is pressed
-            /* if(gamepad1.a)
-            {
-                //Works much like a System.out.println(); or a print(""); or a Console.writeln(""); only difference is it prints it on the RobotDriverStation
-                telemetry.addData("Value of A: ", "Pushed");
-                telemetry.update();
-            } */
-
             if (gamepad2.y) {
                 MoveLift(12.5, 1);
             }
-
             if (gamepad2.a) {
                 MoveLift(-12.5, 1);
             }
 
-            //Flipper code.
+            //Flipper code
             if(gamepad1.a) {
                 // move to 0 degrees.
                 ServoFlipper.setPosition(0);
@@ -102,24 +73,19 @@ public class TeleOpMode extends LinearOpMode {
                 ServoFlipper.setPosition(1/*may be 1 */);
             }
             telemetry.addData("Servo Position", ServoFlipper.getPosition());
-
-
+            telemetry.update();
         }
     }
 
     private final int REV_TICK_COUNT = 288;
-    void MoveLift(double rotations, double motorSpeed) {
+    private void MoveLift(double rotations, double motorSpeed) {
         double ticks = rotations * REV_TICK_COUNT;
 
-        //Reset encoders
         MotorDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         MotorUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //Make it so motors run to position
         MotorDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         MotorUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        //Set motor target position
 
         if(motorSpeed < 0){
             MotorDown.setTargetPosition(-(int) ticks);
@@ -130,7 +96,6 @@ public class TeleOpMode extends LinearOpMode {
             MotorUp.setTargetPosition((int) ticks);
         }
 
-        //Run motors until they reach target positon (ticks)
         MotorDown.setPower(motorSpeed);
         MotorUp.setPower(motorSpeed);
 

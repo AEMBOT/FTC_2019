@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,7 +8,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 
 @TeleOp(name = "DeLoreanTeleOpModeMain", group = "DeLorean")
 public class DeLoreanTeleOpModeMain extends LinearOpMode {
-    //Declare DC motor variables
     private DcMotor BackLeft;
     private DcMotor BackRight;
     private DcMotor FrontLeft;
@@ -25,15 +22,11 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     //private ColorSensor ColorSensorL;
 
     public void runOpMode() {
-        //Initialize DC motor variables
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
 
-        //Initialize any other motors here
-
-        //Initialize color sensors
         //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
         //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
 
@@ -41,11 +34,9 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        //Wait for start button to be pressed
         waitForStart();
 
          while (opModeIsActive()) {
-             //Set all motors' power to y-value of left/right stick accordingly
              BackRight.setPower(gamepad1.right_stick_y);
              BackLeft.setPower(gamepad1.left_stick_y);
              FrontRight.setPower(gamepad1.right_stick_y);
@@ -65,8 +56,9 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
              }
          }
     }
-    private void Strafe(double motorSpeed, DeLoreanAutomodeMain.Direction strafeDirection){
+    private void Strafe(double motorSpeed, DeLoreanAutomodeMain.Direction strafeDirection) {
 
+        //region Unnecessary code from AutoMode
         //Converts degrees into ticks
         //double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
         /*
@@ -82,35 +74,17 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         */
-        //Checks if it is meant to turn right
-        if(strafeDirection == DeLoreanAutomodeMain.Direction.RIGHT)
-        {
-            /*
-            //Sets the number of ticks the motor needs to move
-            BackLeft.setTargetPosition((int)distance);
-            BackRight.setTargetPosition(-(int)distance);
-            FrontLeft.setTargetPosition(-(int)distance);
-            FrontRight.setTargetPosition((int)distance);
-            */
+        //endregion
 
-            //It then sets the power of the motors accordingly to turn the robot to the right
+        if(strafeDirection == DeLoreanAutomodeMain.Direction.RIGHT) {
             BackLeft.setPower(motorSpeed);
             BackRight.setPower(-motorSpeed);
             FrontLeft.setPower(-motorSpeed);
             FrontRight.setPower(motorSpeed);
         }
 
-        //If false turn left
+        //Otherwise strafe left
         else {
-            /*
-            //Sets the number of ticks the motor needs to turn left
-            BackLeft.setTargetPosition((int)distance);
-            BackRight.setTargetPosition(-(int)distance);
-            FrontLeft.setTargetPosition(-(int)distance);
-            FrontRight.setTargetPosition((int)distance);
-            */
-
-            //It then sets the power of the motors to turn left
             BackLeft.setPower(motorSpeed);
             BackRight.setPower(-motorSpeed);
             FrontLeft.setPower(-motorSpeed);
@@ -118,6 +92,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
         }
 
+        //region Unnecessary code from AutoMode
 
         //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
         /*
@@ -134,5 +109,6 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         FrontRight.setPower(0);
         FrontLeft.setPower(0);
         */
+        //endregion
     }
 }
