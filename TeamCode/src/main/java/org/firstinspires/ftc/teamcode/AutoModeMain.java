@@ -65,7 +65,7 @@ public class AutoModeMain extends LinearOpMode {
 
         //Declare speed variables
         double motorSpeed = 1;
-        double turnSpeed = 0.75;
+        double turnSpeed = 0.7;
 
         hasFlipped = false;
 
@@ -245,7 +245,7 @@ public class AutoModeMain extends LinearOpMode {
             MotorLB.setTargetPosition((int)ticks);
             MotorRB.setTargetPosition(-(int)ticks);
 
-            for(int i=0; i < 5; i++){
+            for(int i=0; i < 7; i++){
                 sleep(50);
                 MotorLB.setPower(MotorLB.getPower() +  0.1);
                 MotorRB.setPower(MotorRB.getPower() + -(0.1));
@@ -263,7 +263,7 @@ public class AutoModeMain extends LinearOpMode {
             MotorLB.setTargetPosition(-(int)ticks);
             MotorRB.setTargetPosition((int)ticks);
 
-            for(int i=0; i < 5; i++){
+            for(int i=0; i < 7; i++){
                 sleep(50);
                 MotorLB.setPower(MotorLB.getPower() + -(0.1));
                 MotorRB.setPower(MotorRB.getPower() +  0.1);
@@ -306,7 +306,7 @@ public class AutoModeMain extends LinearOpMode {
             //Sets the number of ticks to negative to allow for reverse
             MotorLB.setTargetPosition(-(int)totalDistance);
             MotorRB.setTargetPosition(-(int)totalDistance);
-            for(int i=0; i < 5; i++){
+            for(int i=0; i < 10; i++){
                 sleep(50);
                 MotorLB.setPower(MotorLB.getPower() +  0.1);
                 MotorRB.setPower(MotorRB.getPower() +  0.1);
@@ -321,7 +321,7 @@ public class AutoModeMain extends LinearOpMode {
             MotorRB.setTargetPosition((int)totalDistance);
         }
 
-        for(int i=0; i < 5; i++){
+        for(int i=0; i < 10; i++){
             sleep(50);
             MotorLB.setPower(MotorLB.getPower() + 0.1);
             MotorRB.setPower(MotorRB.getPower() + 0.1);
