@@ -24,9 +24,6 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     //private ColorSensor ColorSensorR;
     //private ColorSensor ColorSensorL;
 
-    //Creates constant that contains the number of ticks in a full rotation of a REV motor
-    private final int REV_TICK_COUNT = 288;
-
     public void runOpMode() {
         //Initialize DC motor variables
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");

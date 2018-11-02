@@ -209,7 +209,7 @@ public class AutoModeMain extends LinearOpMode {
 
 
     //This method can be called when you want the robot to turn to a set degrees value at a certain speed and direction
-    private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection){
+    private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection) throws InterruptedException {
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
         final double ticksToDegrees = 90 / 85;
@@ -237,11 +237,7 @@ public class AutoModeMain extends LinearOpMode {
 
             //Slowly starts the motors
             for(int i=0; i < 10; i++){
-                try{
-                    Thread.sleep(100);
-                }
-                catch (InterruptedException e){
-                }
+                Thread.sleep(100);
 
                 MotorLB.setPower(MotorRB.getPower() + 0.1);
                 MotorRB.setPower(-(MotorLB.getPower() + 0.1));
@@ -261,11 +257,8 @@ public class AutoModeMain extends LinearOpMode {
 
             //Slowly starts the motors
             for(int i=0; i < 10; i++){
-                try{
-                    Thread.sleep(100);
-                }
-                catch (InterruptedException e){
-                }
+
+                Thread.sleep(100);
 
                 MotorLB.setPower(-(MotorRB.getPower() + 0.1));
                 MotorRB.setPower(MotorLB.getPower() + 0.1);
@@ -289,7 +282,7 @@ public class AutoModeMain extends LinearOpMode {
     }
 
     //This method can be called when you want the robot to drive a certain distance in INCHES at a certain speed
-    private void DriveToDistance(double distance, double motorSpeed){
+    private void DriveToDistance(double distance, double motorSpeed) throws InterruptedException {
 
         //! 1 rev is 12.56 inches !
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
@@ -320,11 +313,9 @@ public class AutoModeMain extends LinearOpMode {
         }
 
         for(int i=0; i < 10; i++){
-            try{
+
                 Thread.sleep(100);
-            }
-            catch (InterruptedException e){
-            }
+
 
             MotorRB.setPower(MotorRB.getPower() + 0.1);
             MotorLB.setPower(MotorLB.getPower() + 0.1);
