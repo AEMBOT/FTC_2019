@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 
 @TeleOp(name = "DeLoreanTeleOpModeMain", group = "DeLorean")
 public class DeLoreanTeleOpModeMain extends LinearOpMode {
+    //Initialize motors
     private DcMotor BackLeft;
     private DcMotor BackRight;
     private DcMotor FrontLeft;
@@ -17,11 +18,12 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
     //Declare any other motors (servos, etc.)
 
-    //Declare sensors
+    //Declare sensors (not on robot right now)
     //private ColorSensor ColorSensorR;
     //private ColorSensor ColorSensorL;
 
     public void runOpMode() {
+        //Initialize motor and sensor variables
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
@@ -34,27 +36,34 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        //Wait for start button to be pressed
         waitForStart();
 
-         while (opModeIsActive()) {
-             BackRight.setPower(gamepad1.right_stick_y);
-             BackLeft.setPower(gamepad1.left_stick_y);
-             FrontRight.setPower(gamepad1.right_stick_y);
-             FrontLeft.setPower(gamepad1.left_stick_y);
+        while (opModeIsActive()) {
 
-             if(gamepad1.dpad_left) {
-                 Strafe(1, DeLoreanAutomodeMain.Direction.LEFT);
-             }
-             else if(gamepad1.dpad_right) {
-                 Strafe(1, DeLoreanAutomodeMain.Direction.RIGHT);
-             }
-             else {
+            //Use gamepad 1's left and right stick to control drive motors
+            BackRight.setPower(gamepad1.right_stick_y);
+            BackLeft.setPower(gamepad1.left_stick_y);
+            FrontRight.setPower(gamepad1.right_stick_y);
+            FrontLeft.setPower(gamepad1.left_stick_y);
+
+            //Strafe left when left d-pad button pressed on gamepad 1
+            if(gamepad1.dpad_left) {
+                Strafe(1, DeLoreanAutomodeMain.Direction.LEFT);
+            }
+            //Strafe right when right d-pad button pressed on gamepad 1
+            else if(gamepad1.dpad_right) {
+                Strafe(1, DeLoreanAutomodeMain.Direction.RIGHT);
+            }
+            //If there are no button presses, stop motors
+            else {
                  BackRight.setPower(0);
                  BackLeft.setPower(0);
                  FrontRight.setPower(0);
                  FrontLeft.setPower(0);
-             }
-         }
+            }
+            //Wheel tucking code?
+        }
     }
     private void Strafe(double motorSpeed, DeLoreanAutomodeMain.Direction strafeDirection) {
 
@@ -76,14 +85,13 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         */
         //endregion
 
+        //Check strafe direction (right or left
         if(strafeDirection == DeLoreanAutomodeMain.Direction.RIGHT) {
             BackLeft.setPower(motorSpeed);
             BackRight.setPower(-motorSpeed);
             FrontLeft.setPower(-motorSpeed);
             FrontRight.setPower(motorSpeed);
         }
-
-        //Otherwise strafe left
         else {
             BackLeft.setPower(motorSpeed);
             BackRight.setPower(-motorSpeed);

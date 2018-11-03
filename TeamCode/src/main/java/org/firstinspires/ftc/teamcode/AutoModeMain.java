@@ -68,11 +68,13 @@ public class AutoModeMain extends LinearOpMode {
         FlipperMotor.setPosition(-0.2);
 
         DriveToDistance(44, motorSpeed);
+
+        //region Removed when AutoMode was simplified
         //TurnToDegrees(60, turnSpeed, Direction.RIGHT);
         //DriveToDistance(33, turnSpeed);
         //TurnToDegrees(45, turnSpeed, Direction.RIGHT);
         //DriveToDistance(16, -motorSpeed);
-//
+
         //while (opModeIsActive()) {
         //    if(!SenseYellow()) {
         //        DriveToDistance(0.1, motorSpeed);
@@ -81,6 +83,7 @@ public class AutoModeMain extends LinearOpMode {
         //        break;
         //    }
         //}
+        //endregion
 
         //region For loop replaced
         /*
@@ -181,7 +184,7 @@ public class AutoModeMain extends LinearOpMode {
         double ticks = (degrees * CONVERSION_FACTOR);
         //double turnDegrees = ticks * ticksToDegrees;
 
-
+        //Waits for 50 milliseconds
         sleep(50);
 
 
