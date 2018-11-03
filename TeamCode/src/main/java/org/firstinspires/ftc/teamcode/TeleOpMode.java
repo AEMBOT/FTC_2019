@@ -19,54 +19,97 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-//Declares This is a drive controlled TeleOp mode
-//@Autonomous(name = "AutoModeMain", group = "Demo") this is what a autonomous mode would look like
 @TeleOp(name = "TeleOpMode", group = "Main")
 public class TeleOpMode extends LinearOpMode {
 
-    //All variables are declared with the modifier "private"
-    //The following are the variables that will contain the drive motors and each of their respective data
-    private DcMotor MotorLeftBack;
-    private DcMotor MotorRightBack;
+    //DC Motors
+    private DcMotor MotorLB;
+    private DcMotor MotorRB;
+    private DcMotor MotorUp;
+    private DcMotor MotorDown;
 
-    //Always separate each set of variable types... it just looks nicer
+    //Servos
+    private Servo ServoFlipper;
+
+    //Sensors
     private ColorSensor DemoColorSensor;
 
-    //Where the majority of your code will go some variables are defined above this outside the runOpMode method
     public void runOpMode()
     {
 
-        //The following assigns the corresponding motor variable to the  variable name on the phone which corresponds to a motor connection # on the REV hub
-        //!!!IMPORTANT!!! If the names are changed on the phones such as "MotorLF" is changed to "MotorLeftFront" the code following must be updated
-        MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
+        MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorUp = hardwareMap.get(DcMotor.class, "LiftUp");
+        MotorDown = hardwareMap.get(DcMotor.class, "LiftDown");
+        ServoFlipper = hardwareMap.get(Servo.class, "Flipper");
 
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
-        //Needs to be reversed to move forward
 
-        MotorRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        MotorRB.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //After initialization of variables has completed wait until the game starts(The play button is pressed)
         waitForStart();
 
+        while (opModeIsActive()) {
+            //Wheels
+            MotorRB.setPower(gamepad1.right_stick_y);
+            MotorLB.setPower(gamepad1.left_stick_y);
 
-        //Will loop until the stop button is pressed on the controller
-        while (opModeIsActive())
-        {
-            //Should in theory work, however I haven't touched this code in a year so it might take some time to get this working again
-            //Basically what this does is set the power of the motor to the y value on the stick corresponding to that side thus creating tank drive(In theory)
-            MotorRightBack.setPower(gamepad1.right_stick_y);
-            MotorLeftBack.setPower(gamepad1.left_stick_y);
-
-
-            //Will be called if A on controller 1 is pressed
-            if(gamepad1.a)
-            {
-                //Works much like a System.out.println(); or a print(""); or a Console.writeln(""); only difference is it prints it on the RobotDriverStation
-                telemetry.addData("Value of A: ", "Pushed");
-                telemetry.update();
+            if (gamepad2.y) {
+                MotorUp.setPower(-0.75);
+                MotorDown.setPower(0.75);
+            }
+            if (gamepad2.a) {
+                MotorUp.setPower(0.75);
+                MotorDown.setPower(-0.75);
+            }
+            if (gamepad2.b) {
+                MotorDown.setPower(0.25);
+            }
+            if (gamepad2.x) {
+                MotorDown.setPower(-0.25);
+            }
+            else {
+                MotorUp.setPower(0);
+                MotorDown.setPower(0);
             }
 
+            //Flipper code
+            if(gamepad1.a) {
+                // move to 0 degrees.
+                ServoFlipper.setPosition(0);
+            } else if (gamepad1.x || gamepad1.b) {
+                // move to 90 degrees.
+                ServoFlipper.setPosition(.5/*may be .5*/);
+            } else if (gamepad1.y) {
+                // move to 180 degrees.
+                ServoFlipper.setPosition(1/*may be 1 */);
+            }
+            telemetry.addData("Servo Position", ServoFlipper.getPosition());
+            telemetry.update();
         }
+    }
+
+    private final int REV_TICK_COUNT = 288;
+    private void MoveLift(double motorSpeed) {
+        /*
+        MotorDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        MotorDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        if(motorSpeed < 0){
+            MotorDown.setTargetPosition(-(int) ticks);
+            MotorUp.setTargetPosition(-(int) ticks);
+        }
+        else {
+            MotorDown.setTargetPosition((int) ticks);
+            MotorUp.setTargetPosition((int) ticks);
+        }
+        */
+
+        MotorDown.setPower(motorSpeed);
+        MotorUp.setPower(motorSpeed);
     }
 }

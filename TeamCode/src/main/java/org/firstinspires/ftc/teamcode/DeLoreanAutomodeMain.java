@@ -1,8 +1,8 @@
 /*
 Code Stolen From Will Richards by Troy Lopez for the Delorean bot.
-As of 10/25 code is written for babybot motor lay-out. This will need to change.
-This is currently skeleton code since we need to have motors defined before we can write
-code for that and frankly as of 10/25 i have no ide how to do that.
+Still a work in progress, need more motor definitions.
+Over commented
+Made for 2019 FTC
  */
 package org.firstinspires.ftc.teamcode;
 
@@ -12,237 +12,284 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "DeloreanAutomodeMain", group = "Main")
+@Autonomous(name = "DeloreanAutomodeMain", group = "DeLorean")
 public class DeLoreanAutomodeMain extends LinearOpMode {
 
-    //Variables created for the two back motors
-    private DcMotor MotorLeftBack;
-    private DcMotor MotorRightBack;
+    private DcMotor BackLeft;
+    private DcMotor BackRight;
+    private DcMotor FrontLeft;
+    private DcMotor FrontRight;
+    //private DcMotor WheelTuckRight;
+    //private DcMotor WheelTuckLeft;
 
-    private ColorSensor ColorSensor;
+    //Declare color sensor(s) here
 
-    public enum TurnDirection {RIGHT, LEFT}
+    public enum Direction {RIGHT, LEFT}
 
-    //Creates a constant variable with the value of 288 or one revolution
-    private final int REV_TICK_COUNT = 288;
+    private final int REV_TICK_COUNT = 560;
+    private final int LIFT_TICK_COUNT = 1120;
 
     public void runOpMode() throws InterruptedException {
 
-        //Initializes motor variables
-        //We'll need to Int the 4 new motors for landing and full wheel drive
-        MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
-        ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
+        BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
+        BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+        FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
+        FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+
+        //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
+        //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
+        //May change to only 1 sensor because of height
 
         //Creates a local reference to VuforiaBase
         //VuforiaBase vuforiaBase = new VuforiaBase();
 
-        //Sets the left motor to
-        MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        //Declare motor speed variable
-        double motorSpeed = 1;
+        double motorSpeed = 0.75;
 
-        //Defines turn speed to be half of regular motor speed (may change)
-        double turnSpeed = motorSpeed / 2;
+        double turnSpeed = 0.75;
 
-        boolean hasFlipped = false;
-
-
-        //Waits until the start button is pressed
         waitForStart();
 
-        //STARTS
+        //Strafe function might not work: consider testing
 
-        //Robot landing code will go here (drop wheel set 1, then Wheel set 2)
+        //Robot landing code (untuck wheels at different times)
 
-        //Strafe 2 inches left
+        Strafe(2, motorSpeed, Direction.RIGHT);
 
-        //Drives up to left cube set.
+        //Drives up to left cube set
         DriveToDistance (36, motorSpeed);
 
-        //Color sense for both sensors, L & R
+        //region Sense Cubes
+        //If cube is in position 1 or 2 from left, strafe right 8
+        //If not, strafe left 8
+        //endregion
 
-        /*Start if situation
-        // L'wood: If either sensor is yellow, flip corresponding flipper out and back
-
-        //If neither sensor detects yellow, move right
-        //Strafe right 15
-        //Right flipper flip+back
-        //End If situation
-        */
-
-        //Claim Code here
-
-        /* Another complicated if function-thing, Courtesy L'wood
-        If the cube was in position 1 or 2 from the left, strafe right 8.
-        If not, strafe left 8
-         */
-
-        //Approach claim site
+        //Approaches claim site
         DriveToDistance(20, motorSpeed);
 
-        //Drop Marker (motor run, then back)
+        //Drop team marker (motor run, then back)
 
-        //strafe right 15
-
-        //this will need to rotate across the center axis
-        TurnToDegrees(135, turnSpeed, AutoModeMain.TurnDirection.RIGHT);
-
-        //drives towards crater straight
+        Strafe(15, motorSpeed, Direction.RIGHT);
+        TurnOnTheSpot(135, turnSpeed, Direction.RIGHT);
         DriveToDistance(40, motorSpeed);
-
-        //Turns 45 RIGHT
-        TurnToDegrees(45, turnSpeed, AutoModeMain.TurnDirection.RIGHT);
-
-        //25 Straight
+        TurnOnTheSpot(45, turnSpeed, Direction.RIGHT);
         DriveToDistance(25, motorSpeed);
-
-        //Turns 90 left
-        TurnToDegrees(90, motorSpeed, AutoModeMain.TurnDirection.LEFT);
-
-        //
-
-        //
-
-        //
-
+        TurnOnTheSpot(90, motorSpeed, Direction.LEFT);
     }
+    private void Strafe(double distance, double motorSpeed, Direction strafeDirection){
 
-
-
-
-    //This method can be called when you want the robot to turn to a set degrees value at a certain speed and direction
-    private void TurnToDegrees(double degrees, double motorSpeed, AutoModeMain.TurnDirection turnDirection){
         //Converts degrees into ticks
-        final double CONVERSION_FACTOR = 2.5;
-        final double ticksToDegrees = 90 / 85;
+        double totalDistance = (REV_TICK_COUNT / 12.566) * distance; //totalDistance is never used. Remove it?
 
-        //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
+        //Resets motor encoders
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+         BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if(strafeDirection == Direction.RIGHT)
+        {
+            BackLeft.setTargetPosition((int)totalDistance);
+            BackRight.setTargetPosition(-(int)totalDistance);
+            FrontLeft.setTargetPosition(-(int)totalDistance);
+            FrontRight.setTargetPosition((int)totalDistance);
+
+            BackLeft.setPower(motorSpeed);
+            BackRight.setPower(-motorSpeed);
+            FrontLeft.setPower(-motorSpeed);
+            FrontRight.setPower(motorSpeed);
+        }
+        else {
+            BackLeft.setTargetPosition((int)totalDistance);
+            BackRight.setTargetPosition(-(int)totalDistance);
+            FrontLeft.setTargetPosition(-(int)totalDistance);
+            FrontRight.setTargetPosition((int)totalDistance);
+
+            BackLeft.setPower(motorSpeed);
+            BackRight.setPower(-motorSpeed);
+            FrontLeft.setPower(-motorSpeed);
+            FrontRight.setPower(motorSpeed);
+        }
+        //Stalls until motors are done
+        while (opModeIsActive() && BackLeft.isBusy() && BackRight.isBusy() && FrontLeft.isBusy() && FrontRight.isBusy()) {
+            idle();
+        }
+        BackRight.setPower(0);
+        BackLeft.setPower(0);
+        FrontRight.setPower(0);
+        FrontLeft.setPower(0);
+    }
+    private void TurnOnTheSpot(double degrees, double motorSpeed, Direction turnDirection){
+        //Converts degrees into ticks
+        final double CONVERSION_FACTOR = 5;
         double ticks = (degrees * CONVERSION_FACTOR);
-        double turnDegrees = ticks * ticksToDegrees;
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if(turnDirection == Direction.RIGHT)
+        {
+            BackLeft.setTargetPosition((int)ticks );
+            BackRight.setTargetPosition(-(int)ticks);
+            FrontLeft.setTargetPosition((int)ticks );
+            FrontRight.setTargetPosition(-(int)ticks);
+
+            BackLeft.setPower(motorSpeed);
+            BackRight.setPower(-motorSpeed);
+            FrontLeft.setPower(motorSpeed);
+            FrontRight.setPower(-motorSpeed);
+        }
+        else {
+            BackLeft.setTargetPosition(-(int)ticks);
+            BackRight.setTargetPosition((int)ticks);
+            FrontLeft.setTargetPosition(-(int)ticks);
+            FrontRight.setTargetPosition((int)ticks);
+
+            BackLeft.setPower(-motorSpeed);
+            BackRight.setPower(motorSpeed);
+            FrontLeft.setPower(-motorSpeed);
+            FrontRight.setPower(motorSpeed);
         }
 
-        //Resets encoder values
-        MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        while (opModeIsActive() &&BackLeft.isBusy() && BackRight.isBusy() && FrontLeft.isBusy() && FrontRight.isBusy()) {
+            idle();
+        }
 
-        //Sets the encoders back up for accepting input
-        MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setPower(0);
+        BackLeft.setPower(0);
+        FrontRight.setPower(0);
+        FrontLeft.setPower(0);
+    }
 
-        //Checks if it is meant to turn right
-        if(turnDirection == AutoModeMain.TurnDirection.RIGHT)
-        {
-            //Sets the number of ticks the motor needs to move
-            MotorLeftBack.setTargetPosition((int)turnDegrees );
-            MotorRightBack.setTargetPosition(-(int)turnDegrees);
+    //region Duplicate turn function
+    /*
+    private void TurnToDegrees(double degrees, double motorSpeed, Direction turnDirection){
+        //Converts degrees into ticks
+        final double CONVERSION_FACTOR = 2.5;
+        double ticks = (degrees * CONVERSION_FACTOR);
+
+        sleep(100);
+
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if(turnDirection == Direction.LEFT) {
+            BackLeft.setTargetPosition((int)ticks);
+            BackRight.setTargetPosition(-(int)ticks);
+            FrontLeft.setTargetPosition((int)ticks);
+            FrontRight.setTargetPosition(-(int)ticks);
 
             //It then sets the power of the motors accordingly to turn the robot to the right
-            MotorLeftBack.setPower(motorSpeed);
-            MotorRightBack.setPower(-motorSpeed);
+            BackLeft.setPower(motorSpeed);
+            BackRight.setPower(-motorSpeed);
         }
 
         //If false turn left
         else {
 
             //Sets the number of ticks the motor needs to turn left
-            MotorLeftBack.setTargetPosition(-(int)turnDegrees );
-            MotorRightBack.setTargetPosition((int)turnDegrees);
+            BackLeft.setTargetPosition(-(int)ticks);
+            BackRight.setTargetPosition((int)ticks);
 
             //It then sets the power of the motors to turn left
-            MotorLeftBack.setPower(-motorSpeed);
-            MotorRightBack.setPower(motorSpeed);
+            BackLeft.setPower(-motorSpeed);
+            BackRight.setPower(motorSpeed);
         }
 
 
-        //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy()) {
+        //This will stall until the motors are done moving forward at which point this loop is broken and the code may proceed
+        while (opModeIsActive() && BackLeft.isBusy() && BackRight.isBusy()) {
             idle();
         }
 
         //After it has moved the desired amount brake the wheels
-        MotorRightBack.setPower(0);
-        MotorLeftBack.setPower(0);
+        BackRight.setPower(0);
+        BackLeft.setPower(0);
 
     }
+    */
+    //endregion
 
     //This method can be called when you want the robot to drive a certain distance in INCHES at a certain speed
     private void DriveToDistance(double distance, double motorSpeed){
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-
-        }
-
-        //! 1 rev is 12.56 inches !
+        //! 1 rev is 12.566 inches !
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
 
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //Stops and resets encoders
-        MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        //Then it switches the encoders in a mode where it will drive the specified distance no matter what
-        MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        //Will check if the robot should be in reverse if so set encoder target accordingly
         if(motorSpeed < 0){
-
-            //Sets the number of ticks to negative to allow for reverse
-            MotorLeftBack.setTargetPosition(-(int)totalDistance);
-            MotorRightBack.setTargetPosition(-(int)totalDistance);
+            BackLeft.setTargetPosition(-(int)totalDistance);
+            BackRight.setTargetPosition(-(int)totalDistance);
+            FrontLeft.setTargetPosition(-(int)totalDistance);
+            FrontRight.setTargetPosition(-(int)totalDistance);
+        }
+        else {
+            BackLeft.setTargetPosition((int)totalDistance);
+            BackRight.setTargetPosition((int)totalDistance);
+            FrontLeft.setTargetPosition((int)totalDistance);
+            FrontRight.setTargetPosition((int)totalDistance);
         }
 
-        //Will run if robot is set to move forward
-        else{
+        BackLeft.setPower(motorSpeed);
+        BackRight.setPower(motorSpeed);
+        FrontLeft.setPower(motorSpeed);
+        FrontRight.setPower(motorSpeed);
 
-            //Roughly the same as the code above but this will move forward
-            MotorLeftBack.setTargetPosition((int)totalDistance);
-            MotorRightBack.setTargetPosition((int)totalDistance);
-        }
-
-
-        //It then sets the power to the motors to allow for forward movement
-        MotorLeftBack.setPower(motorSpeed);
-        MotorRightBack.setPower(motorSpeed);
-
-        //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy()) {
+        while (opModeIsActive() &&BackLeft.isBusy() && BackRight.isBusy()) {
             idle();
         }
 
-        //After it has moved the desired amount brake the wheels
-        MotorRightBack.setPower(0);
-        MotorLeftBack.setPower(0);
+        BackRight.setPower(0);
+        BackLeft.setPower(0);
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
     }
 
-    //This method will use the color sensor to sense if the ball is yellow or white and returns a boolean value accordingly
-    private boolean SenseYellow(){
+    private boolean SenseYellow(ColorSensor sensor){
         boolean isYellow;
 
-        //The color sensed was white
-        if(ColorSensor.blue() > 100 && ColorSensor.red() > 100 && ColorSensor.green() > 100){
+        //White
+        if(sensor.blue() > 100 && sensor.red() > 100 && sensor.green() > 100){
             isYellow = false;
-            return isYellow;
         }
-
-        //The color sensed was yellow
-        else if(ColorSensor.blue() < 100 && ColorSensor.blue() > 50){
+        //Yellow
+        else if(sensor.blue() < 100 && sensor.blue() > 50){
             isYellow = true;
         }
-
-        //It did not sense a valid color
+        //Invalid color
         else{
             isYellow = false;
         }
         return isYellow;
     }
+    //Lift function here
 }

@@ -12,124 +12,115 @@ Try to keep use of regions to a minimal
 package org.firstinspires.ftc.teamcode;
 
 
+import android.media.tv.TvInputService;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "AutoModeMain", group = "Main")
 public class AutoModeMain extends LinearOpMode {
 
-    //Variables created for the two back motors
-    private DcMotor MotorLeftBack;
-    private DcMotor MotorRightBack;
+    private DcMotor MotorLB;
+    private DcMotor MotorRB;
+    private DcMotor MotorLiftUp;
+    private DcMotor MotorLiftDown;
+    private Servo FlipperMotor;
 
     private ColorSensor ColorSensor;
 
-    public enum TurnDirection {RIGHT, LEFT}
+    public enum Direction {RIGHT, LEFT}
+
+    //Declare boolean hasFlipped for flipper
+    public boolean hasFlipped;
 
     //Creates a constant variable with the value of 288 or one revolution
     private final int REV_TICK_COUNT = 288;
 
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
-        //Initializes motor variables
-        MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
+        MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorLiftUp = hardwareMap.get(DcMotor.class, "LiftUp");
+        MotorLiftDown = hardwareMap.get(DcMotor.class, "LiftDown");
+        FlipperMotor = hardwareMap.get(Servo.class, "Flipper");
+
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
         //Creates a local reference to VuforiaBase
         //VuforiaBase vuforiaBase = new VuforiaBase();
 
-        //Sets the left motor to
-        MotorLeftBack.setDirection(DcMotor.Direction.REVERSE);
+        MotorLB.setDirection(DcMotor.Direction.REVERSE);
 
-        //Declare speed variable (double)
-        double motorSpeed = .5;
+        double motorSpeed = 1;
+        double turnSpeed = 0.75;
 
-        boolean hasFlipped = false;
+        hasFlipped = false;
 
-
-        //Waits until the start button is pressed
         waitForStart();
 
+        //LandRobot(5);
 
-        //Robot landing code will go here
+        //Should set flipper parallel to robot
+        //FlipperMotor.setPosition(0.2);
+        FlipperMotor.setPosition(-0.2);
 
-        //Drives straight forward roughly 20 inches
-        DriveToDistance(20, motorSpeed);
+        DriveToDistance(44, motorSpeed);
+        //TurnToDegrees(60, turnSpeed, Direction.RIGHT);
+        //DriveToDistance(33, turnSpeed);
+        //TurnToDegrees(45, turnSpeed, Direction.RIGHT);
+        //DriveToDistance(16, -motorSpeed);
+//
+        //while (opModeIsActive()) {
+        //    if(!SenseYellow()) {
+        //        DriveToDistance(0.1, motorSpeed);
+        //    }
+        //    else {
+        //        break;
+        //    }
+        //}
 
-        //Waits 2 seconds
-        //Thread.sleep(2000);
-
-        //Turns 60 degrees to the right
-        TurnToDegrees(60, motorSpeed / 2, TurnDirection.RIGHT);
-
-        //Waits 2 seconds
-        //Thread.sleep(2000);
-
-        //Drives directly forward 34 inches
-        //This part is inconsistent and sometimes overshoots; Work in progress
-        DriveToDistance(32, motorSpeed);
-
-        //Waits 2 seconds
-        // Thread.sleep(2000);
-
-        //Turns to the left 30 degrees
-        TurnToDegrees(30, motorSpeed, TurnDirection.RIGHT);
-
-        //Backwards 18 inches
-        DriveToDistance(18, -motorSpeed);
-
-
-        //See if color sensor senses yellow (gold) here
+        //region For loop replaced
+        /*
         if (SenseYellow() && !hasFlipped) {
-            //Flip Code
-            hasFlipped = true;
+            RunFlipper(0.8);
         }
 
-        //pause to check for yellow
-        //Thread.sleep(1000);
-
-        //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
 
-        //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
-            //Flip Code here
-            hasFlipped = true;
+            RunFlipper(0.8);
         }
 
-        //pause to check for yellow
-        //Thread.sleep(1000);
-
-        //Backwards 14.5 Inches
         DriveToDistance(14.5, -motorSpeed);
 
-        //Sense if yellow
         if (SenseYellow() && !hasFlipped) {
-            //Flip Code here
-            hasFlipped = true;
+            RunFlipper(0.8);
         }
+        */
+        //endregion
+
+        //Park on crater
+        //DriveToDistance(2, motorSpeed);
+        //TurnToDegrees(270, motorSpeed, Direction.RIGHT);
+        //DriveToDistance(6, motorSpeed);
+
+        //region Commented Code
 
         //pause to check for yellow
         //Thread.sleep(1000);
 
         //Reset has flipped value
-        hasFlipped = false;
-        //endregion
+        //hasFlipped = false;
 
-
-        //This is where errors have started - Troy
-        //Try to calibrate TurnToDegrees? - Zane
-        //The calibration didn't seem to work - Troy
-        //I think I fixed it. I inverted the conversion factor, which may have affected things. - Zane 10/24 8:14pm
-
+        /*
         //Drive backward 24 inches
         DriveToDistance(24, -motorSpeed);
 
         //Turn right 75 degrees
-        TurnToDegrees(75, motorSpeed, TurnDirection.RIGHT);
+        TurnToDegrees(75, motorSpeed, Direction.RIGHT);
 
         //Drive Forward 24 inches
         DriveToDistance(24, motorSpeed);
@@ -163,153 +154,179 @@ public class AutoModeMain extends LinearOpMode {
         DriveToDistance(26, motorSpeed);
 
         //Turn Left 45 degrees
-        TurnToDegrees(45, motorSpeed, TurnDirection.LEFT);
+        TurnToDegrees(45, motorSpeed, Direction.LEFT);
 
         //Drives Backwards 18 Inches
         DriveToDistance(18, -motorSpeed);
 
         //Turns 90 degrees Left
-        TurnToDegrees(90, motorSpeed, TurnDirection.LEFT);
+        TurnToDegrees(90, motorSpeed, Direction.LEFT);
 
         //Forward 96 inches
         DriveToDistance(96, motorSpeed);
 
         //Claim Code will go here
-
+        */
+        //endregion
     }
 
 
     //This method can be called when you want the robot to turn to a set degrees value at a certain speed and direction
-    private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection){
+    private void TurnToDegrees(double degrees, double motorSpeed, Direction turnDirection) {
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
-        final double ticksToDegrees = 85 / 90;
+        //final double ticksToDegrees = 85 / 90;
 
-        //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
+        //Multiplies the number of degrees by the conversion fa-ctor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);
-        double turnDegrees = ticks * ticksToDegrees;
+        //double turnDegrees = ticks * ticksToDegrees;
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
 
-        }
+        sleep(50);
+
 
         //Resets encoder values
-        MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets the encoders back up for accepting input
-        MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Checks if it is meant to turn right
-        if(turnDirection == TurnDirection.RIGHT)
+        if(turnDirection == Direction.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
-            MotorLeftBack.setTargetPosition((int)turnDegrees );
-            MotorRightBack.setTargetPosition(-(int)turnDegrees);
+            MotorLB.setTargetPosition((int)ticks);
+            MotorRB.setTargetPosition(-(int)ticks);
 
             //It then sets the power of the motors accordingly to turn the robot to the right
-            MotorLeftBack.setPower(motorSpeed);
-            MotorRightBack.setPower(-motorSpeed);
+            MotorLB.setPower(motorSpeed);
+            MotorRB.setPower(-motorSpeed);
         }
 
         //If false turn left
         else {
 
             //Sets the number of ticks the motor needs to turn left
-            MotorLeftBack.setTargetPosition(-(int)turnDegrees );
-            MotorRightBack.setTargetPosition((int)turnDegrees);
+            MotorLB.setTargetPosition(-(int)ticks);
+            MotorRB.setTargetPosition((int)ticks);
 
             //It then sets the power of the motors to turn left
-            MotorLeftBack.setPower(-motorSpeed);
-            MotorRightBack.setPower(motorSpeed);
+            MotorLB.setPower(-motorSpeed);
+            MotorRB.setPower(motorSpeed);
         }
 
 
         //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy()) {
+        while (opModeIsActive() && MotorLB.isBusy() && MotorRB.isBusy()) {
             idle();
         }
 
         //After it has moved the desired amount brake the wheels
-        MotorRightBack.setPower(0);
-        MotorLeftBack.setPower(0);
+        MotorRB.setPower(0);
+        MotorLB.setPower(0);
 
     }
 
     //This method can be called when you want the robot to drive a certain distance in INCHES at a certain speed
-    private void DriveToDistance(double distance, double motorSpeed){
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-
-        }
-
-        //! 1 rev is 12.56 inches !
+    private void DriveToDistance(double distance, double motorSpeed) {
+        //1 rev is 12.566 inches
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
 
+            //Reset motor encoders
+            MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            MotorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //Stops and resets encoders
-        MotorLeftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            MotorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            MotorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        //Then it switches the encoders in a mode where it will drive the specified distance no matter what
-        MotorLeftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorRightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        //Will check if the robot should be in reverse if so set encoder target accordingly
         if(motorSpeed < 0){
-
-            //Sets the number of ticks to negative to allow for reverse
-            MotorLeftBack.setTargetPosition(-(int)totalDistance);
-            MotorRightBack.setTargetPosition(-(int)totalDistance);
+            //Negative for reversing
+            MotorLB.setTargetPosition(-(int)totalDistance);
+            MotorRB.setTargetPosition( -(int)totalDistance);
+            for(int i = 0; i < 5; i++){
+                sleep(50);
+                MotorLB.setPower(MotorLB.getPower() +  0.1);
+                MotorRB.setPower(MotorRB.getPower() +  0.1);
+            }
+        }
+        else {
+            MotorLB.setTargetPosition((int)totalDistance);
+            MotorRB.setTargetPosition((int)totalDistance);
         }
 
-        //Will run if robot is set to move forward
-        else{
-
-            //Roughly the same as the code above but this will move forward
-            MotorLeftBack.setTargetPosition((int)totalDistance);
-            MotorRightBack.setTargetPosition((int)totalDistance);
+        for(int i = 0; i < 5; i++){
+            sleep(50);
+            MotorLB.setPower(MotorLB.getPower() + 0.1);
+            MotorRB.setPower(MotorRB.getPower() + 0.1);
         }
 
-
-        //It then sets the power to the motors to allow for forward movement
-        MotorLeftBack.setPower(motorSpeed);
-        MotorRightBack.setPower(motorSpeed);
-
-        //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        while (opModeIsActive() && MotorLeftBack.isBusy() && MotorRightBack.isBusy()) {
+        while (opModeIsActive() && MotorLB.isBusy() && MotorRB.isBusy()) { //Do we need opModeIsActive? It already invokes the idle() function
             idle();
         }
 
         //After it has moved the desired amount brake the wheels
-        MotorRightBack.setPower(0);
-        MotorLeftBack.setPower(0);
+        MotorRB.setPower(0);
+        MotorLB.setPower(0);
     }
 
-    //This method will use the color sensor to sense if the ball is yellow or white and returns a boolean value accordingly
     private boolean SenseYellow(){
         boolean isYellow;
 
-        //The color sensed was white
-        if(ColorSensor.blue() > 100 && ColorSensor.red() > 100 && ColorSensor.green() > 100){
-            isYellow = false;
-            return isYellow;
-        }
-
-        //The color sensed was yellow
-        else if(ColorSensor.blue() < 100 && ColorSensor.blue() > 50){
+        telemetry.addData("Blue: ", ColorSensor.blue());
+        telemetry.addData("Green: ", ColorSensor.green());
+        telemetry.addData("Red: ", ColorSensor.red());
+        telemetry.update();
+        //Sensed yellow
+        if(ColorSensor.blue() - 15 < ColorSensor.red() && ColorSensor.blue() - 15 < ColorSensor.green()){
             isYellow = true;
         }
-
-        //It did not sense a valid color
+        //Invalid color
         else{
             isYellow = false;
         }
         return isYellow;
     }
+
+    private void RunFlipper(double position) {
+        FlipperMotor.setPosition(position);
+
+        hasFlipped = true;
+
+        //Reset flipper motor to parallel to robot
+        FlipperMotor.setPosition(0.3);
+    }
+
+    //region LandRobot function
+
+    private void LandRobot(double rotations) {
+        double ticks = rotations * REV_TICK_COUNT;
+
+        //Reset encoders
+        MotorLiftDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLiftUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Make it so motors run to position
+        MotorLiftDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorLiftUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //Set motor target position
+        MotorLiftDown.setTargetPosition(-(int)ticks);
+        MotorLiftUp.setTargetPosition((int)ticks);
+
+        //Run motors until they reach target position (ticks)
+        MotorLiftDown.setPower(0.5);
+        MotorLiftUp.setPower(0.5);
+
+        while(opModeIsActive() && MotorLiftDown.isBusy() && MotorLiftUp.isBusy()) {
+            idle();
+        }
+
+        MotorLiftDown.setPower(0);
+        MotorLiftUp.setPower(0);
+    }
+
+    //endregion
 }

@@ -11,17 +11,22 @@ Try to keep use of regions to a minimal
 
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "ColorSensorDemo", group = "Demo")
 public class ColorSensorDemo extends LinearOpMode {
 
     //Variables created for the two back motors
-    private DcMotor MotorLeftBack;
-    private DcMotor MotorRightBack;
+    private DcMotor MotorLB;
+    private DcMotor MotorRB;
+
+    private Servo FlipperServo;
 
     //Color sensor variables
     private ColorSensor ColorSensor;
@@ -29,8 +34,10 @@ public class ColorSensorDemo extends LinearOpMode {
     public void runOpMode(){
 
         //Initializes motor variables
-        MotorLeftBack = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRightBack = hardwareMap.get(DcMotor.class, "MotorRB");
+        MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
+        MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
+
+        FlipperServo = hardwareMap.get(Servo.class, "Flipper");
 
         //Init color sensor
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
@@ -51,11 +58,14 @@ public class ColorSensorDemo extends LinearOpMode {
             telemetry.addData("Color: ", color);
             telemetry.update();
 
-            if(ColorSensor.blue() > 100 && ColorSensor.red() > 100 && ColorSensor.green() > 100){
-                color = "White";
-            }
-            else if(ColorSensor.blue() < 100 && ColorSensor.blue() > 50){
+            if(ColorSensor.blue() < ColorSensor.red() && ColorSensor.blue() < ColorSensor.green()){
                 color = "Yellow";
+                //FlipperServo.setPosition(0.8);
+                //try {
+                //    Thread.sleep(1000);
+                //} catch (InterruptedException e) {
+                //}
+                //FlipperServo.setPosition(0);
             }
             else{
                 color = "None";
