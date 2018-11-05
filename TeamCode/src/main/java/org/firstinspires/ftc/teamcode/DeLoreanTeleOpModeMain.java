@@ -53,6 +53,8 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                  BackLeft.setPower(0);
                  FrontRight.setPower(0);
                  FrontLeft.setPower(0);
+                 MotorWheelR.setPower(0);
+                 MotorWheelL.setPower(0);
              }
          }
     }
