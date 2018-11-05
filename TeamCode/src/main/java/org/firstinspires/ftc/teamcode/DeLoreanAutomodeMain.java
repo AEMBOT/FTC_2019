@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @Autonomous(name = "DeloreanAutomodeMain", group = "DeLorean")
 public class DeLoreanAutomodeMain extends LinearOpMode {
 
+    //Declares Motor Variables
     private DcMotor BackLeft;
     private DcMotor BackRight;
     private DcMotor FrontLeft;
@@ -24,13 +25,16 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
     //Declare color sensor(s) here
 
+    //Used to specify direction for strafing/turning
     public enum Direction {RIGHT, LEFT}
 
+    //Number of ticks per rotation for each motor type
     private final int REV_TICK_COUNT = 560;
     private final int LIFT_TICK_COUNT = 1120;
 
     public void runOpMode() throws InterruptedException {
 
+        //Initialize motors and sensors
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
@@ -43,13 +47,14 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Creates a local reference to VuforiaBase
         //VuforiaBase vuforiaBase = new VuforiaBase();
 
+        //Reverse left motors so all motors rotate in the same direction at any given power level
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         double motorSpeed = 0.75;
-
         double turnSpeed = 0.75;
 
+        //Wait for start button to be pressed
         waitForStart();
 
         //Strafe function might not work: consider testing
@@ -71,6 +76,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         //Drop team marker (motor run, then back)
 
+        //What does this do?
         Strafe(15, motorSpeed, Direction.RIGHT);
         TurnOnTheSpot(135, turnSpeed, Direction.RIGHT);
         DriveToDistance(40, motorSpeed);

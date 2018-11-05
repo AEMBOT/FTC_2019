@@ -12,8 +12,6 @@ Try to keep use of regions to a minimal
 package org.firstinspires.ftc.teamcode;
 
 
-import android.media.tv.TvInputService;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -56,23 +54,44 @@ public class AutoModeMain extends LinearOpMode {
 
         double motorSpeed = 1;
         double turnSpeed = 0.75;
-
         hasFlipped = false;
+
+        //region Auto Comments from Competition
+
+        //Round 2
+        //Robot didn't land
+        //Robot did land during TeleOp
+        //We can put gold in team zone and silver
+        //Weren't able to  latch back on lander (not enough time)
+
+        //Round 3
+        //Didn't land during auto again
+
+        //Round 4
+        //LIFT STOPPED WORKING ENTIRELY
+        //TeleOp: push stuff into alliance zone (make easier?)
+
+        //Final Round
+        //LINEAR SLIDE BROKE
+        //Gets stuck in crater easily (fix with DeLorean)
+
+        //Don't forget flag holder
+        //endregion
 
         waitForStart();
 
-        //LandRobot(5);
+        LandRobot(2.5);
+        //TurnToDegrees(30, turnSpeed, Direction.LEFT);
+        //DriveToDistance(4, motorSpeed);
+        //TurnToDegrees(30, turnSpeed, Direction.RIGHT);
+        //DriveToDistance(42, motorSpeed);
 
-        //Should set flipper parallel to robot
-        //FlipperMotor.setPosition(0.2);
-        FlipperMotor.setPosition(-0.2);
-
-        DriveToDistance(44, motorSpeed);
+        //region Removed when AutoMode was simplified
         //TurnToDegrees(60, turnSpeed, Direction.RIGHT);
         //DriveToDistance(33, turnSpeed);
         //TurnToDegrees(45, turnSpeed, Direction.RIGHT);
         //DriveToDistance(16, -motorSpeed);
-//
+
         //while (opModeIsActive()) {
         //    if(!SenseYellow()) {
         //        DriveToDistance(0.1, motorSpeed);
@@ -81,92 +100,6 @@ public class AutoModeMain extends LinearOpMode {
         //        break;
         //    }
         //}
-
-        //region For loop replaced
-        /*
-        if (SenseYellow() && !hasFlipped) {
-            RunFlipper(0.8);
-        }
-
-        DriveToDistance(14.5, -motorSpeed);
-
-        if (SenseYellow() && !hasFlipped) {
-            RunFlipper(0.8);
-        }
-
-        DriveToDistance(14.5, -motorSpeed);
-
-        if (SenseYellow() && !hasFlipped) {
-            RunFlipper(0.8);
-        }
-        */
-        //endregion
-
-        //Park on crater
-        //DriveToDistance(2, motorSpeed);
-        //TurnToDegrees(270, motorSpeed, Direction.RIGHT);
-        //DriveToDistance(6, motorSpeed);
-
-        //region Commented Code
-
-        //pause to check for yellow
-        //Thread.sleep(1000);
-
-        //Reset has flipped value
-        //hasFlipped = false;
-
-        /*
-        //Drive backward 24 inches
-        DriveToDistance(24, -motorSpeed);
-
-        //Turn right 75 degrees
-        TurnToDegrees(75, motorSpeed, Direction.RIGHT);
-
-        //Drive Forward 24 inches
-        DriveToDistance(24, motorSpeed);
-
-
-        //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
-
-            //Flip Code here
-            hasFlipped = true;
-        }
-
-        //Drives to next object, 14.5 inches
-        DriveToDistance(14.5, motorSpeed);
-
-        //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
-            //Flipper code
-            hasFlipped = true;
-        }
-        //Drives to next object, 14.5 inches
-        DriveToDistance(14.5, motorSpeed);
-
-        //Sense Yellow
-        if (SenseYellow() && !hasFlipped) {
-            //Flipper code
-            hasFlipped = true;
-        }
-
-        //Forward 26
-        DriveToDistance(26, motorSpeed);
-
-        //Turn Left 45 degrees
-        TurnToDegrees(45, motorSpeed, Direction.LEFT);
-
-        //Drives Backwards 18 Inches
-        DriveToDistance(18, -motorSpeed);
-
-        //Turns 90 degrees Left
-        TurnToDegrees(90, motorSpeed, Direction.LEFT);
-
-        //Forward 96 inches
-        DriveToDistance(96, motorSpeed);
-
-        //Claim Code will go here
-        */
         //endregion
     }
 
@@ -181,7 +114,7 @@ public class AutoModeMain extends LinearOpMode {
         double ticks = (degrees * CONVERSION_FACTOR);
         //double turnDegrees = ticks * ticksToDegrees;
 
-
+        //Waits for 50 milliseconds
         sleep(50);
 
 
@@ -304,21 +237,24 @@ public class AutoModeMain extends LinearOpMode {
     private void LandRobot(double rotations) {
         double ticks = rotations * REV_TICK_COUNT;
 
-        //Reset encoders
-        MotorLiftDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorLiftUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //Make it so motors run to position
+        //Reset encoders.
         MotorLiftDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         MotorLiftUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        //Set motor target position
+        //Check what direction lift will be going
+
+        MotorLiftUp.setTargetPosition(-(int)ticks);
         MotorLiftDown.setTargetPosition(-(int)ticks);
-        MotorLiftUp.setTargetPosition((int)ticks);
+
+        MotorLiftUp.setPower(-0.75);
+        MotorLiftDown.setPower(-0.75);
+
 
         //Run motors until they reach target position (ticks)
-        MotorLiftDown.setPower(0.5);
-        MotorLiftUp.setPower(0.5);
+        /*
+        MotorLiftDown.setPower(0.25);
+        MotorLiftUp.setPower(0.25);
+        */
 
         while(opModeIsActive() && MotorLiftDown.isBusy() && MotorLiftUp.isBusy()) {
             idle();
@@ -327,6 +263,4 @@ public class AutoModeMain extends LinearOpMode {
         MotorLiftDown.setPower(0);
         MotorLiftUp.setPower(0);
     }
-
-    //endregion
 }

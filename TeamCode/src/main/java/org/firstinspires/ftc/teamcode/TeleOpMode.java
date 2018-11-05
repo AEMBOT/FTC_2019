@@ -11,12 +11,10 @@ Try to keep use of regions to a minimal
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "TeleOpMode", group = "Main")
@@ -36,7 +34,7 @@ public class TeleOpMode extends LinearOpMode {
 
     public void runOpMode()
     {
-
+        //Initialize motors and sensors
         MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
         MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
         MotorUp = hardwareMap.get(DcMotor.class, "LiftUp");
@@ -45,52 +43,74 @@ public class TeleOpMode extends LinearOpMode {
 
         DemoColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
-        MotorRB.setDirection(DcMotorSimple.Direction.REVERSE);
+        //Reverse right-side drive motor so both motors rotate in same direction
+        MotorRB.setDirection(DcMotor.Direction.REVERSE);
 
+        //Wait for start button to be pressed
         waitForStart();
 
         while (opModeIsActive()) {
-            //Wheels
+            //Controls drive motors with gamepad 1's joysticks
             MotorRB.setPower(gamepad1.right_stick_y);
             MotorLB.setPower(gamepad1.left_stick_y);
 
+            //Lift code
+            /*
+            if (gamepad2.a) { //Release lift
+                //Pull lift towards robot
+                MotorUp.setPower(-0.4);
+            }
             if (gamepad2.y) {
-                MotorUp.setPower(-0.75);
-                MotorDown.setPower(0.75);
+                //raise robot
+                MotorUp.setPower(1);
             }
-            if (gamepad2.a) {
-                MotorUp.setPower(0.75);
-                MotorDown.setPower(-0.75);
-            }
+            //Individual motor controlling (is this needed anymore?)
             if (gamepad2.b) {
-                MotorDown.setPower(0.25);
+                MotorDown.setPower(0.4);
             }
-            if (gamepad2.x) {
-                MotorDown.setPower(-0.25);
+            if (gamepad2.x) { //raise robot
+                MotorDown.setPower(-1);
+            }
+            //Reset motor power if nothing is pressed
+            else {
+                MotorUp.setPower(0);
+                MotorDown.setPower(0);
+            }
+            */
+
+            if (gamepad2.a) {
+                MotorUp.setPower(-0.4);
+                MotorDown.setPower(-0.4);
+            }
+            else if (gamepad2.y) {
+                MotorUp.setPower(1);
+                MotorDown.setPower(1);
             }
             else {
                 MotorUp.setPower(0);
                 MotorDown.setPower(0);
             }
-
             //Flipper code
             if(gamepad1.a) {
                 // move to 0 degrees.
-                ServoFlipper.setPosition(0);
+                ServoFlipper.setPosition(0.2);
             } else if (gamepad1.x || gamepad1.b) {
                 // move to 90 degrees.
-                ServoFlipper.setPosition(.5/*may be .5*/);
+                ServoFlipper.setPosition(.5);
             } else if (gamepad1.y) {
                 // move to 180 degrees.
-                ServoFlipper.setPosition(1/*may be 1 */);
+                ServoFlipper.setPosition(0.8);
             }
+            //Print Flipper servo position do driver station phone
             telemetry.addData("Servo Position", ServoFlipper.getPosition());
             telemetry.update();
         }
     }
 
     private final int REV_TICK_COUNT = 288;
+    //Should we consider removing this from TeleOp? We don't call it at all.
     private void MoveLift(double motorSpeed) {
+        //region This broke the lift
         /*
         MotorDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         MotorUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -108,7 +128,7 @@ public class TeleOpMode extends LinearOpMode {
             MotorUp.setTargetPosition((int) ticks);
         }
         */
-
+        //endregion
         MotorDown.setPower(motorSpeed);
         MotorUp.setPower(motorSpeed);
     }

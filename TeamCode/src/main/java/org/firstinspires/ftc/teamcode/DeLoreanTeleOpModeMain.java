@@ -12,8 +12,6 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     private DcMotor BackRight;
     private DcMotor FrontLeft;
     private DcMotor FrontRight;
-
-    //Only used for raising/lowering wheels
     private DcMotor MotorWheelR;
     private DcMotor MotorWheelL;
 
@@ -55,8 +53,6 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                  BackLeft.setPower(0);
                  FrontRight.setPower(0);
                  FrontLeft.setPower(0);
-                 MotorWheelL.setPower(0);
-                 MotorWheelR.setPower(0);
              }
          }
     }
