@@ -182,17 +182,17 @@ public class SpeedFullAutomode extends LinearOpMode {
     private void TurnToDegrees(double degrees, double motorSpeed, TurnDirection turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 2.5;
-        final double ticksToDegrees = 85 / 90;
+        //final double ticksToDegrees = 85 / 90;
 
         //Multiplies the number of degrees by the conversion factor to get the number of ticks for the specified degrees
         double ticks = (degrees * CONVERSION_FACTOR);
-        double turnDegrees = ticks * ticksToDegrees;
+        //double turnDegrees = ticks * ticksToDegrees;
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-
-        }
+        //try {
+        //    Thread.sleep(100);
+        //} catch (InterruptedException e) {
+//
+        //}
 
         //Resets encoder values
         MotorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -206,8 +206,8 @@ public class SpeedFullAutomode extends LinearOpMode {
         if(turnDirection == TurnDirection.RIGHT)
         {
             //Sets the number of ticks the motor needs to move
-            MotorLB.setTargetPosition((int)turnDegrees );
-            MotorRB.setTargetPosition(-(int)turnDegrees);
+            MotorLB.setTargetPosition((int)ticks );
+            MotorRB.setTargetPosition(-(int)ticks);
 
             //It then sets the power of the motors accordingly to turn the robot to the right
             MotorLB.setPower(motorSpeed);
@@ -218,8 +218,8 @@ public class SpeedFullAutomode extends LinearOpMode {
         else {
 
             //Sets the number of ticks the motor needs to turn left
-            MotorLB.setTargetPosition(-(int)turnDegrees );
-            MotorRB.setTargetPosition((int)turnDegrees);
+            MotorLB.setTargetPosition(-(int)ticks );
+            MotorRB.setTargetPosition((int)ticks);
 
             //It then sets the power of the motors to turn left
             MotorLB.setPower(-motorSpeed);
