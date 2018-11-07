@@ -1,11 +1,8 @@
 /*
 Code Stolen From Will Richards by Troy Lopez for the Delorean bot.
-Still a work in progress, need more motor definitions.
-Over commented
 Made for 2019 FTC
  */
 package org.firstinspires.ftc.teamcode;
-
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -42,7 +39,6 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
 
-
         //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
         //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
         //May change to only 1 sensor because of height
@@ -54,6 +50,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        //Sets up speeds for different actions
         double motorSpeed = 0.75;
         double turnSpeed = 0.75;
         double motorSpeedTuck = .7;
@@ -61,21 +58,20 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Wait for start button to be pressed
         waitForStart();
 
-        //Lands! :)
-        Land(.5, motorSpeed);
-        //Strafe function might not work: consider testing....
+        //Lands
+        Land(-.5, motorSpeed);
 
-        //Robot landing code (untuck wheels at different times)
-
+        //Strafe function doesn't work: Have mechanincal fix
         Strafe(2, motorSpeed, Direction.RIGHT);
 
         //Drives up to left cube set
         DriveToDistance (36, motorSpeed);
 
-        //region Sense Cubes
+        //region Sense Cubes-Old
         //If cube is in position 1 or 2 from left, strafe right 8
         //If not, strafe left 8
         //endregion
+
 
         //Approaches claim site
         DriveToDistance(20, motorSpeed);
@@ -95,6 +91,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //endregion
 
     }
+
     private void Strafe(double distance, double motorSpeed, Direction strafeDirection){
 
         //Converts degrees into ticks

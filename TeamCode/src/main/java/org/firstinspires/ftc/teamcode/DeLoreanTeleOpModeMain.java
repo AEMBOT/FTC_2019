@@ -62,20 +62,26 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                  FrontLeft.setPower(-strafeSpeed);
                  FrontRight.setPower(strafeSpeed);
              }
-             //Tuck left set of wheels
+             //Tuck of wheels
              if(gamepad2.dpad_up) {
                  MotorWheelTuckL.setPower(0.5);
+                 sleep(1000);
+                 MotorWheelTuckR.setPower(0.5);
              }
-             //Untuck left set of wheels
+             //Untuck wheels
              if(gamepad2.dpad_down) {
                  MotorWheelTuckL.setPower(-0.5);
+                 sleep(1000);
+                 MotorWheelTuckR.setPower(-0.5);
              }
+             /* Removed for simplicity
              if(gamepad2.y) {
                  MotorWheelTuckR.setPower(0.5);
              }
              if(gamepad2.a) {
                  MotorWheelTuckR.setPower(-0.5);
              }
+             */
              else {
                  BackRight.setPower(0);
                  BackLeft.setPower(0);
