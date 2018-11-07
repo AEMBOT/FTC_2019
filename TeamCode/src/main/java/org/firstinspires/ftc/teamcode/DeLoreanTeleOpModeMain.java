@@ -26,6 +26,8 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+        MotorWheelTuckL = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
+        MotorWheelTuckR = hardwareMap.get(DcMotor.class, "WheelTuckRight");
 
         //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
         //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
@@ -34,30 +36,31 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        double motorSpeed = 0.5;
+        double motorSpeed = 1;
+        double strafeSpeed = .75;
 
         waitForStart();
 
          while (opModeIsActive()) {
-             BackRight.setPower(gamepad1.right_stick_y);
-             BackLeft.setPower(gamepad1.left_stick_y);
-             FrontRight.setPower(gamepad1.right_stick_y);
-             FrontLeft.setPower(gamepad1.left_stick_y);
+             BackRight.setPower(- gamepad1.right_stick_y);
+             BackLeft.setPower(- gamepad1.left_stick_y);
+             FrontRight.setPower(- gamepad1.right_stick_y);
+             FrontLeft.setPower(- gamepad1.left_stick_y);
 
              //Strafe left
              if(gamepad1.dpad_left) {
-                 BackLeft.setPower(motorSpeed);
-                 BackRight.setPower(-motorSpeed);
-                 FrontLeft.setPower(-motorSpeed);
-                 FrontRight.setPower(motorSpeed);
+                 BackLeft.setPower(strafeSpeed);
+                 BackRight.setPower(-strafeSpeed);
+                 FrontLeft.setPower(-strafeSpeed);
+                 FrontRight.setPower(strafeSpeed);
 
              }
              //Strafe right
              if(gamepad1.dpad_right) {
-                 BackLeft.setPower(motorSpeed);
-                 BackRight.setPower(-motorSpeed);
-                 FrontLeft.setPower(-motorSpeed);
-                 FrontRight.setPower(motorSpeed);
+                 BackLeft.setPower(strafeSpeed);
+                 BackRight.setPower(-strafeSpeed);
+                 FrontLeft.setPower(-strafeSpeed);
+                 FrontRight.setPower(strafeSpeed);
              }
              //Tuck left set of wheels
              if(gamepad2.dpad_up) {

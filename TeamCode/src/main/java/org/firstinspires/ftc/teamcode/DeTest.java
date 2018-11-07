@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "DeloreanAutomodeMain", group = "DeLorean")
+@Autonomous(name = "DeTest", group = "DeLorean")
 public class DeTest extends LinearOpMode {
 
     //Declares Motor Variables
@@ -56,7 +56,7 @@ public class DeTest extends LinearOpMode {
 
         Strafe(3, motorSpeed,Direction.RIGHT);
 
-        DriveToDistance(3, motorSpeed);
+        DriveToDistance(12, motorSpeed);
 
         TurnOnTheSpot(180, motorSpeed, Direction.RIGHT);
 

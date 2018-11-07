@@ -56,6 +56,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         double motorSpeed = 0.75;
         double turnSpeed = 0.75;
+        double motorSpeedTuck = .7;
 
         //Wait for start button to be pressed
         waitForStart();
