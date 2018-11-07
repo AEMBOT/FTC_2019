@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -12,8 +12,8 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     private DcMotor BackRight;
     private DcMotor FrontLeft;
     private DcMotor FrontRight;
-    private DcMotor MotorWheelR;
-    private DcMotor MotorWheelL;
+    private DcMotor MotorWheelTuckR;
+    private DcMotor MotorWheelTuckL;
 
     //Declare any other motors (servos, etc.)
 
@@ -34,6 +34,8 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        double motorSpeed = 0.5;
+
         waitForStart();
 
          while (opModeIsActive()) {
@@ -42,77 +44,43 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
              FrontRight.setPower(gamepad1.right_stick_y);
              FrontLeft.setPower(gamepad1.left_stick_y);
 
+             //Strafe left
              if(gamepad1.dpad_left) {
-                 Strafe(1, DeLoreanAutomodeMain.Direction.LEFT);
+                 BackLeft.setPower(motorSpeed);
+                 BackRight.setPower(-motorSpeed);
+                 FrontLeft.setPower(-motorSpeed);
+                 FrontRight.setPower(motorSpeed);
+
              }
-             else if(gamepad1.dpad_right) {
-                 Strafe(1, DeLoreanAutomodeMain.Direction.RIGHT);
+             //Strafe right
+             if(gamepad1.dpad_right) {
+                 BackLeft.setPower(motorSpeed);
+                 BackRight.setPower(-motorSpeed);
+                 FrontLeft.setPower(-motorSpeed);
+                 FrontRight.setPower(motorSpeed);
+             }
+             //Tuck left set of wheels
+             if(gamepad2.dpad_up) {
+                 MotorWheelTuckL.setPower(0.5);
+             }
+             //Untuck left set of wheels
+             if(gamepad2.dpad_down) {
+                 MotorWheelTuckL.setPower(-0.5);
+             }
+             if(gamepad2.y) {
+                 MotorWheelTuckR.setPower(0.5);
+             }
+             if(gamepad2.a) {
+                 MotorWheelTuckR.setPower(-0.5);
              }
              else {
                  BackRight.setPower(0);
                  BackLeft.setPower(0);
                  FrontRight.setPower(0);
                  FrontLeft.setPower(0);
-                 MotorWheelR.setPower(0);
-                 MotorWheelL.setPower(0);
+                 MotorWheelTuckR.setPower(0);
+                 MotorWheelTuckL.setPower(0);
              }
          }
-    }
-    private void Strafe(double motorSpeed, DeLoreanAutomodeMain.Direction strafeDirection) {
-
-        //region Unnecessary code from AutoMode
-        //Converts degrees into ticks
-        //double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
-        /*
-        //Resets encoder values
-        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //Sets the encoders back up for accepting input
-        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        */
-        //endregion
-
-        if(strafeDirection == DeLoreanAutomodeMain.Direction.RIGHT) {
-            BackLeft.setPower(motorSpeed);
-            BackRight.setPower(-motorSpeed);
-            FrontLeft.setPower(-motorSpeed);
-            FrontRight.setPower(motorSpeed);
-        }
-
-        //Otherwise strafe left
-        else {
-            BackLeft.setPower(motorSpeed);
-            BackRight.setPower(-motorSpeed);
-            FrontLeft.setPower(-motorSpeed);
-            FrontRight.setPower(motorSpeed);
-
-        }
-
-
-
-        //region Unnecessary code from AutoMode
-
-        //This will stall until the motors are done moving forward at which point this loop is broken and thus the loop is broken and the code may proceed
-        /*
-        while (opModeIsActive() && BackLeft.isBusy() && BackRight.isBusy() && FrontLeft.isBusy() && FrontRight.isBusy()) {
-
-            idle();
-        }
-        */
-
-        /*
-        //After it has moved the desired amount brake the wheels
-        BackRight.setPower(0);
-        BackLeft.setPower(0);
-        FrontRight.setPower(0);
-        FrontLeft.setPower(0);
-        */
-        //endregion
     }
 }
