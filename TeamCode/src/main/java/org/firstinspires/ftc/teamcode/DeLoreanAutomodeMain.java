@@ -20,8 +20,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     private DcMotor BackRight;
     private DcMotor FrontLeft;
     private DcMotor FrontRight;
-    //private DcMotor WheelTuckRight;
-    //private DcMotor WheelTuckLeft;
+    private DcMotor WheelTuckRight;
+    private DcMotor WheelTuckLeft;
 
     //Declare color sensor(s) here
 
@@ -39,6 +39,9 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+        WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
+        WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+
 
         //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
         //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
@@ -57,6 +60,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Wait for start button to be pressed
         waitForStart();
 
+        Land(.5, motorSpeed);
         //Strafe function might not work: consider testing
 
         //Robot landing code (untuck wheels at different times)
@@ -175,11 +179,44 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
             idle();
         }
 
+
+
         BackRight.setPower(0);
         BackLeft.setPower(0);
         FrontRight.setPower(0);
         FrontLeft.setPower(0);
     }
+
+    private void Land(double rotations, double motorSpeedTuck){
+        double totalRotation = REV_TICK_COUNT * rotations;
+
+        WheelTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        WheelTuckRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        WheelTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        WheelTuckRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if (motorSpeedTuck < 0) {
+
+            WheelTuckLeft.setTargetPosition(-(int) totalRotation);
+            sleep(1000);
+            WheelTuckRight.setTargetPosition(-(int) totalRotation);
+        }
+
+        else{
+
+            WheelTuckLeft.setTargetPosition((int) totalRotation);
+            sleep(1000);
+            WheelTuckRight.setTargetPosition((int) totalRotation);
+        }
+
+        while (opModeIsActive() && WheelTuckLeft.isBusy()) {
+
+            idle();
+        }
+    }
+
+
 
     //region Duplicate turn function
     /*
