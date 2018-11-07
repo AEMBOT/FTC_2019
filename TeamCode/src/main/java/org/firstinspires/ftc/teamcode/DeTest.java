@@ -1,9 +1,3 @@
-/*
-Code Stolen From Will Richards by Troy Lopez for the Delorean bot.
-Still a work in progress, need more motor definitions.
-Over commented
-Made for 2019 FTC
- */
 package org.firstinspires.ftc.teamcode;
 
 
@@ -13,7 +7,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "DeloreanAutomodeMain", group = "DeLorean")
-public class DeLoreanAutomodeMain extends LinearOpMode {
+public class DeTest extends LinearOpMode {
 
     //Declares Motor Variables
     private DcMotor BackLeft;
@@ -60,38 +54,12 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Wait for start button to be pressed
         waitForStart();
 
-        //Lands! :)
-        Land(.5, motorSpeed);
-        //Strafe function might not work: consider testing....
+        Strafe(3, motorSpeed,Direction.RIGHT);
 
-        //Robot landing code (untuck wheels at different times)
+        DriveToDistance(3, motorSpeed);
 
-        Strafe(2, motorSpeed, Direction.RIGHT);
+        TurnOnTheSpot(180, motorSpeed, Direction.RIGHT);
 
-        //Drives up to left cube set
-        DriveToDistance (36, motorSpeed);
-
-        //region Sense Cubes
-        //If cube is in position 1 or 2 from left, strafe right 8
-        //If not, strafe left 8
-        //endregion
-
-        //Approaches claim site
-        DriveToDistance(20, motorSpeed);
-
-        //Drop team marker (motor run, then back)
-
-        //region Mystery Code
-        /*
-        //What does this do?
-        Strafe(15, motorSpeed, Direction.RIGHT);
-        TurnOnTheSpot(135, turnSpeed, Direction.RIGHT);
-        DriveToDistance(40, motorSpeed);
-        TurnOnTheSpot(45, turnSpeed, Direction.RIGHT);
-        DriveToDistance(25, motorSpeed);
-        TurnOnTheSpot(90, motorSpeed, Direction.LEFT);
-        */
-        //endregion
 
     }
     private void Strafe(double distance, double motorSpeed, Direction strafeDirection){
