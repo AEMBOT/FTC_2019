@@ -36,7 +36,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        double motorSpeed = 1;
+        //Declare strafeSpeed variable
         double strafeSpeed = .75;
 
         waitForStart();

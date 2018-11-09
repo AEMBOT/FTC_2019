@@ -28,7 +28,6 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
     //Number of ticks per rotation for each motor type
     private final int REV_TICK_COUNT = 560;
-    private final int LIFT_TICK_COUNT = 1120;
 
     public void runOpMode() {
 
@@ -51,16 +50,14 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         //Sets up speeds for different actions
-        //Do we need these? We never use turnSpeed or motorSpeedTuck.
         double motorSpeed = 0.75;
-        double turnSpeed = 0.75;
-        double motorSpeedTuck = .7;
+        double turnSpeed = 1;
+        double tuckSpeed = 0.75;
 
         //Wait for start button to be pressed
         waitForStart();
 
-        //Untucks wheels
-        UntuckWheels(-0.5, motorSpeed);
+        UntuckWheels(-0.5, tuckSpeed);
 
         //Strafe function was fixed (in theory)
         Strafe(2, motorSpeed, Direction.RIGHT);
@@ -69,34 +66,16 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Drives up to left cube set
         DriveToDistance (36, motorSpeed);
 
-        //region Sense Cubes-Old
-        //If cube is in position 1 or 2 from left, strafe right 8
-        //If not, strafe left 8
-        //endregion
-
-
         //Approaches claim site
         DriveToDistance(20, motorSpeed);
 
         //Drop team marker (motor run, then back)
 
-        //region Mystery Code
-        /*
-        //What does this do?
-        Strafe(15, motorSpeed, Direction.RIGHT);
-        TurnOnTheSpot(135, turnSpeed, Direction.RIGHT);
-        DriveToDistance(40, motorSpeed);
-        TurnOnTheSpot(45, turnSpeed, Direction.RIGHT);
-        DriveToDistance(25, motorSpeed);
-        TurnOnTheSpot(90, motorSpeed, Direction.LEFT);
-        */
-        //endregion
-        //endregion
-
-        //Begin new DeLorean Automode
+        //Begin new and improved DeLorean Automode
 
         //Drive to claim site and drop marker
         DriveToDistance(66, motorSpeed);
+        //Drop marker
         DriveToDistance(34, -motorSpeed);
 
         //Best range of color sensor is <2cm away from target (close)
@@ -121,7 +100,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
                 }
         }
         //Begin approach to other cube set
-        TurnOnTheSpot( 45, 1, Direction.RIGHT);
+        TurnOnTheSpot( 45, turnSpeed, Direction.RIGHT);
         DriveToDistance(45, motorSpeed);
 
         //Checks three objects for yellow and parks on edge of crater
@@ -132,19 +111,19 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Checks second object if yellow (third is automatic if 1+2 aren't yellow)
         else {
             //Face parallel to cube set
-            TurnOnTheSpot(45, 1, Direction.RIGHT);
+            TurnOnTheSpot(45, turnSpeed, Direction.RIGHT);
             //Drive up to second cube
             DriveToDistance(14.5, motorSpeed);
 
             if (SenseYellow(ColorSensor)) {
                 //pickup
-                TurnOnTheSpot(90, 1, Direction.LEFT);
+                TurnOnTheSpot(90, turnSpeed, Direction.LEFT);
                 DriveToDistance(3, motorSpeed);
             }
             else {
                 DriveToDistance(14.5, motorSpeed);
                 //pickup
-                TurnOnTheSpot(90,1, Direction.LEFT);
+                TurnOnTheSpot(90,turnSpeed, Direction.LEFT);
                 DriveToDistance(3, motorSpeed);
             }
 
@@ -166,6 +145,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        //Check which direction to strafe
         if(strafeDirection == Direction.RIGHT)
         {
             BackLeft.setTargetPosition((int)totalDistance);
@@ -189,10 +169,13 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
             FrontLeft.setPower(-motorSpeed);
             FrontRight.setPower(motorSpeed);
         }
+
         //Stalls until motors are done
         while (opModeIsActive() && BackLeft.isBusy() && BackRight.isBusy() && FrontLeft.isBusy() && FrontRight.isBusy()) {
             idle();
         }
+
+        //Brake all motors
         BackRight.setPower(0);
         BackLeft.setPower(0);
         FrontRight.setPower(0);
@@ -203,6 +186,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         final double CONVERSION_FACTOR = 5;
         double ticks = (degrees * CONVERSION_FACTOR);
 
+        //Reset encoders and make motors run to # of ticks
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -213,6 +197,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        //Check which direction to turn
         if(turnDirection == Direction.RIGHT)
         {
             BackLeft.setTargetPosition((int)ticks );
@@ -237,19 +222,20 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
             FrontRight.setPower(motorSpeed);
         }
 
+        //Wait until turning is done
         while (opModeIsActive() &&BackLeft.isBusy() && BackRight.isBusy() && FrontLeft.isBusy() && FrontRight.isBusy()) {
             idle();
         }
 
-
-
+        //Stop motors
         BackRight.setPower(0);
         BackLeft.setPower(0);
         FrontRight.setPower(0);
         FrontLeft.setPower(0);
     }
     private void UntuckWheels(double rotations, double tuckSpeed){
-        double totalRotations = REV_TICK_COUNT * rotations;
+        final int TUCK_TICK_COUNT = 1120;
+        double totalRotations = TUCK_TICK_COUNT * rotations;
 
         //Reset encoders and make motors run to # of ticks
         WheelTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -292,9 +278,10 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     }
     //Drives distance in INCHES
     private void DriveToDistance(double distance, double motorSpeed){
-        //! 1 rev is 12.566 inches !
+        //Convert inches to ticks
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
 
+        //Reset encoders and make motors run for ticks
         BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -305,6 +292,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        //Check whether to drive forward or backward
         if(motorSpeed < 0){
             BackLeft.setTargetPosition(-(int)totalDistance);
             BackRight.setTargetPosition(-(int)totalDistance);
@@ -318,36 +306,34 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
             FrontRight.setTargetPosition((int)totalDistance);
         }
 
+        //Run motors
         BackLeft.setPower(motorSpeed);
         BackRight.setPower(motorSpeed);
         FrontLeft.setPower(motorSpeed);
         FrontRight.setPower(motorSpeed);
 
+        //Wait for moving to finish
         while (opModeIsActive() &&BackLeft.isBusy() && BackRight.isBusy()) {
             idle();
         }
 
+        //Stop motors
         BackRight.setPower(0);
         BackLeft.setPower(0);
         FrontLeft.setPower(0);
         FrontRight.setPower(0);
     }
-
+    //Function to sense yellow that returns boolean
     private boolean SenseYellow(ColorSensor sensor){
-        boolean isYellow;
+        //Declare boolean isYellow and initialize it to false
+        boolean isYellow = false;
 
-        //White
-        if(sensor.blue() > 100 && sensor.red() > 100 && sensor.green() > 100){
-            isYellow = false;
-        }
-        //Yellow
-        else if(sensor.blue() < 100 && sensor.blue() > 50){
+        //Senses yellow
+        if (sensor.blue() < 100 && sensor.blue() > 50) {
             isYellow = true;
         }
-        //Invalid color
-        else {
-            isYellow = false;
-        }
+
+        //Return boolean value isYellow
         return isYellow;
     }
 }
