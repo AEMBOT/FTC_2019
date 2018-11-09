@@ -65,20 +65,20 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
              }
 
              //Tuck of wheels
-             if(gamepad2.dpad_up) {
-                 MotorWheelTuckL.setPower(1);
+             if(gamepad1.left_bumper) {
+                 MotorWheelTuckL.setPower(-.75);
                  //encoder value tells it when to reduce power to .20 to hold position
-                 sleep(1000);
-                 MotorWheelTuckR.setPower(1);
+                 sleep(2000);
+                 MotorWheelTuckR.setPower(.75);
                  //encoder value tells it when to reduce power to .20 to hold position
              }
              //Untuck wheels
-             if(gamepad2.dpad_down) {
-                 MotorWheelTuckL.setPower(-1);
+             if(gamepad1.right_bumper) {
+                 MotorWheelTuckL.setPower(.75);
                  //encoder value tells it when to reduce power to .20 to hold position
 
-                 sleep(1000);
-                 MotorWheelTuckR.setPower(-1);
+                 sleep(2000);
+                 MotorWheelTuckR.setPower(-.75);
                  //encoder value tells it when to reduce power to .20 to hold position
 
              }
