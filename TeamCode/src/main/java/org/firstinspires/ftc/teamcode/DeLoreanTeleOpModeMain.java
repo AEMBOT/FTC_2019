@@ -43,10 +43,10 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
          while (opModeIsActive()) {
              //Driving NOT strafing
-             BackRight.setPower(- gamepad1.right_stick_y);
-             BackLeft.setPower(- gamepad1.left_stick_y);
-             FrontRight.setPower(- gamepad1.right_stick_y);
-             FrontLeft.setPower(- gamepad1.left_stick_y);
+             BackRight.setPower(-gamepad1.right_stick_y);
+             BackLeft.setPower(-gamepad1.left_stick_y);
+             FrontRight.setPower(-gamepad1.right_stick_y);
+             FrontLeft.setPower(-gamepad1.left_stick_y);
 
              //Strafe left
              if(gamepad1.dpad_left) {
@@ -64,7 +64,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                  FrontRight.setPower(-strafeSpeed);
              }
 
-             //Tuck of wheels
+             //Tuck wheels into robot
              if(gamepad1.left_bumper) {
                  MotorWheelTuckL.setPower(-.75);
                  //encoder value tells it when to reduce power to .20 to hold position
@@ -77,14 +77,16 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
              if(gamepad1.right_bumper) {
                  MotorWheelTuckL.setPower(.75);
                  //encoder value tells it when to reduce power to .20 to hold position
-
                  sleep(500);
+                 MotorWheelTuckL.setPower(0.2);
                  MotorWheelTuckR.setPower(-.75);
                  sleep(500);
+                 MotorWheelTuckR.setPower(-0.2);
                  //encoder value tells it when to reduce power to .20 to hold position
 
              }
 
+             //region Removed for simplicity
              /* Removed for simplicity
              if(gamepad2.y) {
                  MotorWheelTuckR.setPower(0.5);
@@ -93,13 +95,13 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                  MotorWheelTuckR.setPower(-0.5);
              }
              */
+             //endregion
+
              else {
                  BackRight.setPower(0);
                  BackLeft.setPower(0);
                  FrontRight.setPower(0);
                  FrontLeft.setPower(0);
-                 MotorWheelTuckR.setPower(0);
-                 MotorWheelTuckL.setPower(0);
              }
          }
     }

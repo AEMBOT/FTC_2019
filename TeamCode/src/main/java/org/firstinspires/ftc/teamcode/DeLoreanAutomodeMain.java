@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "DeloreanAutomodeMain", group = "DeLorean")
+@Autonomous(name = "DeLoreanAutomodeMain", group = "DeLorean")
 public class DeLoreanAutomodeMain extends LinearOpMode {
 
     //Declares Motor Variables
@@ -21,6 +21,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     private DcMotor WheelTuckLeft;
 
     //Declare color sensor(s) here
+    private ColorSensor ColorSensor;
 
     //Used to specify direction for strafing/turning
     public enum Direction {RIGHT, LEFT}
@@ -29,7 +30,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     private final int REV_TICK_COUNT = 560;
     private final int LIFT_TICK_COUNT = 1120;
 
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
         //Initialize motors and sensors
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
@@ -39,9 +40,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
 
-        //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
-        //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
-        //May change to only 1 sensor because of height
+        //Has to be fixed (not configured on phone)
+        ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
         //Creates a local reference to VuforiaBase
         //VuforiaBase vuforiaBase = new VuforiaBase();
@@ -51,6 +51,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         //Sets up speeds for different actions
+        //Do we need these? We never use turnSpeed or motorSpeedTuck.
         double motorSpeed = 0.75;
         double turnSpeed = 0.75;
         double motorSpeedTuck = .7;
@@ -58,12 +59,13 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Wait for start button to be pressed
         waitForStart();
 
-        //Lands
-        Land(-.5, motorSpeed);
+        //Untucks wheels
+        Land(-0.5, motorSpeed);
 
-        //Strafe function doesn't work: Have mechanincal fix
+        //Strafe function was fixed (in theory)
         Strafe(2, motorSpeed, Direction.RIGHT);
 
+        //region Old DeLorean Automode
         //Drives up to left cube set
         DriveToDistance (36, motorSpeed);
 
@@ -89,47 +91,51 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         TurnOnTheSpot(90, motorSpeed, Direction.LEFT);
         */
         //endregion
+        //endregion
 
+        //Begin new DeLorean Automode
 
-        //new Delorean automode
+        //Drive to claim site and drop marker
         DriveToDistance(66, motorSpeed);
-        //Drop claim object
         DriveToDistance(34, -motorSpeed);
+
         //Check if object is the yellow cube
-        if (yellow==true) {
+        if (SenseYellow(ColorSensor)) {
             //pickup
             TurnOnTheSpot(90, 1, Direction.RIGHT);
             DriveToDistance(14.5, motorSpeed);
         }
-
         else {
             TurnOnTheSpot(90, 1, Direction.RIGHT);
             DriveToDistance(14.5, -motorSpeed);
-
-                if (yellow==true) {
+                //Checks if object on far left from the center of the maps Point ov view is yellow
+                if (SenseYellow(ColorSensor)) {
                     //pickup
                     DriveToDistance(29, motorSpeed);
                 }
-
-                else  {
+                //If not go to the far right one and pick up gold
+                else {
                     DriveToDistance(29, motorSpeed);
-                    //pickup
+                    //Pick up cube
                 }
-            }
+        }
+        //Begin approach to other cube set
         TurnOnTheSpot( 45, 1, Direction.RIGHT);
         DriveToDistance(45, motorSpeed);
 
-        // Checks second three objects for yellow and goes onto edge of hill
-        if (yellow==true) {
+        //Checks three objects for yellow and parks on edge of crater
+        if (SenseYellow(ColorSensor)) {
             //pickup
             DriveToDistance(5, motorSpeed);
         }
-
+        //Checks second object if yellow (third is automatic if 1+2 aren't yellow)
         else {
+            //Face parallel to cube set
             TurnOnTheSpot(45, 1, Direction.RIGHT);
+            //Drive up to second cube
             DriveToDistance(14.5, motorSpeed);
 
-            if (yellow==true) {
+            if (SenseYellow(ColorSensor)) {
                 //pickup
                 TurnOnTheSpot(90, 1, Direction.LEFT);
                 DriveToDistance(3, motorSpeed);
@@ -143,7 +149,6 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         }
     }
-
     private void Strafe(double distance, double motorSpeed, Direction strafeDirection){
 
         //Converts degrees into ticks

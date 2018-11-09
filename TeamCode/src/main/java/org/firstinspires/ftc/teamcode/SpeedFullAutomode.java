@@ -13,11 +13,13 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "SpeedFullAutomode", group = "Main")
+@Disabled
 public class SpeedFullAutomode extends LinearOpMode {
 
     //Variables created for the two back motors
