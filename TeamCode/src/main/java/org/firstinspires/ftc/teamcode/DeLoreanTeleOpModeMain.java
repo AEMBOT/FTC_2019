@@ -57,10 +57,10 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
              }
              //Strafe right
              if(gamepad1.dpad_right) {
-                 BackLeft.setPower(strafeSpeed);
-                 BackRight.setPower(-strafeSpeed);
-                 FrontLeft.setPower(-strafeSpeed);
-                 FrontRight.setPower(strafeSpeed);
+                 BackLeft.setPower(-strafeSpeed);
+                 BackRight.setPower(strafeSpeed);
+                 FrontLeft.setPower(strafeSpeed);
+                 FrontRight.setPower(-strafeSpeed);
              }
 
              //Tuck of wheels
