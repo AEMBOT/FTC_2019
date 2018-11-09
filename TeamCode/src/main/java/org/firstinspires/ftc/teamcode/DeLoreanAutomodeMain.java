@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "DeLoreanAutomodeMain", group = "DeLorean")
 public class DeLoreanAutomodeMain extends LinearOpMode {
@@ -19,18 +20,20 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     private DcMotor FrontRight;
     private DcMotor WheelTuckRight;
     private DcMotor WheelTuckLeft;
+    //private DcMotor ArchScrew;
+    //private DcMotor LiftScrew;
+    //private Servo IntakeServo;
 
     //Declare color sensor(s) here
     private ColorSensor ColorSensor;
 
     //Used to specify direction for strafing/turning
-    public enum Direction {RIGHT, LEFT}
+    public enum Direction {UP, DOWN, LEFT, RIGHT}
 
-    //Number of ticks per rotation for each motor type
+    //Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
 
     public void runOpMode() {
-
         //Initialize motors and sensors
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
@@ -38,6 +41,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+
+        //Also initialize
 
         //Has to be fixed (not configured on phone)
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
@@ -129,7 +134,18 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         }
     }
-    private void Strafe(double distance, double motorSpeed, Direction strafeDirection){
+    //Intake function
+    private void IntakeObject (double motorPower, double intakeTime, double rotations, Direction liftDirection) {
+        /* Function pseudocode
+         *
+         * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
+         * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
+         * Check which direction to move lift with liftDirection parameter
+         * (etc.)
+         *
+         */
+    }
+    private void Strafe (double distance, double motorSpeed, Direction strafeDirection){
 
         //Converts degrees into ticks
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance; //totalDistance is never used. Remove it?
