@@ -90,6 +90,58 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         */
         //endregion
 
+
+        //new Delorean automode
+        DriveToDistance(66, motorSpeed);
+        //Drop claim object
+        DriveToDistance(34, -motorSpeed);
+        //Check if object is the yellow cube
+        if (yellow==true) {
+            //pickup
+            TurnOnTheSpot(90, 1, Direction.RIGHT);
+            DriveToDistance(14.5, motorSpeed);
+        }
+
+        else {
+            TurnOnTheSpot(90, 1, Direction.RIGHT);
+            DriveToDistance(14.5, -motorSpeed);
+
+                if (yellow==true) {
+                    //pickup
+                    DriveToDistance(29, motorSpeed);
+                }
+
+                else  {
+                    DriveToDistance(29, motorSpeed);
+                    //pickup
+                }
+            }
+        TurnOnTheSpot( 45, 1, Direction.RIGHT);
+        DriveToDistance(45, motorSpeed);
+
+        // Checks second three objects for yellow and goes onto edge of hill
+        if (yellow==true) {
+            //pickup
+            DriveToDistance(5, motorSpeed);
+        }
+
+        else {
+            TurnOnTheSpot(45, 1, Direction.RIGHT);
+            DriveToDistance(14.5, motorSpeed);
+
+            if (yellow==true) {
+                //pickup
+                TurnOnTheSpot(90, 1, Direction.LEFT);
+                DriveToDistance(3, motorSpeed);
+            }
+            else {
+                DriveToDistance(14.5, motorSpeed);
+                //pickup
+                TurnOnTheSpot(90,1, Direction.LEFT);
+                DriveToDistance(3, motorSpeed);
+            }
+
+        }
     }
 
     private void Strafe(double distance, double motorSpeed, Direction strafeDirection){
