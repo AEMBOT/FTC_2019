@@ -60,7 +60,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         waitForStart();
 
         //Untucks wheels
-        Land(-0.5, motorSpeed);
+        UntuckWheels(-0.5, motorSpeed);
 
         //Strafe function was fixed (in theory)
         Strafe(2, motorSpeed, Direction.RIGHT);
@@ -99,6 +99,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         DriveToDistance(66, motorSpeed);
         DriveToDistance(34, -motorSpeed);
 
+        //Best range of color sensor is <2cm away from target (close)
         //Check if object is the yellow cube
         if (SenseYellow(ColorSensor)) {
             //pickup
@@ -247,83 +248,49 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontRight.setPower(0);
         FrontLeft.setPower(0);
     }
+    private void UntuckWheels(double rotations, double tuckSpeed){
+        double totalRotations = REV_TICK_COUNT * rotations;
 
-    private void Land(double rotations, double motorSpeedTuck){
-        double totalRotation = REV_TICK_COUNT * rotations;
-
+        //Reset encoders and make motors run to # of ticks
         WheelTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         WheelTuckRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         WheelTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         WheelTuckRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        if (motorSpeedTuck < 0) {
-
-            WheelTuckLeft.setTargetPosition(-(int) totalRotation);
+        //region Tucking code not necessary
+        /*
+        //Check which direction to move wheels
+        if (speedTuck < 0) {
+            WheelTuckLeft.setTargetPosition(-(int)totalRotations);
             sleep(1000);
-            WheelTuckRight.setTargetPosition(-(int) totalRotation);
+            WheelTuckRight.setTargetPosition(-(int)totalRotations);
         }
-
-        else{
-
-            WheelTuckLeft.setTargetPosition((int) totalRotation);
-            sleep(1000);
-            WheelTuckRight.setTargetPosition((int) totalRotation);
-        }
-
-        while (opModeIsActive() && WheelTuckLeft.isBusy()) {
-
-            idle();
-        }
-    }
-
-
-
-    //region Duplicate turn function
-    /*
-    private void TurnToDegrees(double degrees, double motorSpeed, Direction turnDirection){
-        //Converts degrees into ticks
-        final double CONVERSION_FACTOR = 2.5;
-        double ticks = (degrees * CONVERSION_FACTOR);
-        sleep(100);
-        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(turnDirection == Direction.LEFT) {
-            BackLeft.setTargetPosition((int)ticks);
-            BackRight.setTargetPosition(-(int)ticks);
-            FrontLeft.setTargetPosition((int)ticks);
-            FrontRight.setTargetPosition(-(int)ticks);
-            //It then sets the power of the motors accordingly to turn the robot to the right
-            BackLeft.setPower(motorSpeed);
-            BackRight.setPower(-motorSpeed);
-        }
-        //If false turn left
         else {
-            //Sets the number of ticks the motor needs to turn left
-            BackLeft.setTargetPosition(-(int)ticks);
-            BackRight.setTargetPosition((int)ticks);
-            //It then sets the power of the motors to turn left
-            BackLeft.setPower(-motorSpeed);
-            BackRight.setPower(motorSpeed);
+            WheelTuckLeft.setTargetPosition((int)totalRotations);
+            sleep(1000);
+            WheelTuckRight.setTargetPosition((int)totalRotations);
         }
-        //This will stall until the motors are done moving forward at which point this loop is broken and the code may proceed
-        while (opModeIsActive() && BackLeft.isBusy() && BackRight.isBusy()) {
+        */
+        //endregion
+
+        //Define target position and run motors
+        WheelTuckLeft.setTargetPosition((int)totalRotations);
+        WheelTuckRight.setTargetPosition(-(int)totalRotations);
+
+        WheelTuckLeft.setPower(tuckSpeed);
+        WheelTuckRight.setPower(-tuckSpeed);
+
+        //Wait until wheels finish tucking
+        while (opModeIsActive() && WheelTuckLeft.isBusy()) {
             idle();
         }
-        //After it has moved the desired amount brake the wheels
-        BackRight.setPower(0);
-        BackLeft.setPower(0);
-    }
-    */
-    //endregion
 
-    //This method can be called when you want the robot to drive a certain distance in INCHES at a certain speed
+        //Keep wheels down and don't let robot collapse
+        WheelTuckLeft.setPower(0.2);
+        WheelTuckRight.setPower(-0.2);
+    }
+    //Drives distance in INCHES
     private void DriveToDistance(double distance, double motorSpeed){
         //! 1 rev is 12.566 inches !
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
@@ -378,10 +345,9 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
             isYellow = true;
         }
         //Invalid color
-        else{
+        else {
             isYellow = false;
         }
         return isYellow;
     }
-    //Lift function here
 }
