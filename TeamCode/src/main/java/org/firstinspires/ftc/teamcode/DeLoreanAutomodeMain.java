@@ -86,50 +86,47 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Best range of color sensor is <2cm away from target (close)
         //Check if object is the yellow cube
         if (SenseYellow(ColorSensor)) {
-            //pickup
+            //Hit it
             TurnOnTheSpot(90, 1, Direction.RIGHT);
             DriveToDistance(14.5, motorSpeed);
         }
         else {
-            TurnOnTheSpot(90, 1, Direction.RIGHT);
-            DriveToDistance(14.5, -motorSpeed);
+            Strafe(14.5,motorSpeed,Direction.LEFT);
+
             //Checks if object on far left from the center of the maps Point ov view is yellow
             if (SenseYellow(ColorSensor)) {
                 //pickup
-                DriveToDistance(29, motorSpeed);
             }
             //If not go to the far right one and pick up gold
             else {
-                DriveToDistance(29, motorSpeed);
+               Strafe(29,motorSpeed,Direction.RIGHT);
                 //Pick up cube
             }
         }
+
         //Begin approach to other cube set
-        TurnOnTheSpot( 45, turnSpeed, Direction.RIGHT);
-        DriveToDistance(45, motorSpeed);
+        TurnOnTheSpot( 90, turnSpeed, Direction.RIGHT);
+        DriveToDistance(30, motorSpeed);
 
         //Checks three objects for yellow and parks on edge of crater
+        Strafe(20,motorSpeed,Direction.RIGHT);
         if (SenseYellow(ColorSensor)) {
             //pickup
             DriveToDistance(5, motorSpeed);
         }
         //Checks second object if yellow (third is automatic if 1+2 aren't yellow)
         else {
-            //Face parallel to cube set
-            TurnOnTheSpot(45, turnSpeed, Direction.RIGHT);
-            //Drive up to second cube
-            DriveToDistance(14.5, motorSpeed);
+
+            Strafe(motorSpeed,14.5,Direction.RIGHT);
 
             if (SenseYellow(ColorSensor)) {
                 //pickup
-                TurnOnTheSpot(90, turnSpeed, Direction.LEFT);
-                DriveToDistance(3, motorSpeed);
+                DriveToDistance(5, motorSpeed);
             }
             else {
-                DriveToDistance(14.5, motorSpeed);
+                Strafe(14.5, motorSpeed, Direction.RIGHT);
                 //pickup
-                TurnOnTheSpot(90,turnSpeed, Direction.LEFT);
-                DriveToDistance(3, motorSpeed);
+                DriveToDistance(5, motorSpeed);
             }
 
         }
