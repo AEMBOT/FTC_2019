@@ -42,7 +42,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
 
-        //Also initialize
+        //Also initialize intake servos and motors
 
         //Has to be fixed (not configured on phone)
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
@@ -93,16 +93,16 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         else {
             TurnOnTheSpot(90, 1, Direction.RIGHT);
             DriveToDistance(14.5, -motorSpeed);
-                //Checks if object on far left from the center of the maps Point ov view is yellow
-                if (SenseYellow(ColorSensor)) {
-                    //pickup
-                    DriveToDistance(29, motorSpeed);
-                }
-                //If not go to the far right one and pick up gold
-                else {
-                    DriveToDistance(29, motorSpeed);
-                    //Pick up cube
-                }
+            //Checks if object on far left from the center of the maps Point ov view is yellow
+            if (SenseYellow(ColorSensor)) {
+                //pickup
+                DriveToDistance(29, motorSpeed);
+            }
+            //If not go to the far right one and pick up gold
+            else {
+                DriveToDistance(29, motorSpeed);
+                //Pick up cube
+            }
         }
         //Begin approach to other cube set
         TurnOnTheSpot( 45, turnSpeed, Direction.RIGHT);
@@ -139,10 +139,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         /* Function pseudocode
          *
          * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
-         * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
          * Check which direction to move lift with liftDirection parameter
-         * (etc.)
-         *
+         * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
          */
     }
     private void Strafe (double distance, double motorSpeed, Direction strafeDirection){
@@ -329,7 +327,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontRight.setPower(motorSpeed);
 
         //Wait for moving to finish
-        while (opModeIsActive() &&BackLeft.isBusy() && BackRight.isBusy()) {
+        while (opModeIsActive() && BackLeft.isBusy() && BackRight.isBusy()) {
             idle();
         }
 

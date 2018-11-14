@@ -16,12 +16,14 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     private DcMotor MotorWheelTuckL;
 
     //Declare any other motors (servos, etc.)
+    private Servo intakeServo;
 
     //Declare sensors
     //private ColorSensor ColorSensorR;
     //private ColorSensor ColorSensorL;
 
     public void runOpMode() {
+        //Motor
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
@@ -29,6 +31,10 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         MotorWheelTuckL = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         MotorWheelTuckR = hardwareMap.get(DcMotor.class, "WheelTuckRight");
 
+       //Servo
+        intakeServo = hardwareMap.get(Servo.class, "Sweeper");
+
+        //Sensors
         //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
         //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
 
@@ -38,6 +44,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
         //Declare strafeSpeed variable
         double strafeSpeed = .75;
+        boolean isServoRunning = true;
 
         waitForStart();
 
@@ -85,6 +92,32 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                  //encoder value tells it when to reduce power to .20 to hold position
 
              }
+
+             //When A is pressed toggle servo running and stopping
+             if(gamepad2.a){
+                 isServoRunning = !isServoRunning;
+
+                 if(isServoRunning){
+                     intakeServo.setPosition(1);
+                 }
+                 else{
+                     intakeServo.setPosition(0.5);
+                 }
+             }
+
+             /*
+              if(gamepad2.a){
+                isServoRunning = !isServoRunning;
+
+                 if(isServoRunning){
+                     intakeServo.setPosition(1);
+                 }
+                 else{
+                     intakeServo.setPosition(0);
+                 }
+             }
+             */
+
 
              //region Removed for simplicity
              /* Removed for simplicity
