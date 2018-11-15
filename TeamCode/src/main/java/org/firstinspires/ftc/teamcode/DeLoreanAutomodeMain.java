@@ -1,6 +1,6 @@
 /*
-Code Stolen From Will Richards by Troy Lopez for the Delorean bot.
-Made for 2019 FTC
+Code Stolen From Will Richards by Troy Lopez for the DeLorean robot.
+Made for 2019 FTC Rover Ruckus
  */
 package org.firstinspires.ftc.teamcode;
 
@@ -63,15 +63,15 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         double turnSpeed = 1;
         double tuckSpeed = 0.75;
 
-        //region OLD CODE
+        //region OLD CODE FOR HISTORICAL PURPOSES
         /*
-        //Wait for start button to be pressed
-        waitForStart();
+         //Wait for start button to be pressed
+         waitForStart();
 
-        UntuckWheels(0.5, tuckSpeed);
+         UntuckWheels(0.5, tuckSpeed);
 
-        //Strafe function was fixed (in theory)
-        Strafe(2, motorSpeed, Direction.RIGHT);
+         //Strafe function was fixed (in theory)
+         Strafe(2, motorSpeed, Direction.RIGHT);
 
         DriveToDistance(36, motorSpeed);
 
@@ -147,6 +147,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         TurnOnTheSpot(130, motorSpeed, Direction.LEFT);
         DriveToDistance(21, motorSpeed);
 
+        //And so it begins.. The start of the 1st set of sampling code. No matter what, the robot will end in the same spot.
         if (SenseYellow(ColorSensor)){
             //Picks up shape here
             //Drives out of the way
@@ -178,6 +179,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
                 //Drive to mutual endpoint
                 TurnOnTheSpot(40,motorSpeed,Direction.RIGHT);
                 DriveToDistance(37, motorSpeed);
+
+                //From Here we need to check the second set, then park
             }
         }
     }
