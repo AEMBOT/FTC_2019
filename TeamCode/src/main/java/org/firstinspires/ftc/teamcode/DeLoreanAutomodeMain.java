@@ -25,6 +25,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     //private DcMotor ArchScrew;
     //private DcMotor LiftScrew;
     //private Servo IntakeServo;
+    private Servo IntakeServo;
 
     //Declare color sensor(s) here
     private ColorSensor ColorSensor;
@@ -45,6 +46,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        IntakeServo = hardwareMap.get(Servo.class, "Sweeper");
 
         //Also initialize intake servos and motors
 
@@ -189,7 +191,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     //Intake function
     private void IntakeObject (double motorPower, double intakeTime, double rotations, Direction liftDirection) {
         /* Function pseudocode
-         *
+
          * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
          * Check which direction to move lift with liftDirection parameter
          * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
