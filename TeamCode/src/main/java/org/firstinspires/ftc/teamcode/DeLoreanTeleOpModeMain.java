@@ -14,6 +14,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     private DcMotor FrontRight;
     private DcMotor MotorWheelTuckR;
     private DcMotor MotorWheelTuckL;
+    private Servo Flipper;
 
     //Declare any other motors (servos, etc.)
     private Servo intakeServo;
@@ -32,8 +33,8 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         MotorWheelTuckR = hardwareMap.get(DcMotor.class, "WheelTuckRight");
 
        //Servo
-        intakeServo = hardwareMap.get(Servo.class, "Sweeper");
-
+        //intakeServo = hardwareMap.get(Servo.class, "Sweeper");
+        Flipper = hardwareMap.get(Servo.class, "Flipper" );
         //Sensors
         //ColorSensorR = hardwareMap.get(ColorSensor.class, "ColorSensorR");
         //ColorSensorL = hardwareMap.get(ColorSensor.class, "ColorSensorL");
@@ -94,7 +95,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
              }
 
              //When A is pressed toggle servo running and stopping
-             if(gamepad2.a){
+            /* if(gamepad2.a){
                  isServoRunning = !isServoRunning;
 
                  if(isServoRunning){
@@ -104,7 +105,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                      intakeServo.setPosition(0.5);
                  }
              }
-
+            */
              /*
               if(gamepad2.a){
                 isServoRunning = !isServoRunning;
