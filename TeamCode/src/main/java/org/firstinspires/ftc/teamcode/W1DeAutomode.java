@@ -265,6 +265,8 @@ public class W1DeAutomode extends LinearOpMode {
         //Keep wheels down and don't let robot collapse
         WheelTuckLeft.setPower(0.2);
         WheelTuckRight.setPower(-0.2);
+
+        //ignore me
     }
 
     //Drives distance in INCHES
