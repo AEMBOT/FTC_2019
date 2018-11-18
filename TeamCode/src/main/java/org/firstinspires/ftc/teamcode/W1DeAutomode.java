@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "DeLoreanAutomodeMain", group = "DeLorean")
+@Autonomous(name = "W1DeAutoMode", group = "DeLorean")
 public class W1DeAutomode extends LinearOpMode {
 
     //Declares Motor Variables
@@ -23,16 +23,14 @@ public class W1DeAutomode extends LinearOpMode {
     //private DcMotor ArchScrew;
     //private DcMotor LiftScrew;
     //private Servo IntakeServo;
-    // private Sweeper SweeperServo
+    //private Sweeper SweeperServo
     private Servo Flipper;
 
     //Declare color sensor(s) here
     private ColorSensor ColorSensor;
 
     //Used to specify direction for strafing/turning
-    public enum Direction {
-        UP, DOWN, LEFT, RIGHT
-    }
+    public enum Direction {UP, DOWN, LEFT, RIGHT}
 
     //Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
@@ -62,7 +60,7 @@ public class W1DeAutomode extends LinearOpMode {
         //Sets up speeds for different actions
         double motorSpeed = 0.75;
         double turnSpeed = 1;
-        double tuckSpeed = 0.75;
+        double tuckSpeed = 1;
 
         //Wait for start button to be pressed
         waitForStart();
@@ -70,22 +68,27 @@ public class W1DeAutomode extends LinearOpMode {
         UntuckWheels(-0.5, tuckSpeed);
 
         //Sets arm to proper height
-        Flipper.setPosition(.5);
+        Flipper.setPosition(0.4);
 
         //Strafe function was fixed (in theory)
-        Strafe(2, motorSpeed, Direction.LEFT);
+        //Strafe(2, motorSpeed, Direction.LEFT);
+        DriveToDistance(2, -motorSpeed);
 
         //Lines up with first shape
-        TurnOnTheSpot(20, motorSpeed, Direction.LEFT);
+        TurnOnTheSpot(90, motorSpeed, Direction.LEFT);
 
+        /*
         //Approaches first shape
         DriveToDistance(35.5, motorSpeed);
 
         //intake code?
+
         if ((SenseYellow(ColorSensor))) {
             //Pickup-move cube
-            //IntakeServo.setPosition(.8);
-           }
+            ///Flipper.setPosition(.8);
+        }
+
+
 
         //Aligns with claim site
         TurnOnTheSpot(40, motorSpeed, Direction.RIGHT);
@@ -95,25 +98,31 @@ public class W1DeAutomode extends LinearOpMode {
         TurnOnTheSpot(145, motorSpeed, Direction.RIGHT);
         DriveToDistance(25.5, motorSpeed);
 
+
+
         if ((SenseYellow(ColorSensor))) {
             //Pickup-move cube
             Flipper.setPosition(.8);
             Flipper.setPosition(.5);
         }
 
-        //Third cube set
+
+        //Third cube
         TurnOnTheSpot(85, motorSpeed, Direction.LEFT);
         DriveToDistance(15, motorSpeed);
 
+
         if ((SenseYellow(ColorSensor))) {
             //Pickup-move cube
             Flipper.setPosition(.8);
             Flipper.setPosition(.5);
         }
+
 
         //Second set
         TurnOnTheSpot(45, motorSpeed, Direction.RIGHT);
         DriveToDistance(48.5, motorSpeed);
+
 
         //Last mineral
         if ((SenseYellow(ColorSensor))) {
@@ -122,9 +131,12 @@ public class W1DeAutomode extends LinearOpMode {
             Flipper.setPosition(.5);
         }
 
+
+
         //Parks
-        Strafe(6, motorSpeed, Direction.LEFT);
+        Strafe(6, motorSpeed, Direction.LEFT); //TODO: DON'T STRAFE!
         DriveToDistance(10, motorSpeed);
+        */
     }
 
     //Intake function
@@ -243,6 +255,12 @@ public class W1DeAutomode extends LinearOpMode {
         final int TUCK_TICK_COUNT = 1120;
         double totalRotations = TUCK_TICK_COUNT * rotations;
 
+        //Move one wheel set out of the way to make room for other
+        WheelTuckLeft.setPower(-0.2);
+        sleep(2000);
+
+        //region Encoder code
+        /*
         //Reset encoders and make motors run to # of ticks
         WheelTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         WheelTuckRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -253,9 +271,22 @@ public class W1DeAutomode extends LinearOpMode {
         //Define target position and run motors
         WheelTuckLeft.setTargetPosition((int) totalRotations);
         WheelTuckRight.setTargetPosition(-(int) totalRotations);
+        */
+        //endregion
 
-        WheelTuckLeft.setPower(tuckSpeed);
+        BackRight.setPower(0.5);
+        FrontRight.setPower(-0.5);
+        BackLeft.setPower(0.5);
+        FrontLeft.setPower(-0.5);
+
+        //Move wheels onto mat
         WheelTuckRight.setPower(-tuckSpeed);
+        sleep(1000);
+        WheelTuckRight.setPower(-0.2);
+        WheelTuckLeft.setPower(tuckSpeed);
+        sleep(1000);
+        WheelTuckLeft.setPower(0.2);
+
 
         //Wait until wheels finish tucking
         while (opModeIsActive() && WheelTuckLeft.isBusy()) {
@@ -266,7 +297,6 @@ public class W1DeAutomode extends LinearOpMode {
         WheelTuckLeft.setPower(0.2);
         WheelTuckRight.setPower(-0.2);
 
-        //ignore me
     }
 
     //Drives distance in INCHES
