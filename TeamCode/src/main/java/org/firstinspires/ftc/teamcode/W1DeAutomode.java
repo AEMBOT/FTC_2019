@@ -65,7 +65,7 @@ public class W1DeAutomode extends LinearOpMode {
         //Wait for start button to be pressed
         waitForStart();
 
-        UntuckWheels(-0.5, tuckSpeed);
+        UntuckWheels(0.5, tuckSpeed);
 
         //Sets arm to proper height
         Flipper.setPosition(0.4);
@@ -76,67 +76,6 @@ public class W1DeAutomode extends LinearOpMode {
 
         //Lines up with first shape
         TurnOnTheSpot(90, motorSpeed, Direction.LEFT);
-
-        /*
-        //Approaches first shape
-        DriveToDistance(35.5, motorSpeed);
-
-        //intake code?
-
-        if ((SenseYellow(ColorSensor))) {
-            //Pickup-move cube
-            ///Flipper.setPosition(.8);
-        }
-
-
-
-        //Aligns with claim site
-        TurnOnTheSpot(40, motorSpeed, Direction.RIGHT);
-        DriveToDistance(28, motorSpeed);
-
-        //aligns with second shape
-        TurnOnTheSpot(145, motorSpeed, Direction.RIGHT);
-        DriveToDistance(25.5, motorSpeed);
-
-
-
-        if ((SenseYellow(ColorSensor))) {
-            //Pickup-move cube
-            Flipper.setPosition(.8);
-            Flipper.setPosition(.5);
-        }
-
-
-        //Third cube
-        TurnOnTheSpot(85, motorSpeed, Direction.LEFT);
-        DriveToDistance(15, motorSpeed);
-
-
-        if ((SenseYellow(ColorSensor))) {
-            //Pickup-move cube
-            Flipper.setPosition(.8);
-            Flipper.setPosition(.5);
-        }
-
-
-        //Second set
-        TurnOnTheSpot(45, motorSpeed, Direction.RIGHT);
-        DriveToDistance(48.5, motorSpeed);
-
-
-        //Last mineral
-        if ((SenseYellow(ColorSensor))) {
-            //Pickup-move cube
-            Flipper.setPosition(.8);
-            Flipper.setPosition(.5);
-        }
-
-
-
-        //Parks
-        Strafe(6, motorSpeed, Direction.LEFT); //TODO: DON'T STRAFE!
-        DriveToDistance(10, motorSpeed);
-        */
     }
 
     //Intake function
@@ -251,33 +190,33 @@ public class W1DeAutomode extends LinearOpMode {
         FrontLeft.setPower(0);
     }
 
-    private void UntuckWheels(double rotations, double tuckSpeed) {
+    private void UntuckWheels (double rotationDegrees, double tuckSpeed) {
+        //Converts degrees of rotation to ticks
         final int TUCK_TICK_COUNT = 1120;
-        double totalRotations = TUCK_TICK_COUNT * rotations;
+        int ticks = (int)Math.round((rotationDegrees / 360) * TUCK_TICK_COUNT);
+        //Converts degrees of rotation to ticks (for original movement)
+        int prepareTicks = (int)Math.round((90 / 360) * TUCK_TICK_COUNT);
 
-        //Move one wheel set out of the way to make room for other
-        WheelTuckLeft.setPower(-0.2);
-        sleep(2000);
-
-        //region Encoder code
-        /*
-        //Reset encoders and make motors run to # of ticks
+        //Reset encoders and run to position
         WheelTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         WheelTuckRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         WheelTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         WheelTuckRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        //Define target position and run motors
-        WheelTuckLeft.setTargetPosition((int) totalRotations);
-        WheelTuckRight.setTargetPosition(-(int) totalRotations);
-        */
-        //endregion
+        //Move one wheel set out of the way to make room for other
+        WheelTuckLeft.setTargetPosition(ticks);
+        WheelTuckLeft.setPower(-0.2);
+        sleep(2000);
 
+
+        //Strafe code
+        /*
         BackRight.setPower(0.5);
         FrontRight.setPower(-0.5);
         BackLeft.setPower(0.5);
         FrontLeft.setPower(-0.5);
+        */
 
         //Move wheels onto mat
         WheelTuckRight.setPower(-tuckSpeed);
@@ -289,9 +228,11 @@ public class W1DeAutomode extends LinearOpMode {
 
 
         //Wait until wheels finish tucking
+        /*
         while (opModeIsActive() && WheelTuckLeft.isBusy()) {
             idle();
         }
+        */
 
         //Keep wheels down and don't let robot collapse
         WheelTuckLeft.setPower(0.2);
