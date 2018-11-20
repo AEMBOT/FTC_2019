@@ -138,16 +138,16 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         waitForStart();
 
-        UntuckWheels(1,2,tuckSpeed,strafeSpeed);
+        //UntuckWheels(1,2,tuckSpeed,strafeSpeed);
 
         //Sets arm to proper height
         Flipper.setPosition(.5);
 
         //Strafe function was fixed (in theory)
-        Strafe(2, motorSpeed, Direction.LEFT);
+        //Strafe(2, motorSpeed, Direction.LEFT);
 
         //Lines up with first shape
-        TurnOnTheSpot(20, motorSpeed, Direction.LEFT);
+        TurnOnTheSpot(20, motorSpeed, Direction.RIGHT);
 
         //Approaches first shape
         DriveToDistance(35.5, motorSpeed);

@@ -18,7 +18,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
     //Declare any other motors (servos, etc.)
     private Servo intakeServo;
-    private Servo Flipper;
+    //private Servo Flipper;
 
     //Declare sensors
     //private ColorSensor ColorSensorR;
