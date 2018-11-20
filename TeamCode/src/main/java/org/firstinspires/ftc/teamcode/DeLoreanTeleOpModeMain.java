@@ -18,6 +18,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
     //Declare any other motors (servos, etc.)
     private Servo intakeServo;
+    private Servo Flipper;
 
     //Declare sensors
     //private ColorSensor ColorSensorR;
@@ -124,10 +125,10 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                  isServoRunning = !isServoRunning;
 
                  if(isServoRunning){
-                     intakeServo.setPosition(1);
+                     Flipper.setPosition(1);
                  }
                  else{
-                     intakeServo.setPosition(0.5);
+                     Flipper.setPosition(0.5);
                  }
              }
              */

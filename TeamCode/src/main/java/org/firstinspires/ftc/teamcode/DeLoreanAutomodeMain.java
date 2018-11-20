@@ -1,8 +1,10 @@
 /*
-Code Stolen From Will Richards by Troy Lopez for the Delorean bot.
-Made for 2019 FTC
+Code Stolen From Will Richards by Troy Lopez for the DeLorean robot.
+Made for 2019 FTC Rover Ruckus
  */
 package org.firstinspires.ftc.teamcode;
+
+import android.drm.DrmStore;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -23,12 +25,15 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     //private DcMotor ArchScrew;
     //private DcMotor LiftScrew;
     //private Servo IntakeServo;
+    private Servo IntakeServo;
 
     //Declare color sensor(s) here
     private ColorSensor ColorSensor;
 
     //Used to specify direction for strafing/turning
-    public enum Direction {UP, DOWN, LEFT, RIGHT}
+    public enum Direction {
+        UP, DOWN, LEFT, RIGHT
+    }
 
     //Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
@@ -41,6 +46,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        IntakeServo = hardwareMap.get(Servo.class, "Sweeper");
 
         //Also initialize intake servos and motors
 
@@ -59,85 +65,133 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         double turnSpeed = 1;
         double tuckSpeed = 0.75;
 
-        //Wait for start button to be pressed
-        waitForStart();
+        //region OLD CODE FOR HISTORICAL PURPOSES
+        /*
+         //Wait for start button to be pressed
+         waitForStart();
 
-        UntuckWheels(-0.5, tuckSpeed);
+         UntuckWheels(0.5, tuckSpeed);
 
-        //Strafe function was fixed (in theory)
-        Strafe(2, motorSpeed, Direction.RIGHT);
+         //Strafe function was fixed (in theory)
+         Strafe(2, motorSpeed, Direction.RIGHT);
 
-        //region Old DeLorean Automode
-        //Drives up to left cube set
-        DriveToDistance (36, motorSpeed);
+        DriveToDistance(36, motorSpeed);
 
         //Approaches claim site
         DriveToDistance(20, motorSpeed);
 
-        //Drop team marker (motor run, then back)
-
-        //Begin new and improved DeLorean Automode
-
-        //Drive to claim site and drop marker
         DriveToDistance(66, motorSpeed);
         //Drop marker
         DriveToDistance(34, -motorSpeed);
 
-        //Best range of color sensor is <2cm away from target (close)
-        //Check if object is the yellow cube
+        */
+        //region Old Sampling Code
+        /*
         if (SenseYellow(ColorSensor)) {
-            //pickup
+            //Hit it
             TurnOnTheSpot(90, 1, Direction.RIGHT);
             DriveToDistance(14.5, motorSpeed);
         }
         else {
-            TurnOnTheSpot(90, 1, Direction.RIGHT);
-            DriveToDistance(14.5, -motorSpeed);
+            Strafe(14.5,motorSpeed,Direction.LEFT);
+
             //Checks if object on far left from the center of the maps Point ov view is yellow
             if (SenseYellow(ColorSensor)) {
                 //pickup
-                DriveToDistance(29, motorSpeed);
             }
             //If not go to the far right one and pick up gold
             else {
-                DriveToDistance(29, motorSpeed);
+               Strafe(29,motorSpeed,Direction.RIGHT);
                 //Pick up cube
             }
         }
+
         //Begin approach to other cube set
-        TurnOnTheSpot( 45, turnSpeed, Direction.RIGHT);
-        DriveToDistance(45, motorSpeed);
+        TurnOnTheSpot( 90, turnSpeed, Direction.RIGHT);
+        DriveToDistance(30, motorSpeed);
 
         //Checks three objects for yellow and parks on edge of crater
+        Strafe(20,motorSpeed,Direction.RIGHT);
         if (SenseYellow(ColorSensor)) {
             //pickup
             DriveToDistance(5, motorSpeed);
         }
         //Checks second object if yellow (third is automatic if 1+2 aren't yellow)
         else {
-            //Face parallel to cube set
-            TurnOnTheSpot(45, turnSpeed, Direction.RIGHT);
-            //Drive up to second cube
-            DriveToDistance(14.5, motorSpeed);
+
+            Strafe(motorSpeed,14.5,Direction.RIGHT);
 
             if (SenseYellow(ColorSensor)) {
                 //pickup
-                TurnOnTheSpot(90, turnSpeed, Direction.LEFT);
-                DriveToDistance(3, motorSpeed);
+                DriveToDistance(5, motorSpeed);
             }
             else {
-                DriveToDistance(14.5, motorSpeed);
+                Strafe(14.5, motorSpeed, Direction.RIGHT);
                 //pickup
-                TurnOnTheSpot(90,turnSpeed, Direction.LEFT);
-                DriveToDistance(3, motorSpeed);
+                DriveToDistance(5, motorSpeed);
             }
+            */
+        //endregion
 
+        //endregion
+
+        waitForStart();
+
+        UntuckWheels(.5, motorSpeed);
+
+        //Unhooks from lander
+        Strafe(2,motorSpeed,Direction.LEFT);
+
+        //Drives to Claim Site
+        DriveToDistance(50, motorSpeed);
+
+        //Re-orients itself, and drives towards first shape
+        TurnOnTheSpot(130, motorSpeed, Direction.LEFT);
+        DriveToDistance(21, motorSpeed);
+
+        //And so it begins.. The start of the 1st set of sampling code. No matter what, the robot will end in the same spot.
+        if (SenseYellow(ColorSensor)){
+            //Picks up shape here
+            //Drives out of the way
+            DriveToDistance(13, motorSpeed);
+
+            //Turns toward mutual end point for phase 1 (First Cube Set)
+            TurnOnTheSpot(95, motorSpeed, Direction.LEFT);
+            DriveToDistance(72, motorSpeed);
+        }
+        else {
+            //Backs up to drive 2 second shape
+            DriveToDistance(6, -motorSpeed);
+            TurnOnTheSpot(86, motorSpeed, Direction.LEFT);
+            DriveToDistance(12, motorSpeed);
+
+            //Senses for yellow
+            if (SenseYellow(ColorSensor)){
+                //Pick it up here
+                //Re-orients and moves to mutual end point
+                TurnOnTheSpot(8, motorSpeed, Direction.LEFT);
+                DriveToDistance(49, motorSpeed);
+            }
+            else{
+                //Re-orients with last shape
+                DriveToDistance(6, -motorSpeed);
+                TurnOnTheSpot(125, motorSpeed, Direction.LEFT);
+                DriveToDistance(25, motorSpeed);
+                //Pick up cube here
+                //Drive to mutual endpoint
+                TurnOnTheSpot(40,motorSpeed,Direction.RIGHT);
+                DriveToDistance(37, motorSpeed);
+
+                //From Here we need to check the second set, then park
+            }
         }
     }
+
+
     //Intake function
     private void IntakeObject (double motorPower, double intakeTime, double rotations, Direction liftDirection) {
         /* Function pseudocode
-         *
+
          * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
          * Check which direction to move lift with liftDirection parameter
          * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
