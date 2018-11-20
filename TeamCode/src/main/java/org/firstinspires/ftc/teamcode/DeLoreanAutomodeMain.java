@@ -25,6 +25,8 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     //private DcMotor ArchScrew;
     //private DcMotor LiftScrew;
     //private Servo IntakeServo;
+
+    //Declare Servos
     private Servo Flipper;
 
     //Declare color sensor(s) here
@@ -46,9 +48,9 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
-        Flipper = hardwareMap.get(Servo.class, "Flipper");
 
         //Also initialize intake servos and motors
+        Flipper = hardwareMap.get(Servo.class, "Flipper");
 
         //Has to be fixed (not configured on phone)
         ColorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
@@ -136,53 +138,55 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         //endregion
 
+        //This is self explanatory
         waitForStart();
 
-        //UntuckWheels(1,2,tuckSpeed,strafeSpeed);
+        UntuckWheels(1,2,tuckSpeed,strafeSpeed);
 
         //Sets arm to proper height
-        Flipper.setPosition(.5);
+        Flipper.setPosition(0.5);
 
-        //Strafe function was fixed (in theory)
-        //Strafe(2, motorSpeed, Direction.LEFT);
+        //Gets off lander
+        DriveToDistance(2,motorSpeed);
 
         //Lines up with first shape
-        TurnOnTheSpot(20, motorSpeed, Direction.RIGHT);
+        TurnOnTheSpot(70, motorSpeed, Direction.RIGHT);
 
-        //Approaches first shape
+        //Approaches first shape, then tests it
         DriveToDistance(35.5, motorSpeed);
 
-        //intake code?
         if ((SenseYellow(ColorSensor))) {
             //Pickup-move cube
             //IntakeServo.setPosition(.8);
+            Flipper.setPosition(.8);
         }
-        //
-        //Aligns with claim site
+
+        //Aligns with claim site and claims
         TurnOnTheSpot(40, motorSpeed, Direction.RIGHT);
         DriveToDistance(28, motorSpeed);
+        //Claim here
 
-        //aligns with second shape
+        //Aligns with second mineral
         TurnOnTheSpot(145, motorSpeed, Direction.RIGHT);
         DriveToDistance(25.5, motorSpeed);
 
         if ((SenseYellow(ColorSensor))) {
             //Pickup-move cube
-            Flipper.setPosition(.8);
-            Flipper.setPosition(.5);
+            Flipper.setPosition(0.8);
+            Flipper.setPosition(0.5);
         }
 
-        //Third cube set
+        //Third Mineral
         TurnOnTheSpot(85, motorSpeed, Direction.LEFT);
         DriveToDistance(15, motorSpeed);
 
         if ((SenseYellow(ColorSensor))) {
             //Pickup-move cube
-            Flipper.setPosition(.8);
-            Flipper.setPosition(.5);
+            Flipper.setPosition(0.8);
+            Flipper.setPosition(0.5);
         }
 
-        //Second set
+        //Second set, first mineral
         TurnOnTheSpot(45, motorSpeed, Direction.RIGHT);
         DriveToDistance(48.5, motorSpeed);
 
@@ -194,10 +198,14 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         }
 
         //Parks
-        Strafe(6, motorSpeed, Direction.LEFT);
+        TurnOnTheSpot(90, motorSpeed, Direction.LEFT);
+        DriveToDistance(4, motorSpeed);
+        TurnOnTheSpot(90, motorSpeed, Direction.RIGHT);
         DriveToDistance(10, motorSpeed);
     }
 
+
+    //region Old Intake
     //Intake function
     //private void IntakeObject(double motorPower, double intakeTime, double rotations, Direction liftDirection) {
         /* Function pseudocode
@@ -211,6 +219,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
 
 
+    /*
     //Intake function
     private void IntakeObject (double motorPower, double intakeTime, double rotations, Direction liftDirection) {
         /* Function pseudocode
@@ -218,8 +227,11 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
          * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
          * Check which direction to move lift with liftDirection parameter
          * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
-         */
+         *
     }
+    */
+   //endregion
+
     private void Strafe (double distance, double motorSpeed, Direction strafeDirection){
 
         //Converts degrees into ticks
@@ -271,7 +283,9 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         BackLeft.setPower(0);
         FrontRight.setPower(0);
         FrontLeft.setPower(0);
+
     }
+
     private void TurnOnTheSpot(double degrees, double motorSpeed, Direction turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 5;
