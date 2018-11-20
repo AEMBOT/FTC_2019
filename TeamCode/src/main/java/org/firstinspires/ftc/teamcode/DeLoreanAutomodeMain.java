@@ -25,7 +25,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
     //private DcMotor ArchScrew;
     //private DcMotor LiftScrew;
     //private Servo IntakeServo;
-    private Servo IntakeServo;
+    private Servo Flipper;
 
     //Declare color sensor(s) here
     private ColorSensor ColorSensor;
@@ -46,7 +46,7 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         WheelTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         WheelTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
-        IntakeServo = hardwareMap.get(Servo.class, "Sweeper");
+        Flipper = hardwareMap.get(Servo.class, "Flipper");
 
         //Also initialize intake servos and motors
 
@@ -62,8 +62,9 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         //Sets up speeds for different actions
         double motorSpeed = 0.75;
-        double turnSpeed = 1;
+        //double turnSpeed = 1;
         double tuckSpeed = 0.75;
+        double strafeSpeed = 1;
 
         //region OLD CODE FOR HISTORICAL PURPOSES
         /*
@@ -137,55 +138,77 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
 
         waitForStart();
 
-        UntuckWheels(.5, motorSpeed);
+        UntuckWheels(1,2,tuckSpeed,strafeSpeed);
 
-        //Unhooks from lander
-        Strafe(2,motorSpeed,Direction.LEFT);
+        //Sets arm to proper height
+        Flipper.setPosition(.5);
 
-        //Drives to Claim Site
-        DriveToDistance(50, motorSpeed);
+        //Strafe function was fixed (in theory)
+        Strafe(2, motorSpeed, Direction.LEFT);
 
-        //Re-orients itself, and drives towards first shape
-        TurnOnTheSpot(130, motorSpeed, Direction.LEFT);
-        DriveToDistance(21, motorSpeed);
+        //Lines up with first shape
+        TurnOnTheSpot(20, motorSpeed, Direction.LEFT);
 
-        //And so it begins.. The start of the 1st set of sampling code. No matter what, the robot will end in the same spot.
-        if (SenseYellow(ColorSensor)){
-            //Picks up shape here
-            //Drives out of the way
-            DriveToDistance(13, motorSpeed);
+        //Approaches first shape
+        DriveToDistance(35.5, motorSpeed);
 
-            //Turns toward mutual end point for phase 1 (First Cube Set)
-            TurnOnTheSpot(95, motorSpeed, Direction.LEFT);
-            DriveToDistance(72, motorSpeed);
+        //intake code?
+        if ((SenseYellow(ColorSensor))) {
+            //Pickup-move cube
+            //IntakeServo.setPosition(.8);
         }
-        else {
-            //Backs up to drive 2 second shape
-            DriveToDistance(6, -motorSpeed);
-            TurnOnTheSpot(86, motorSpeed, Direction.LEFT);
-            DriveToDistance(12, motorSpeed);
+        //
+        //Aligns with claim site
+        TurnOnTheSpot(40, motorSpeed, Direction.RIGHT);
+        DriveToDistance(28, motorSpeed);
 
-            //Senses for yellow
-            if (SenseYellow(ColorSensor)){
-                //Pick it up here
-                //Re-orients and moves to mutual end point
-                TurnOnTheSpot(8, motorSpeed, Direction.LEFT);
-                DriveToDistance(49, motorSpeed);
-            }
-            else{
-                //Re-orients with last shape
-                DriveToDistance(6, -motorSpeed);
-                TurnOnTheSpot(125, motorSpeed, Direction.LEFT);
-                DriveToDistance(25, motorSpeed);
-                //Pick up cube here
-                //Drive to mutual endpoint
-                TurnOnTheSpot(40,motorSpeed,Direction.RIGHT);
-                DriveToDistance(37, motorSpeed);
+        //aligns with second shape
+        TurnOnTheSpot(145, motorSpeed, Direction.RIGHT);
+        DriveToDistance(25.5, motorSpeed);
 
-                //From Here we need to check the second set, then park
-            }
+        if ((SenseYellow(ColorSensor))) {
+            //Pickup-move cube
+            Flipper.setPosition(.8);
+            Flipper.setPosition(.5);
         }
+
+        //Third cube set
+        TurnOnTheSpot(85, motorSpeed, Direction.LEFT);
+        DriveToDistance(15, motorSpeed);
+
+        if ((SenseYellow(ColorSensor))) {
+            //Pickup-move cube
+            Flipper.setPosition(.8);
+            Flipper.setPosition(.5);
+        }
+
+        //Second set
+        TurnOnTheSpot(45, motorSpeed, Direction.RIGHT);
+        DriveToDistance(48.5, motorSpeed);
+
+        //Last mineral
+        if ((SenseYellow(ColorSensor))) {
+            //Pickup-move cube
+            Flipper.setPosition(.8);
+            Flipper.setPosition(.5);
+        }
+
+        //Parks
+        Strafe(6, motorSpeed, Direction.LEFT);
+        DriveToDistance(10, motorSpeed);
     }
+
+    //Intake function
+    //private void IntakeObject(double motorPower, double intakeTime, double rotations, Direction liftDirection) {
+        /* Function pseudocode
+         *
+         * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
+         * Check which direction to move lift with liftDirection parameter
+         * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
+         */
+    //}
+
+
 
 
     //Intake function
@@ -301,16 +324,25 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         FrontRight.setPower(0);
         FrontLeft.setPower(0);
     }
-    private void UntuckWheels(double rotations, double tuckSpeed){
+    private void UntuckWheels(double rotations,double strafeRotations, double tuckSpeed, double strafeSpeed){
         final int TUCK_TICK_COUNT = 1120;
         double totalRotations = TUCK_TICK_COUNT * rotations;
+        double strafeRotaions = TUCK_TICK_COUNT * strafeRotations;
 
         //Reset encoders and make motors run to # of ticks
         WheelTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         WheelTuckRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         WheelTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         WheelTuckRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //region Tucking code not necessary
         /*
@@ -331,10 +363,17 @@ public class DeLoreanAutomodeMain extends LinearOpMode {
         //Define target position and run motors
         WheelTuckLeft.setTargetPosition((int)totalRotations);
         WheelTuckRight.setTargetPosition(-(int)totalRotations);
+        FrontRight.setTargetPosition(-(int)strafeRotations);
+        BackRight.setTargetPosition(-(int)strafeRotations);
+        FrontLeft.setTargetPosition((int)strafeRotations);
+        BackLeft.setTargetPosition((int)strafeRotations);
 
         WheelTuckLeft.setPower(tuckSpeed);
         WheelTuckRight.setPower(-tuckSpeed);
-
+        FrontLeft.setPower(strafeSpeed);
+        FrontRight.setPower(-strafeSpeed);
+        BackLeft.setPower(strafeSpeed);
+        BackRight.setPower(-strafeSpeed);
         //Wait until wheels finish tucking
         while (opModeIsActive() && WheelTuckLeft.isBusy()) {
             idle();
