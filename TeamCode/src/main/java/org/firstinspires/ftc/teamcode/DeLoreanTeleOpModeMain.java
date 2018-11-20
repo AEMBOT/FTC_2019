@@ -14,7 +14,6 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     private DcMotor FrontRight;
     private DcMotor MotorWheelTuckR;
     private DcMotor MotorWheelTuckL;
-    private Servo Flipper;
 
     //Declare any other motors (servos, etc.)
     private Servo intakeServo;
