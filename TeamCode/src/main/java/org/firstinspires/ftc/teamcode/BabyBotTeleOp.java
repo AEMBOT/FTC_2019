@@ -21,9 +21,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 //Declares This is a drive controlled TeleOp mode
 //@Autonomous(name = "AutoModeMain", group = "Demo") this is what a autonomous mode would look like
-@TeleOp(name = "TeleOpMode", group = "Main")
+@TeleOp(name = "BabyBotTeleOp", group = "Main")
 @Disabled
-public class TeleOpMode extends LinearOpMode {
+public class BabyBotTeleOp extends LinearOpMode {
 
     //All variables are declared with the modifier "private"
     //The following are the variables that will contain the drive motors and each of their respective data

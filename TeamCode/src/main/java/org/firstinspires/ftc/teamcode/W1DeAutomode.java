@@ -71,7 +71,7 @@ public class W1DeAutomode extends LinearOpMode {
         Flipper.setPosition(0.4);
 
         //Strafe function was fixed (in theory)
-        //Strafe(2, motorSpeed, Direction.LEFT);
+        //Strafe(2, motorSpeed, direction.LEFT);
         DriveToDistance(2, -motorSpeed);
 
         //Lines up with first shape

@@ -19,9 +19,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "AutoModeMain", group = "Main")
+@Autonomous(name = "BabyBotAuto", group = "Main")
 @Disabled
-public class AutoModeMain extends LinearOpMode {
+public class BabyBotAuto extends LinearOpMode {
 
     private DcMotor MotorLB;
     private DcMotor MotorRB;
@@ -83,15 +83,15 @@ public class AutoModeMain extends LinearOpMode {
         waitForStart();
 
         LandRobot(2.5);
-        //TurnToDegrees(30, turnSpeed, Direction.LEFT);
+        //TurnToDegrees(30, turnSpeed, direction.LEFT);
         //DriveToDistance(4, motorSpeed);
-        //TurnToDegrees(30, turnSpeed, Direction.RIGHT);
+        //TurnToDegrees(30, turnSpeed, direction.RIGHT);
         //DriveToDistance(42, motorSpeed);
 
         //region Removed when AutoMode was simplified
-        //TurnToDegrees(60, turnSpeed, Direction.RIGHT);
+        //TurnToDegrees(60, turnSpeed, direction.RIGHT);
         //DriveToDistance(33, turnSpeed);
-        //TurnToDegrees(45, turnSpeed, Direction.RIGHT);
+        //TurnToDegrees(45, turnSpeed, direction.RIGHT);
         //DriveToDistance(16, -motorSpeed);
 
         //while (opModeIsActive()) {
