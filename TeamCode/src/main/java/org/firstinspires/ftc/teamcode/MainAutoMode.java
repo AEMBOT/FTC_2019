@@ -34,7 +34,6 @@ public class MainAutoMode extends LinearOpMode {
 
     public void runOpMode() {
         // Map variables to robot hardware (via config profile on phone)
-        // Motors
         dcBackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         dcBackRight = hardwareMap.get(DcMotor.class, "BackRight");
         dcFrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
@@ -42,6 +41,7 @@ public class MainAutoMode extends LinearOpMode {
         dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
 
+        //Servos
         svFlipper = hardwareMap.get(Servo.class, "Flipper");
 
         // Sensors
@@ -52,80 +52,10 @@ public class MainAutoMode extends LinearOpMode {
         dcFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         //Sets up speeds for different actions
-        double motorSpeed = 0.75;
-        //double turnSpeed = 1;
+        double motorSpeed = 0.7;
+        double turnSpeed = .8;
         double tuckSpeed = 0.75;
         double strafeSpeed = 1;
-
-        //region OLD CODE FOR HISTORICAL PURPOSES
-        /*
-         //Wait for start button to be pressed
-         waitForStart();
-
-         landWheels(0.5, tuckSpeed);
-
-         //strafe function was fixed (in theory)
-         strafe(2, motorSpeed, direction.RIGHT);
-
-        driveInches(36, motorSpeed);
-
-        //Approaches claim site
-        driveInches(20, motorSpeed);
-
-        driveInches(66, motorSpeed);
-        //Drop marker
-        driveInches(34, -motorSpeed);
-
-        */
-        //region Old Sampling Code
-        /*
-        if (isItYellow(csMain)) {
-            //Hit it
-            turnOnTheSpot(90, 1, direction.RIGHT);
-            driveInches(14.5, motorSpeed);
-        }
-        else {
-            strafe(14.5,motorSpeed,direction.LEFT);
-
-            //Checks if object on far left from the center of the maps Point ov view is yellow
-            if (isItYellow(csMain)) {
-                //pickup
-            }
-            //If not go to the far right one and pick up gold
-            else {
-               strafe(29,motorSpeed,direction.RIGHT);
-                //Pick up cube
-            }
-        }
-
-        //Begin approach to other cube set
-        turnOnTheSpot( 90, turnSpeed, direction.RIGHT);
-        driveInches(30, motorSpeed);
-
-        //Checks three objects for yellow and parks on edge of crater
-        strafe(20,motorSpeed,direction.RIGHT);
-        if (isItYellow(csMain)) {
-            //pickup
-            driveInches(5, motorSpeed);
-        }
-        //Checks second object if yellow (third is automatic if 1+2 aren't yellow)
-        else {
-
-            strafe(motorSpeed,14.5,direction.RIGHT);
-
-            if (isItYellow(csMain)) {
-                //pickup
-                driveInches(5, motorSpeed);
-            }
-            else {
-                strafe(14.5, motorSpeed, direction.RIGHT);
-                //pickup
-                driveInches(5, motorSpeed);
-            }
-            */
-        //endregion
-
-        //endregion
 
         waitForStart();
 
@@ -139,7 +69,7 @@ public class MainAutoMode extends LinearOpMode {
         //driveInches(2,motorSpeed);
 
         // Lines up with first mineral
-        turnOnTheSpot(70, motorSpeed, direction.RIGHT);
+        turnOnTheSpot(70, turnSpeed, direction.RIGHT);
 
         // Drives up to mineral
         driveInches(35.5, motorSpeed);
@@ -151,13 +81,13 @@ public class MainAutoMode extends LinearOpMode {
         }
 
         // Aligns with claim site and drops element
-        turnOnTheSpot(40, motorSpeed, direction.RIGHT);
+        turnOnTheSpot(40, turnSpeed, direction.RIGHT);
         driveInches(28, motorSpeed);
 
         // Drop element
 
         // Aligns with second (center) mineral and drives up to it
-        turnOnTheSpot(145, motorSpeed, direction.RIGHT);
+        turnOnTheSpot(145, turnSpeed, direction.RIGHT);
         driveInches(25.5, motorSpeed);
 
         if ((isItYellow())) {
@@ -167,7 +97,7 @@ public class MainAutoMode extends LinearOpMode {
         }
 
         //Third Mineral
-        turnOnTheSpot(85, motorSpeed, direction.LEFT);
+        turnOnTheSpot(85, turnSpeed, direction.LEFT);
         driveInches(15, motorSpeed);
 
         if ((isItYellow())) {
@@ -177,7 +107,7 @@ public class MainAutoMode extends LinearOpMode {
         }
 
         //Second set, first mineral
-        turnOnTheSpot(45, motorSpeed, direction.RIGHT);
+        turnOnTheSpot(45, turnSpeed, direction.RIGHT);
         driveInches(48.5, motorSpeed);
 
         //Last mineral
@@ -188,10 +118,12 @@ public class MainAutoMode extends LinearOpMode {
         }
 
         //Parks
-        turnOnTheSpot(90, motorSpeed, direction.LEFT);
+        turnOnTheSpot(90, turnSpeed, direction.LEFT);
         driveInches(4, motorSpeed);
-        turnOnTheSpot(90, motorSpeed, direction.RIGHT);
+        turnOnTheSpot(90, turnSpeed, direction.RIGHT);
         driveInches(10, motorSpeed);
+
+        //Wait for teleop to start
     }
 
 
@@ -276,7 +208,7 @@ public class MainAutoMode extends LinearOpMode {
 
     }
 
-    private void turnOnTheSpot(double degrees, double motorSpeed, direction turnDirection){
+    private void turnOnTheSpot(double degrees, double turnSpeed, direction turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 5;
         double ticks = (degrees * CONVERSION_FACTOR);
@@ -300,10 +232,10 @@ public class MainAutoMode extends LinearOpMode {
             dcFrontLeft.setTargetPosition((int)ticks );
             dcFrontRight.setTargetPosition(-(int)ticks);
 
-            dcBackLeft.setPower(motorSpeed);
-            dcBackRight.setPower(-motorSpeed);
-            dcFrontLeft.setPower(motorSpeed);
-            dcFrontRight.setPower(-motorSpeed);
+            dcBackLeft.setPower(turnSpeed);
+            dcBackRight.setPower(-turnSpeed);
+            dcFrontLeft.setPower(turnSpeed);
+            dcFrontRight.setPower(-turnSpeed);
         }
         else {
             dcBackLeft.setTargetPosition(-(int)ticks);
@@ -311,10 +243,10 @@ public class MainAutoMode extends LinearOpMode {
             dcFrontLeft.setTargetPosition(-(int)ticks);
             dcFrontRight.setTargetPosition((int)ticks);
 
-            dcBackLeft.setPower(-motorSpeed);
-            dcBackRight.setPower(motorSpeed);
-            dcFrontLeft.setPower(-motorSpeed);
-            dcFrontRight.setPower(motorSpeed);
+            dcBackLeft.setPower(-turnSpeed);
+            dcBackRight.setPower(turnSpeed);
+            dcFrontLeft.setPower(-turnSpeed);
+            dcFrontRight.setPower(turnSpeed);
         }
 
         //Wait until turning is done
