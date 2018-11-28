@@ -372,7 +372,7 @@ public class MainAutoMode extends LinearOpMode {
         boolean isYellow = false;
 
         //Senses yellow
-        if (csMain.blue() < 100 && csMain.blue() > 50) {
+        if (csMain.red() > csMain.green() && csMain.blue() < (2 * csMain.green())  / 3) {
             isYellow = true;
         }
 
