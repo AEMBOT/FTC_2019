@@ -53,7 +53,71 @@ public class W2DeAuto extends LinearOpMode {
         double tuckSpeed = 0.75;
         double strafeSpeed = 1;
 
+        String color = "none";
+
+        telemetry.addData("Red Value: ", csMain.red());
+        telemetry.addData("Green Value: ", csMain.green());
+        telemetry.addData("Blue Value: ", csMain.blue());
+        telemetry.addData("Color: ", color);
+        telemetry.update();
+
         waitForStart();
+
+        landWheels(0.5, 1, tuckSpeed, strafeSpeed);
+
+        strafe(2, motorSpeed, direction.RIGHT);
+
+        svFlipper.setPosition(0.4);
+
+        turnOnTheSpot(15, turnSpeed, direction.RIGHT);
+
+        driveInches(40,motorSpeed);
+
+        if (csMain.blue() < csMain.red() && csMain.blue() < csMain.green()) {
+            color = "Yellow";
+            svFlipper.setPosition(0.7);
+            svFlipper.setPosition(0.4);
+        }
+
+        else{
+            color = "None";
+        }
+
+        turnOnTheSpot(40, turnSpeed, direction.LEFT);
+
+        driveInches(36, motorSpeed);
+
+        turnOnTheSpot(160, turnSpeed, direction.LEFT);
+
+        driveInches(33, motorSpeed);
+
+        if (csMain.blue() < csMain.red() && csMain.blue() < csMain.green()) {
+            color = "Yellow";
+            svFlipper.setPosition(0.7);
+            svFlipper.setPosition(0.4);
+        }
+
+        else{
+            color = "None";
+        }
+
+        turnOnTheSpot(90, turnSpeed, direction.RIGHT);
+
+        driveInches(16, motorSpeed);
+
+        if (csMain.blue() < csMain.red() && csMain.blue() < csMain.green()) {
+            color = "Yellow";
+            svFlipper.setPosition(0.7);
+            svFlipper.setPosition(0.4);
+        }
+
+        else{
+            color = "None";
+        }
+
+        turnOnTheSpot(165, turnSpeed, direction.LEFT);
+
+        driveInches(65, motorSpeed);
 
         /* Pseudocode
          * 1. Land
