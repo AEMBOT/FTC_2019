@@ -1,8 +1,6 @@
 /*
 Demo autonomous code created by Will Richards for FTC 2019
-
 The following code is to demo the use of color sensors in an auto period
-
 !!!IMPORTANT!!! This code is a demo, the comments are excessive on purpose don't comment this much normally but defiantly comment your code
 Comment large blocks of code that need description, or anything that needs a description... Be concise
 Also if you have alot of unorganized code somewhere insert //region [NAME HERE] at the start and //endregion at the end and it will allow you to collapse that specific section of code
@@ -21,7 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "ColorSensorDemo", group = "Demo")
-@Disabled
+
 public class ColorSensorDemo extends LinearOpMode {
 
     //Variables created for the two back motors
@@ -33,12 +31,9 @@ public class ColorSensorDemo extends LinearOpMode {
     //Color sensor variables
     private ColorSensor ColorSensor;
 
-    public void runOpMode(){
+    public void runOpMode() {
 
         //Initializes motor variables
-        MotorLB = hardwareMap.get(DcMotor.class, "MotorLB");
-        MotorRB = hardwareMap.get(DcMotor.class, "MotorRB");
-
         FlipperServo = hardwareMap.get(Servo.class, "Flipper");
 
         //Init color sensor
@@ -60,32 +55,20 @@ public class ColorSensorDemo extends LinearOpMode {
             telemetry.addData("Color: ", color);
             telemetry.update();
 
-            if(ColorSensor.blue() < ColorSensor.red() && ColorSensor.blue() < ColorSensor.green()){
+            if (ColorSensor.red() > ColorSensor.green() && ColorSensor.blue() < (2 * ColorSensor.green()) / 3) {
                 color = "Yellow";
-                //FlipperServo.setPosition(0.8);
-                //try {
-                //    Thread.sleep(1000);
-                //} catch (InterruptedException e) {
-                //}
-                //FlipperServo.setPosition(0);
-            }
-            else{
+                FlipperServo.setPosition(0.8);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                }
+                FlipperServo.setPosition(0);
+            } else {
                 color = "None";
+                idle();
             }
 
         }
-
-        //Example use of ColorSensor.red() in a situation
-        //Uses the color sensor to check if the red value is greater than 2 to verify it is actually red and not just a false reading
-        /*
-            if(ColorSensor.red() > 2){
-                //Drive forward
-            }
-
-            else{
-                //Do something else
-            }
-        */
 
 
     }

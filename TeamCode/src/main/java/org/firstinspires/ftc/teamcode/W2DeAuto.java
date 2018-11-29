@@ -119,6 +119,8 @@ public class W2DeAuto extends LinearOpMode {
 
         driveInches(65, motorSpeed);
 
+
+
         /* Pseudocode
          * 1. Land
          * 2. Turn and approach right mineral of first set
