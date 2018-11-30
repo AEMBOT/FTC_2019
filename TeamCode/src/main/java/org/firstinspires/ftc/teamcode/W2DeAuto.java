@@ -25,6 +25,9 @@ public class W2DeAuto extends LinearOpMode {
     // Used to specify direction for strafing, turning, or later arch screw intake
     public enum direction { UP, DOWN, LEFT, RIGHT }
 
+    // Used to skip future scannings
+    public boolean sensedGold;
+
     // Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
 
@@ -49,78 +52,45 @@ public class W2DeAuto extends LinearOpMode {
 
         //Sets up speeds for different actions
         double motorSpeed = 0.7;
-        double turnSpeed = .8;
+        double turnSpeed = 0.8;
         double tuckSpeed = 0.75;
         double strafeSpeed = 1;
-
-        String color = "none";
-
-        telemetry.addData("Red Value: ", csMain.red());
-        telemetry.addData("Green Value: ", csMain.green());
-        telemetry.addData("Blue Value: ", csMain.blue());
-        telemetry.addData("Color: ", color);
-        telemetry.update();
 
         waitForStart();
 
         landWheels(0.5, 1, tuckSpeed, strafeSpeed);
 
-        strafe(2, motorSpeed, direction.RIGHT);
+        strafe(2.25, motorSpeed, direction.RIGHT);
 
         svFlipper.setPosition(0.4);
 
         turnOnTheSpot(15, turnSpeed, direction.RIGHT);
 
-        driveInches(40,motorSpeed);
+        driveInches(39.5, motorSpeed);
 
-        if (csMain.blue() < csMain.red() && csMain.blue() < csMain.green()) {
-            color = "Yellow";
-            svFlipper.setPosition(0.7);
-            svFlipper.setPosition(0.4);
+        if(isItYellow()) {
+            hitGold();
+            sensedGold = true;
+        } else {
+            turnOnTheSpot(110, turnSpeed, direction.LEFT);
+            driveInches(14.5, motorSpeed);
+
+            if (isItYellow() && !sensedGold) {
+                hitGold();
+            } else {
+                driveInches(14.5, motorSpeed);
+                hitGold();
+            }
         }
+        // Go to claim site
+        turnOnTheSpot(20, turnSpeed, direction.RIGHT);
+        driveInches(30, motorSpeed);
 
-        else{
-            color = "None";
-        }
+        // Park on crater
+        turnOnTheSpot(110, turnSpeed, direction.RIGHT);
+        driveInches(60, motorSpeed);
 
-        turnOnTheSpot(40, turnSpeed, direction.LEFT);
-
-        driveInches(36, motorSpeed);
-
-        turnOnTheSpot(160, turnSpeed, direction.LEFT);
-
-        driveInches(33, motorSpeed);
-
-        if (csMain.blue() < csMain.red() && csMain.blue() < csMain.green()) {
-            color = "Yellow";
-            svFlipper.setPosition(0.7);
-            svFlipper.setPosition(0.4);
-        }
-
-        else{
-            color = "None";
-        }
-
-        turnOnTheSpot(90, turnSpeed, direction.RIGHT);
-
-        driveInches(16, motorSpeed);
-
-        if (csMain.blue() < csMain.red() && csMain.blue() < csMain.green()) {
-            color = "Yellow";
-            svFlipper.setPosition(0.7);
-            svFlipper.setPosition(0.4);
-        }
-
-        else{
-            color = "None";
-        }
-
-        turnOnTheSpot(165, turnSpeed, direction.LEFT);
-
-        driveInches(65, motorSpeed);
-
-
-
+        //region Pseudocode
         /* Pseudocode
          * 1. Land
          * 2. Turn and approach right mineral of first set
@@ -136,11 +106,16 @@ public class W2DeAuto extends LinearOpMode {
          * 8. Turn towards crater and drive
          * 9. Park on (NOT IN) crater
          */
+        //endregion
     }
-    private void strafe(double distance, double motorSpeed, direction strafeDirection){
+    private void hitGold() {
+        svFlipper.setPosition(0.7);
+        svFlipper.setPosition(0.4);
+    }
+    private void strafe(double inches, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
 
-        double totalDistance = (REV_TICK_COUNT / (Math.PI * 4)) * distance;
+        double totalDistance = (REV_TICK_COUNT / (Math.PI * 4)) * inches;
 
         //Resets motor encoders
         dcBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
