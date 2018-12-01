@@ -66,8 +66,6 @@ public class W2DeAuto extends LinearOpMode {
         sleep(7000);
         tethookLift.setPower(0);
 
-        //ignore me
-
         turnOnTheSpot(90, motorSpeed, direction.RIGHT);
         driveInches(1, motorSpeed);
         turnOnTheSpot(90, motorSpeed, direction.LEFT);
