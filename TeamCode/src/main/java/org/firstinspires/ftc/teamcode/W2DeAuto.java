@@ -18,7 +18,6 @@ public class W2DeAuto extends LinearOpMode {
 
     // Declare servos
     private Servo svFlipper;
-    private Servo svClaim;
 
     // Declare color sensor(s) here
     private ColorSensor csMain;
@@ -26,8 +25,8 @@ public class W2DeAuto extends LinearOpMode {
     // Used to specify direction for strafing, turning, or later arch screw intake
     public enum direction { UP, DOWN, LEFT, RIGHT }
 
-    // Used to prevent unnecessary scans
-    private boolean sensedGold;
+    // Used to skip future scannings
+    public boolean sensedGold;
 
     // Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
@@ -43,7 +42,6 @@ public class W2DeAuto extends LinearOpMode {
 
         //Servos
         svFlipper = hardwareMap.get(Servo.class, "Flipper");
-        svClaim = hardwareMap.get(Servo.class, "ClaimFlipper");
 
         // Sensors
         csMain = hardwareMap.get(ColorSensor.class, "ColorSensor");
@@ -60,44 +58,36 @@ public class W2DeAuto extends LinearOpMode {
 
         waitForStart();
 
-        landWheels(0.5, 1, strafeSpeed);
+        landWheels(0.5, 1, tuckSpeed, strafeSpeed);
 
-        strafe(2.25, strafeSpeed, direction.RIGHT);
+        strafe(2.25, motorSpeed, direction.RIGHT);
 
         svFlipper.setPosition(0.4);
 
-        turnDegrees(15, turnSpeed, direction.RIGHT);
+        turnOnTheSpot(15, turnSpeed, direction.RIGHT);
 
         driveInches(39.5, motorSpeed);
 
         if(isItYellow()) {
             hitGold();
             sensedGold = true;
+        } else {
+            turnOnTheSpot(110, turnSpeed, direction.LEFT);
+            driveInches(14.5, motorSpeed);
+
+            if (isItYellow() && !sensedGold) {
+                hitGold();
+            } else {
+                driveInches(14.5, motorSpeed);
+                hitGold();
+            }
         }
-        turnDegrees(110, turnSpeed, direction.LEFT);
-        driveInches(14.5, motorSpeed);
-
-        if (isItYellow() && !sensedGold) {
-            hitGold();
-            sensedGold = true;
-        }
-
-        driveInches(14.5, motorSpeed);
-
-        if(!sensedGold) {
-            hitGold();
-        }
-
         // Go to claim site
-        turnDegrees(20, turnSpeed, direction.RIGHT);
+        turnOnTheSpot(20, turnSpeed, direction.RIGHT);
         driveInches(30, motorSpeed);
 
-        // Drop claim piece
-        svClaim.setPosition(0.8);
-        svClaim.setPosition(0);
-
         // Park on crater
-        turnDegrees(110, turnSpeed, direction.RIGHT);
+        turnOnTheSpot(110, turnSpeed, direction.RIGHT);
         driveInches(60, motorSpeed);
 
         //region Pseudocode
@@ -176,7 +166,7 @@ public class W2DeAuto extends LinearOpMode {
 
     }
 
-    private void turnDegrees(double degrees, double turnSpeed, direction turnDirection){
+    private void turnOnTheSpot(double degrees, double turnSpeed, direction turnDirection){
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 5;
         double ticks = (degrees * CONVERSION_FACTOR);
@@ -229,37 +219,70 @@ public class W2DeAuto extends LinearOpMode {
         dcFrontLeft.setPower(0);
     }
 
-    private void landWheels(double rotations, double tuckSpeed, double strafeSpeed){
+    private void landWheels(double rotations, double strafeRotations, double tuckSpeed, double strafeSpeed){
         final int TUCK_TICK_COUNT = 1120;
         double totalRotations = TUCK_TICK_COUNT * rotations;
+        double strafeRotaions = TUCK_TICK_COUNT * strafeRotations;
 
         //Reset encoders and make motors run to # of ticks
         dcTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcTuckRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         dcTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dcTuckRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //region Tucking code not necessary
+        /*
+        //Check which direction to move wheels
+        if (speedTuck < 0) {
+            dcTuckLeft.setTargetPosition(-(int)totalRotations);
+            sleep(1000);
+            dcTuckRight.setTargetPosition(-(int)totalRotations);
+        }
+        else {
+            dcTuckLeft.setTargetPosition((int)totalRotations);
+            sleep(1000);
+            dcTuckRight.setTargetPosition((int)totalRotations);
+        }
+        */
+        //endregion
 
         //Define target position and run motors
         dcTuckLeft.setTargetPosition((int)totalRotations);
         dcTuckRight.setTargetPosition(-(int)totalRotations);
+        dcFrontRight.setTargetPosition(-(int)strafeRotations);
+        dcBackRight.setTargetPosition(-(int)strafeRotations);
+        dcFrontLeft.setTargetPosition((int)strafeRotations);
+        dcBackLeft.setTargetPosition((int)strafeRotations);
 
         dcTuckLeft.setPower(tuckSpeed);
         dcTuckRight.setPower(-tuckSpeed);
+        dcFrontLeft.setPower(strafeSpeed);
+        dcFrontRight.setPower(-strafeSpeed);
+        dcBackLeft.setPower(strafeSpeed);
+        dcBackRight.setPower(-strafeSpeed);
         //Wait until wheels finish tucking
-        while (opModeIsActive() && dcTuckLeft.isBusy() && dcTuckRight.isBusy()) {
+        while (opModeIsActive() && dcTuckLeft.isBusy()) {
             idle();
         }
 
         //Keep wheels down and don't let robot collapse
-        //dcTuckLeft.setPower(0.2);
-        //dcTuckRight.setPower(-0.2);
+        dcTuckLeft.setPower(0.2);
+        dcTuckRight.setPower(-0.2);
     }
 
     //Drives distance in INCHES
-    private void driveInches(double inches, double motorSpeed){
+    private void driveInches(double distance, double motorSpeed){
         //Convert inches to ticks
-        double totalDistance = (REV_TICK_COUNT / 12.566) * inches;
+        double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
 
         //Reset encoders and make motors run for ticks
         dcBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
