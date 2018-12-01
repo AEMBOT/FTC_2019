@@ -58,7 +58,8 @@ public class W2DeAuto extends LinearOpMode {
 
         waitForStart();
 
-        landWheels(0.5, 1, tuckSpeed, strafeSpeed);
+        liftWheels(0.3, tuckSpeed);
+        landWheels(0.5, 0, tuckSpeed, strafeSpeed);
 
         strafe(2.25, motorSpeed, direction.RIGHT);
 
@@ -217,6 +218,20 @@ public class W2DeAuto extends LinearOpMode {
         dcBackLeft.setPower(0);
         dcFrontRight.setPower(0);
         dcFrontLeft.setPower(0);
+
+
+    }
+
+    private void liftWheels (double rotations, double tuckSpeed){
+
+        final int TUCK_TICK_COUNT = 1120;
+        double totalRotations = TUCK_TICK_COUNT * rotations;
+
+        dcTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcTuckLeft.setTargetPosition((int)totalRotations);
+        dcTuckLeft.setPower(tuckSpeed);
+
     }
 
     private void landWheels(double rotations, double strafeRotations, double tuckSpeed, double strafeSpeed){
@@ -238,22 +253,6 @@ public class W2DeAuto extends LinearOpMode {
         dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dcBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dcBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        //region Tucking code not necessary
-        /*
-        //Check which direction to move wheels
-        if (speedTuck < 0) {
-            dcTuckLeft.setTargetPosition(-(int)totalRotations);
-            sleep(1000);
-            dcTuckRight.setTargetPosition(-(int)totalRotations);
-        }
-        else {
-            dcTuckLeft.setTargetPosition((int)totalRotations);
-            sleep(1000);
-            dcTuckRight.setTargetPosition((int)totalRotations);
-        }
-        */
-        //endregion
 
         //Define target position and run motors
         dcTuckLeft.setTargetPosition((int)totalRotations);
