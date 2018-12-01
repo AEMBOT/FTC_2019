@@ -17,7 +17,7 @@ public class W2DeAuto extends LinearOpMode {
     private DcMotor dcTuckLeft;
 
     // Declare servos
-    private Servo svFlipper;
+    // private Servo svFlipper;
     private Servo svClaim;
 
     // Declare color sensor(s) here
@@ -41,9 +41,9 @@ public class W2DeAuto extends LinearOpMode {
         dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
 
-        //Servos
-        svFlipper = hardwareMap.get(Servo.class, "Flipper");
-        svClaim = hardwareMap.get(Servo.class, "Claim");
+        // Servos
+        // svFlipper = hardwareMap.get(Servo.class, "Flipper");
+        svClaim = hardwareMap.get(Servo.class, "svClaim");
 
         // Sensors
         csMain = hardwareMap.get(ColorSensor.class, "ColorSensor");
@@ -60,13 +60,23 @@ public class W2DeAuto extends LinearOpMode {
 
         waitForStart();
 
+        // Get off hook
         liftWheels(0.3, tuckSpeed);
-        landWheels(0.5, tuckSpeed);
+        turnDegrees(90, turnSpeed, direction.RIGHT);
+        driveInches(6, motorSpeed);
+        turnDegrees(90, turnSpeed, direction.LEFT);
 
-        strafe(2.25, motorSpeed, direction.RIGHT);
+        // Drive to claim site
+        driveInches(48, motorSpeed);
 
-        svFlipper.setPosition(0.4);
+        // Drop claim piece
+        svClaim.setPosition(1);
+        svClaim.setPosition(0);
 
+        // Turn, approach crater (maybe?)
+
+        //region Old Code
+        /*
         turnDegrees(15, turnSpeed, direction.RIGHT);
 
         driveInches(39.5, motorSpeed);
@@ -97,6 +107,8 @@ public class W2DeAuto extends LinearOpMode {
         // Park on crater
         turnDegrees(110, turnSpeed, direction.RIGHT);
         driveInches(60, motorSpeed);
+        */
+        //endregion
 
         //region Pseudocode
         /* Pseudocode
@@ -116,10 +128,12 @@ public class W2DeAuto extends LinearOpMode {
          */
         //endregion
     }
+    /*
     private void hitGold() {
         svFlipper.setPosition(0.7);
         svFlipper.setPosition(0.4);
     }
+    */
     private void strafe(double inches, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
 
