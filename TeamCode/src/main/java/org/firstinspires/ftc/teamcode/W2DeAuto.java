@@ -15,7 +15,7 @@ public class W2DeAuto extends LinearOpMode {
     private DcMotor dcFrontRight;
     private DcMotor dcTuckRight;
     private DcMotor dcTuckLeft;
-
+    private DcMotor tethookLift;
     // Declare servos
     private Servo svFlipper;
 
@@ -39,6 +39,7 @@ public class W2DeAuto extends LinearOpMode {
         dcFrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        tethookLift = hardwareMap.get(DcMotor.class, "HookLift");
 
         //Servos
         svFlipper = hardwareMap.get(Servo.class, "Flipper");
@@ -58,8 +59,12 @@ public class W2DeAuto extends LinearOpMode {
 
         waitForStart();
 
+
         liftWheels(0.3, tuckSpeed);
-        landWheels(0.5, 0, tuckSpeed, strafeSpeed);
+        //landWheels(0.5, 0, tuckSpeed, strafeSpeed);
+        tethookLift.setPower(1);
+        sleep(3000);
+        tethookLift.setPower(0);
 
         strafe(2.25, motorSpeed, direction.RIGHT);
 
