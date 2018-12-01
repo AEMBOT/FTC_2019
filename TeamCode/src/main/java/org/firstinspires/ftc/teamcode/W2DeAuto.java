@@ -60,15 +60,17 @@ public class W2DeAuto extends LinearOpMode {
         waitForStart();
 
 
-        liftWheels(0.3, tuckSpeed);
+        liftWheels(0.5, tuckSpeed);
         //landWheels(0.5, 0, tuckSpeed, strafeSpeed);
         tethookLift.setPower(1);
-        sleep(3000);
+        sleep(7000);
         tethookLift.setPower(0);
 
         //ignore me
 
-        strafe(2.25, motorSpeed, direction.RIGHT);
+        turnOnTheSpot(90, motorSpeed, direction.RIGHT);
+        driveInches(1, motorSpeed);
+        turnOnTheSpot(90, motorSpeed, direction.LEFT);
 
         svFlipper.setPosition(0.4);
 
