@@ -66,6 +66,8 @@ public class W2DeAuto extends LinearOpMode {
         sleep(3000);
         tethookLift.setPower(0);
 
+        //ignore me
+
         strafe(2.25, motorSpeed, direction.RIGHT);
 
         svFlipper.setPosition(0.4);
