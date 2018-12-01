@@ -15,13 +15,14 @@ public class W2DeAuto extends LinearOpMode {
     private DcMotor dcFrontRight;
     private DcMotor dcTuckRight;
     private DcMotor dcTuckLeft;
+    private DcMotor tethookLift;
 
     // Declare servos
     // private Servo svFlipper;
     private Servo svClaim;
 
     // Declare color sensor(s) here
-    private ColorSensor csMain;
+    // private ColorSensor csMain;
 
     // Used to specify direction for strafing, turning, or later arch screw intake
     public enum direction { UP, DOWN, LEFT, RIGHT }
@@ -40,13 +41,14 @@ public class W2DeAuto extends LinearOpMode {
         dcFrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        tethookLift = hardwareMap.get(DcMotor.class, "HookLift");
 
         // Servos
         // svFlipper = hardwareMap.get(Servo.class, "Flipper");
         svClaim = hardwareMap.get(Servo.class, "svClaim");
 
         // Sensors
-        csMain = hardwareMap.get(ColorSensor.class, "ColorSensor");
+        // csMain = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
         // Reverse motors on one side so all rotate in same direction
         dcBackLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -55,23 +57,27 @@ public class W2DeAuto extends LinearOpMode {
         //Sets up speeds for different actions
         double motorSpeed = 0.7;
         double turnSpeed = 0.8;
-        double tuckSpeed = 0.75;
+        double tuckSpeed = 1;
         // double strafeSpeed = 1; Impractical; we only use it once
 
         waitForStart();
 
         // Get off hook
-        liftWheels(0.3, tuckSpeed);
-        turnDegrees(90, turnSpeed, direction.RIGHT);
-        driveInches(6, motorSpeed);
-        turnDegrees(90, turnSpeed, direction.LEFT);
+        liftWheels(0.5, tuckSpeed);
+        sleep(250);
+        tethookLift.setPower(1);
+        sleep(8000);
+        tethookLift.setPower(0);
+        turnDegrees(180, 0.4, direction.RIGHT);
 
+        /*
         // Drive to claim site
         driveInches(48, motorSpeed);
 
         // Drop claim piece
         svClaim.setPosition(1);
         svClaim.setPosition(0);
+        */
 
         // Turn, approach crater (maybe?)
 
@@ -128,12 +134,16 @@ public class W2DeAuto extends LinearOpMode {
          */
         //endregion
     }
+
+    //region We don't have a flipper
     /*
     private void hitGold() {
         svFlipper.setPosition(0.7);
         svFlipper.setPosition(0.4);
     }
     */
+    //endregion
+
     private void strafe(double inches, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
 
@@ -253,6 +263,15 @@ public class W2DeAuto extends LinearOpMode {
         dcTuckLeft.setTargetPosition((int)totalRotations);
         dcTuckLeft.setPower(tuckSpeed);
 
+        while(opModeIsActive() && dcTuckLeft.isBusy()) {
+            idle();
+        }
+
+        dcTuckLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        dcTuckLeft.setPower(0.2);
+        sleep(2000);
+        dcTuckLeft.setPower(0);
     }
 
     private void landWheels(double rotations, double tuckSpeed){
@@ -335,7 +354,8 @@ public class W2DeAuto extends LinearOpMode {
     }
 
     //Function to sense yellow that returns a boolean
-    private boolean isItYellow(){
+    //region We don't have a color sensor
+    /*private boolean isItYellow(){
         //Declare boolean isYellow and initialize it to false
         boolean isYellow = false;
 
@@ -347,4 +367,6 @@ public class W2DeAuto extends LinearOpMode {
         //Return boolean value isYellow
         return isYellow;
     }
+    */
+    //endregion
 }

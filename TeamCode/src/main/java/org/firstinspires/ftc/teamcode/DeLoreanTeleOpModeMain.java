@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.motors.TetrixMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -55,7 +54,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
             FrontLeft.setPower(-gamepad1.left_stick_y);
 
             // Mess with lift
-            tethookLift.setPower(gamepad2.left_stick_y);
+            tethookLift.setPower(gamepad2.right_stick_y);
 
             //Strafe left
             if(gamepad1.dpad_left) {
