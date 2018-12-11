@@ -48,28 +48,28 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
         while (opModeIsActive()) {
             //Driving NOT strafing
-            BackRight.setPower(-gamepad1.right_stick_y);
-            BackLeft.setPower(-gamepad1.left_stick_y);
-            FrontRight.setPower(-gamepad1.right_stick_y);
-            FrontLeft.setPower(-gamepad1.left_stick_y);
+            BackRight.setPower(-gamepad1.right_stick_y * 0.75);
+            BackLeft.setPower(-gamepad1.left_stick_y * 0.75);
+            FrontRight.setPower(-gamepad1.right_stick_y * 0.75);
+            FrontLeft.setPower(-gamepad1.left_stick_y * 0.75);
 
             // Mess with lift
             tethookLift.setPower(gamepad2.right_stick_y);
 
             //Strafe left
             if(gamepad1.dpad_left) {
-                BackLeft.setPower(strafeSpeed);
-                BackRight.setPower(-strafeSpeed);
-                FrontLeft.setPower(-strafeSpeed);
-                FrontRight.setPower(strafeSpeed);
+                BackLeft.setPower(strafeSpeed * 0.75);
+                BackRight.setPower(-strafeSpeed * 0.75);
+                FrontLeft.setPower(-strafeSpeed * 0.75);
+                FrontRight.setPower(strafeSpeed * 0.75);
 
             }
             //Strafe right
             if(gamepad1.dpad_right) {
-                BackLeft.setPower(-strafeSpeed);
-                BackRight.setPower(strafeSpeed);
-                FrontLeft.setPower(strafeSpeed);
-                FrontRight.setPower(-strafeSpeed);
+                BackLeft.setPower(-strafeSpeed * 0.75);
+                BackRight.setPower(strafeSpeed * 0.75);
+                FrontLeft.setPower(strafeSpeed * 0.75);
+                FrontRight.setPower(-strafeSpeed * 0.75);
             }
             //Changes position of claim servo based on driver controller A or B
             if(gamepad1.a) {
