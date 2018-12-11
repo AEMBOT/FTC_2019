@@ -200,7 +200,7 @@ public class W2DeAuto extends LinearOpMode {
 
     private void turnDegrees(double degrees, double turnSpeed, direction turnDirection){
         //Converts degrees into ticks
-        final double CONVERSION_FACTOR = 5;
+        final double CONVERSION_FACTOR = 10; // Double to 10? 180 degrees was only 90
         double ticks = (degrees * CONVERSION_FACTOR);
 
         //Reset encoders and make motors run to # of ticks
