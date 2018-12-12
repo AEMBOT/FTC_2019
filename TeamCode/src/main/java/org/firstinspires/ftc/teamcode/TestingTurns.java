@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "Testing Turns", group = "Testing")
 public class TestingTurns extends LinearOpMode {
@@ -31,7 +30,6 @@ public class TestingTurns extends LinearOpMode {
         waitForStart();
 
         turnToDegreesNew(90, 0.5, direction.RIGHT);
-        sleep(5000);
     }
     private void turnToDegreesNew(int degrees, double power, direction turnDirection) {
         // Conversion factor to go from motor rotations to degrees of robot rotation (distance between wheel sets / wheel circumference)
@@ -46,6 +44,11 @@ public class TestingTurns extends LinearOpMode {
         dcBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        dcBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set target positions depending on direction and run motors to those points
         switch(turnDirection) {
