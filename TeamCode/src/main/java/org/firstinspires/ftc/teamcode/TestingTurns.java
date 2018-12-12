@@ -31,6 +31,7 @@ public class TestingTurns extends LinearOpMode {
         waitForStart();
 
         turnToDegreesNew(90, 0.5, direction.RIGHT);
+        sleep(5000);
     }
     private void turnToDegreesNew(int degrees, double power, direction turnDirection) {
         // Conversion factor to go from motor rotations to degrees of robot rotation (distance between wheel sets / wheel circumference)
