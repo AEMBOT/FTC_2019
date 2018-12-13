@@ -4,18 +4,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
 @TeleOp(name = "DeTeleOp", group = "DeLorean")
 public class DeLoreanTeleOpModeMain extends LinearOpMode {
-    private DcMotor BackLeft;
-    private DcMotor BackRight;
-    private DcMotor FrontLeft;
-    private DcMotor FrontRight;
+    private DcMotor dcBackLeft;
+    private DcMotor dcBackRight;
+    private DcMotor dcFrontLeft;
+    private DcMotor dcFrontRight;
     //private DcMotor MotorWheelTuckR;
-    private DcMotor MotorWheelTuckL;
-    private DcMotor tethookLift;
-    private DcMotor screw;
+    private DcMotor dcTuckLeft;
+    private DcMotor tetHookLift;
+    private DcMotor dcScrew;
+
     //Declare any other motors (servos, etc.)
     private Servo svClaim;
 
@@ -23,58 +23,59 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     private double speedLimit;
 
     //Declare sensors
-    //private ColorSensor ColorSensorR;
-    //private ColorSensor ColorSensorL;
 
     public void runOpMode() {
         //Motor
-        BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
-        BackRight = hardwareMap.get(DcMotor.class, "BackRight");
-        FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
-        FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
-        MotorWheelTuckL = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
+        dcBackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
+        dcBackRight = hardwareMap.get(DcMotor.class, "BackRight");
+        dcFrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
+        dcFrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+        dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         //MotorWheelTuckR = hardwareMap.get(DcMotor.class, "WheelTuckRight");
-        tethookLift = hardwareMap.get(DcMotor.class, "HookLift");
-        screw = hardwareMap.get(DcMotor.class, "screw");
+        tetHookLift = hardwareMap.get(DcMotor.class, "HookLift");
+        dcScrew = hardwareMap.get(DcMotor.class, "screw");
 
         //Servo
         svClaim = hardwareMap.get(Servo.class, "svClaim");
 
         //Reverse left motors so forward is the same for all motors
-        BackLeft.setDirection(DcMotor.Direction.REVERSE);
-        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        dcBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        dcFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         //Declare strafeSpeed variable
         double strafeSpeed = .75;
-        boolean isServoRunning = true;
+
+        // Initialize speed limit
+        speedLimit = 0.75;
 
         waitForStart();
 
         while (opModeIsActive()) {
             //Driving NOT strafing
-            BackRight.setPower(-gamepad1.right_stick_y * speedLimit);
-            BackLeft.setPower(-gamepad1.left_stick_y * speedLimit);
-            FrontRight.setPower(-gamepad1.right_stick_y * speedLimit);
-            FrontLeft.setPower(-gamepad1.left_stick_y * speedLimit);
+            dcBackRight.setPower(-gamepad1.right_stick_y * speedLimit);
+            dcBackLeft.setPower(-gamepad1.left_stick_y * speedLimit);
+            dcFrontRight.setPower(-gamepad1.right_stick_y * speedLimit);
+            dcFrontLeft.setPower(-gamepad1.left_stick_y * speedLimit);
 
-            // Mess with lift
-            tethookLift.setPower(gamepad2.right_stick_y);
+            // Move lift up or down
+            tetHookLift.setPower(gamepad2.right_stick_y);
 
             //Strafe left
             if(gamepad1.dpad_left) {
-                BackLeft.setPower(strafeSpeed * speedLimit);
-                BackRight.setPower(-strafeSpeed * speedLimit);
-                FrontLeft.setPower(-strafeSpeed * speedLimit);
-                FrontRight.setPower(strafeSpeed * speedLimit);
+                dcBackLeft.setPower(strafeSpeed * speedLimit);
+                dcBackRight.setPower(-strafeSpeed * speedLimit);
+                dcFrontLeft.setPower(-strafeSpeed * speedLimit);
+                dcFrontRight.setPower(strafeSpeed * speedLimit);
 
             }
             //Strafe right
             if(gamepad1.dpad_right) {
-                BackLeft.setPower(-strafeSpeed * speedLimit);
-                BackRight.setPower(strafeSpeed * speedLimit);
-                FrontLeft.setPower(strafeSpeed * speedLimit);
-                FrontRight.setPower(-strafeSpeed * speedLimit);
+                dcBackLeft.setPower(-strafeSpeed * speedLimit);
+                dcBackRight.setPower(strafeSpeed * speedLimit);
+                dcFrontLeft.setPower(strafeSpeed * speedLimit);
+                dcFrontRight.setPower(-strafeSpeed * speedLimit);
             }
+
             //Changes position of claim servo based on driver controller A or B
             if(gamepad1.a) {
                 svClaim.setPosition(1);
@@ -82,24 +83,28 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
             if(gamepad1.b) {
                 svClaim.setPosition(0);
             }
+
             //TODO: Redo tucking code for Week 3 competition
+
+            //region Old Tucking Code
             //Untuck Left Wheels
+            /*
             if(gamepad2.left_trigger > 0) {
-                MotorWheelTuckL.setPower(gamepad2.left_trigger);
+                dcTuckLeft.setPower(gamepad2.left_trigger);
             }
             //Tuck left wheels
             if(gamepad2.left_bumper) {
-                MotorWheelTuckL.setPower(-1);
+                dcTuckLeft.setPower(-1);
             }
 
             if (gamepad2.a){
-                screw.setPower(1);
+                dcScrew.setPower(1);
             }
             if (gamepad2.b){
-                screw.setPower(0);
+                dcScrew.setPower(0);
             }
 
-            /*
+
             //Untuck right wheels
             if(gamepad2.right_trigger > 0) {
                 MotorWheelTuckR.setPower(-gamepad2.right_trigger);
@@ -109,14 +114,15 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
                 MotorWheelTuckR.setPower(1);
             }
             else {
-                BackRight.setPower(0);
-                BackLeft.setPower(0);
-                FrontRight.setPower(0);
-                FrontLeft.setPower(0);
+                dcBackRight.setPower(0);
+                dcBackLeft.setPower(0);
+                dcFrontRight.setPower(0);
+                dcFrontLeft.setPower(0);
                 MotorWheelTuckR.setPower(0);
-                MotorWheelTuckL.setPower(0);
+                dcTuckLeft.setPower(0);
             }
             */
+            //endregion
         }
     }
 }
