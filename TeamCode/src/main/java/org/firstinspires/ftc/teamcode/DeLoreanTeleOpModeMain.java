@@ -15,7 +15,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
     //private DcMotor MotorWheelTuckR;
     private DcMotor MotorWheelTuckL;
     private DcMotor tethookLift;
-
+    private DcMotor screw;
     //Declare any other motors (servos, etc.)
     private Servo svClaim;
 
@@ -35,6 +35,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         MotorWheelTuckL = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         //MotorWheelTuckR = hardwareMap.get(DcMotor.class, "WheelTuckRight");
         tethookLift = hardwareMap.get(DcMotor.class, "HookLift");
+        screw = hardwareMap.get(DcMotor.class, "screw");
 
         //Servo
         svClaim = hardwareMap.get(Servo.class, "svClaim");
@@ -90,6 +91,14 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
             if(gamepad2.left_bumper) {
                 MotorWheelTuckL.setPower(-1);
             }
+
+            if (gamepad2.a){
+                screw.setPower(1);
+            }
+            if (gamepad2.b){
+                screw.setPower(0);
+            }
+
             /*
             //Untuck right wheels
             if(gamepad2.right_trigger > 0) {
