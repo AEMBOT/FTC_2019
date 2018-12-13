@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-@TeleOp(name = "DeLoreanTeleOpModeMain", group = "DeLorean")
+@TeleOp(name = "DeTeleOp", group = "DeLorean")
 public class DeLoreanTeleOpModeMain extends LinearOpMode {
     private DcMotor BackLeft;
     private DcMotor BackRight;
@@ -18,6 +18,9 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
     //Declare any other motors (servos, etc.)
     private Servo svClaim;
+
+    // Max turn speed variable
+    private double speedLimit;
 
     //Declare sensors
     //private ColorSensor ColorSensorR;
@@ -48,28 +51,28 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
         while (opModeIsActive()) {
             //Driving NOT strafing
-            BackRight.setPower(-gamepad1.right_stick_y * 0.75);
-            BackLeft.setPower(-gamepad1.left_stick_y * 0.75);
-            FrontRight.setPower(-gamepad1.right_stick_y * 0.75);
-            FrontLeft.setPower(-gamepad1.left_stick_y * 0.75);
+            BackRight.setPower(-gamepad1.right_stick_y * speedLimit);
+            BackLeft.setPower(-gamepad1.left_stick_y * speedLimit);
+            FrontRight.setPower(-gamepad1.right_stick_y * speedLimit);
+            FrontLeft.setPower(-gamepad1.left_stick_y * speedLimit);
 
             // Mess with lift
             tethookLift.setPower(gamepad2.right_stick_y);
 
             //Strafe left
             if(gamepad1.dpad_left) {
-                BackLeft.setPower(strafeSpeed * 0.75);
-                BackRight.setPower(-strafeSpeed * 0.75);
-                FrontLeft.setPower(-strafeSpeed * 0.75);
-                FrontRight.setPower(strafeSpeed * 0.75);
+                BackLeft.setPower(strafeSpeed * speedLimit);
+                BackRight.setPower(-strafeSpeed * speedLimit);
+                FrontLeft.setPower(-strafeSpeed * speedLimit);
+                FrontRight.setPower(strafeSpeed * speedLimit);
 
             }
             //Strafe right
             if(gamepad1.dpad_right) {
-                BackLeft.setPower(-strafeSpeed * 0.75);
-                BackRight.setPower(strafeSpeed * 0.75);
-                FrontLeft.setPower(strafeSpeed * 0.75);
-                FrontRight.setPower(-strafeSpeed * 0.75);
+                BackLeft.setPower(-strafeSpeed * speedLimit);
+                BackRight.setPower(strafeSpeed * speedLimit);
+                FrontLeft.setPower(strafeSpeed * speedLimit);
+                FrontRight.setPower(-strafeSpeed * speedLimit);
             }
             //Changes position of claim servo based on driver controller A or B
             if(gamepad1.a) {
@@ -78,6 +81,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
             if(gamepad1.b) {
                 svClaim.setPosition(0);
             }
+            //TODO: Redo tucking code for Week 3 competition
             //Untuck Left Wheels
             if(gamepad2.left_trigger > 0) {
                 MotorWheelTuckL.setPower(gamepad2.left_trigger);
