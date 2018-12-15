@@ -14,7 +14,7 @@ public class DeTeleOp extends LinearOpMode {
     //private DcMotor MotorWheelTuckR;
     private DcMotor dcTuckLeft;
     private DcMotor tetHookLift;
-    private DcMotor dcScrew;
+    //private DcMotor dcScrew;
 
     //Declare any other motors (servos, etc.)
     private Servo svClaim;
@@ -91,13 +91,15 @@ public class DeTeleOp extends LinearOpMode {
                 dcScrew.setPower(0);
             }
             */
-            //TODO: Redo tucking code for Week 3 competition
 
             if(gamepad2.right_trigger > 0) {
                 dcTuckLeft.setPower(gamepad2.right_trigger);
             }
-            if(gamepad2.left_trigger > 0) {
+            else if(gamepad2.left_trigger > 0) {
                 dcTuckLeft.setPower(-gamepad2.left_trigger);
+            }
+            else {
+                dcTuckLeft.setPower(0);
             }
         }
     }

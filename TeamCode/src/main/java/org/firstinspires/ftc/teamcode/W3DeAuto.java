@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -15,7 +14,7 @@ public class W3DeAuto extends LinearOpMode {
     private DcMotor dcFrontRight;
     private DcMotor dcTuckRight;
     private DcMotor dcTuckLeft;
-    private DcMotor tethookLift;
+    private DcMotor tetHookLift;
 
     // Declare servos
     // private Servo svFlipper;
@@ -25,10 +24,12 @@ public class W3DeAuto extends LinearOpMode {
     // private ColorSensor csMain;
 
     // Used to specify direction for strafing, turning, or later arch screw intake
-    public enum direction { UP, DOWN, LEFT, RIGHT }
+    public enum direction {
+        LEFT, RIGHT
+    }
 
     // Used to skip future scannings
-    private boolean sensedGold;
+    // private boolean sensedGold;
 
     // Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
@@ -42,7 +43,7 @@ public class W3DeAuto extends LinearOpMode {
         dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         //dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
         //dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
-        tethookLift = hardwareMap.get(DcMotor.class, "HookLift");
+        tetHookLift = hardwareMap.get(DcMotor.class, "HookLift");
 
         // Servos
         // svFlipper = hardwareMap.get(Servo.class, "Flipper");
@@ -64,20 +65,22 @@ public class W3DeAuto extends LinearOpMode {
         waitForStart();
 
         // Get off hook
-        liftWheels(0.5, tuckSpeed);
-        sleep(250);
-        tethookLift.setPower(1);
-        sleep(8000);
-        tethookLift.setPower(0);
-
-        turnDegrees(180, 0.4, direction.RIGHT);
+        liftWheels(500, tuckSpeed);
+        sleep(500);
+        tetHookLift.setPower(1);
+        sleep(9000);
+        tetHookLift.setPower(0);
+        
+        // driveInches(1, motorSpeed);
+        // turnDegrees(180, 0.4, direction.RIGHT);
+        strafe(1, turnSpeed, direction.RIGHT);
 
         // Drive to claim site
-        driveInches(72, motorSpeed);
+        // driveInches(72, motorSpeed);
 
         // Turn and drop claim piece
-        turnDegrees(90, turnSpeed, direction.RIGHT);
-        svClaim.setPosition(0.7);
+        // turnDegrees(90, turnSpeed, direction.RIGHT);
+        // svClaim.setPosition(0.7);
 
         // Turn, approach crater (maybe?)
 
@@ -143,6 +146,36 @@ public class W3DeAuto extends LinearOpMode {
     }
     */
     //endregion
+
+    private void strafeLeftSideOut(double inches, double speed){
+        //Converts degrees into ticks
+
+        double totalDistance = (REV_TICK_COUNT / (Math.PI * 4)) * inches;
+
+        //Resets motor encoders
+        dcFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dcBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        dcFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dcBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        dcFrontLeft.setTargetPosition((int)totalDistance);
+        dcBackLeft.setTargetPosition(-(int)totalDistance);
+
+        dcBackLeft.setPower(-speed);
+        dcFrontLeft.setPower(speed);
+
+
+        //Stalls until motors are done
+        while (opModeIsActive() && dcBackLeft.isBusy() && dcBackRight.isBusy() && dcFrontLeft.isBusy() && dcFrontRight.isBusy()) {
+            idle();
+        }
+
+        //Brake all motors
+        dcBackLeft.setPower(0);
+        dcFrontLeft.setPower(0);
+
+    }
 
     private void strafe(double inches, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
@@ -253,59 +286,29 @@ public class W3DeAuto extends LinearOpMode {
 
     }
 
-    private void liftWheels (double rotations, double tuckSpeed){
+    // Landing code
+    private void liftWheels (long milliseconds, double tuckSpeed){
 
-        final int TUCK_TICK_COUNT = 1120;
-        double totalRotations = TUCK_TICK_COUNT * rotations;
+        // final int HD_40_1_TICK_COUNT = 1120;
+        // double totalRotations = HD_40_1_TICK_COUNT * rotations;
 
-        dcTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dcTuckLeft.setTargetPosition((int)totalRotations);
+        // dcTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // dcTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // dcTuckLeft.setTargetPosition((int)totalRotations);
         dcTuckLeft.setPower(tuckSpeed);
+        sleep(milliseconds);
 
-        while(opModeIsActive() && dcTuckLeft.isBusy()) {
-            idle();
-        }
+        // while(opModeIsActive() && dcTuckLeft.isBusy()) {
+        //     idle();
+        // }
 
-        dcTuckLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // dcTuckLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        dcTuckLeft.setPower(0.2);
-        sleep(2000);
+        // dcTuckLeft.setPower(0.2);
+        // sleep(2000);
         dcTuckLeft.setPower(0);
     }
 
-    private void landWheels(double rotations, double tuckSpeed){
-        final int TUCK_TICK_COUNT = 1120;
-        double totalRotations = TUCK_TICK_COUNT * rotations;
-
-        //Reset encoders and make motors run to # of ticks
-        dcTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcTuckRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        dcTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dcTuckRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        //Define target position and run motors
-        dcTuckLeft.setTargetPosition((int)totalRotations);
-        dcTuckRight.setTargetPosition(-(int)totalRotations);
-
-        dcTuckLeft.setPower(tuckSpeed);
-        dcTuckRight.setPower(-tuckSpeed);
-
-        //Wait until wheels finish tucking
-        while (opModeIsActive() && dcTuckLeft.isBusy() && dcTuckRight.isBusy()) {
-            idle();
-        }
-
-        //Keep wheels down and don't let robot collapse
-        /**
-         * dcTuckLeft.setPower(0.2);
-         * dcTuckRight.setPower(-0.2);
-         */
-
-    }
-
-    //Drives distance in INCHES
     private void driveInches(double inches, double motorSpeed){
         //Convert inches to ticks
         double totalDistance = (REV_TICK_COUNT / 12.566) * inches;
