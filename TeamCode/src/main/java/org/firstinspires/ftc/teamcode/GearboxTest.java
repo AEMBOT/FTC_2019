@@ -26,7 +26,7 @@ public class GearboxTest extends LinearOpMode {
             motorL.setPower(gamepad1.left_stick_y);
 
             if (gamepad1.a){
-                screw.setPower(1);
+                screw.setPower(0.5);
             }
             if (gamepad1.b){
                 screw.setPower(0);

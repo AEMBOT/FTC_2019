@@ -33,7 +33,7 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
         dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         //MotorWheelTuckR = hardwareMap.get(DcMotor.class, "WheelTuckRight");
         tetHookLift = hardwareMap.get(DcMotor.class, "HookLift");
-        dcScrew = hardwareMap.get(DcMotor.class, "screw");
+        //dcScrew = hardwareMap.get(DcMotor.class, "screw");
 
         //Servo
         svClaim = hardwareMap.get(Servo.class, "svClaim");
@@ -78,12 +78,19 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
 
             //Changes position of claim servo based on driver controller A or B
             if(gamepad1.a) {
-                svClaim.setPosition(1);
+                svClaim.setPosition(0.5);
             }
             if(gamepad1.b) {
                 svClaim.setPosition(0);
             }
-
+            /*
+            if (gamepad1.a){
+                dcScrew.setPower(0.5);
+            }
+            if (gamepad1.b){
+                dcScrew.setPower(0);
+            }
+            */
             //TODO: Redo tucking code for Week 3 competition
 
             //region Old Tucking Code

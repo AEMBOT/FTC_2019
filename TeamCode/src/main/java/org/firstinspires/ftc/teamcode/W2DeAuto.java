@@ -40,7 +40,8 @@ public class W2DeAuto extends LinearOpMode {
         dcFrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         dcFrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
-        dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        //dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        //dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
         tethookLift = hardwareMap.get(DcMotor.class, "HookLift");
 
         // Servos
@@ -68,16 +69,16 @@ public class W2DeAuto extends LinearOpMode {
         tethookLift.setPower(1);
         sleep(8000);
         tethookLift.setPower(0);
+
         turnDegrees(180, 0.4, direction.RIGHT);
 
-        /*
         // Drive to claim site
-        driveInches(48, motorSpeed);
+        driveInches(72, motorSpeed);
 
         // Drop claim piece
         svClaim.setPosition(1);
         svClaim.setPosition(0);
-        */
+
 
         // Turn, approach crater (maybe?)
 
@@ -113,7 +114,7 @@ public class W2DeAuto extends LinearOpMode {
         // Park on crater
         turnDegrees(110, turnSpeed, direction.RIGHT);
         driveInches(60, motorSpeed);
-        */
+
         //endregion
 
         //region Pseudocode
