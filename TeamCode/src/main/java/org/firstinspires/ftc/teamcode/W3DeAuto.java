@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "W2DeAuto", group = "DeLorean")
-public class W2DeAuto extends LinearOpMode {
+@Autonomous(name = "W3DeAuto", group = "DeLorean")
+public class W3DeAuto extends LinearOpMode {
     // Declares Motor Variables
     private DcMotor dcBackLeft;
     private DcMotor dcBackRight;
@@ -75,10 +75,9 @@ public class W2DeAuto extends LinearOpMode {
         // Drive to claim site
         driveInches(72, motorSpeed);
 
-        // Drop claim piece
-        svClaim.setPosition(1);
-        svClaim.setPosition(0);
-
+        // Turn and drop claim piece
+        turnDegrees(90, turnSpeed, direction.RIGHT);
+        svClaim.setPosition(0.7);
 
         // Turn, approach crater (maybe?)
 

@@ -5,12 +5,14 @@ Made for 2019 FTC Rover Ruckus
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "MainAutoMode", group = "DeLorean")
+@Disabled
 public class MainAutoMode extends LinearOpMode {
     // Declares Motor Variables
     private DcMotor dcBackLeft;

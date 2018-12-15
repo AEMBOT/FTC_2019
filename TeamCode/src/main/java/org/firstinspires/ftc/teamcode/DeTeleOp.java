@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "DeTeleOp", group = "DeLorean")
-public class DeLoreanTeleOpModeMain extends LinearOpMode {
+public class DeTeleOp extends LinearOpMode {
     private DcMotor dcBackLeft;
     private DcMotor dcBackRight;
     private DcMotor dcFrontLeft;
@@ -93,43 +93,12 @@ public class DeLoreanTeleOpModeMain extends LinearOpMode {
             */
             //TODO: Redo tucking code for Week 3 competition
 
-            //region Old Tucking Code
-            //Untuck Left Wheels
-            /*
-            if(gamepad2.left_trigger > 0) {
-                dcTuckLeft.setPower(gamepad2.left_trigger);
-            }
-            //Tuck left wheels
-            if(gamepad2.left_bumper) {
-                dcTuckLeft.setPower(-1);
-            }
-
-            if (gamepad2.a){
-                dcScrew.setPower(1);
-            }
-            if (gamepad2.b){
-                dcScrew.setPower(0);
-            }
-
-
-            //Untuck right wheels
             if(gamepad2.right_trigger > 0) {
-                MotorWheelTuckR.setPower(-gamepad2.right_trigger);
+                dcTuckLeft.setPower(gamepad2.right_trigger);
             }
-            //Tuck left wheels
-            if(gamepad2.right_bumper) {
-                MotorWheelTuckR.setPower(1);
+            if(gamepad2.left_trigger > 0) {
+                dcTuckLeft.setPower(-gamepad2.left_trigger);
             }
-            else {
-                dcBackRight.setPower(0);
-                dcBackLeft.setPower(0);
-                dcFrontRight.setPower(0);
-                dcFrontLeft.setPower(0);
-                MotorWheelTuckR.setPower(0);
-                dcTuckLeft.setPower(0);
-            }
-            */
-            //endregion
         }
     }
 }
