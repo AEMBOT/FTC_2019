@@ -75,6 +75,27 @@ public class DeTeleOp extends LinearOpMode {
                 dcFrontLeft.setPower(strafeSpeed * speedLimit);
                 dcFrontRight.setPower(-strafeSpeed * speedLimit);
             }
+            // Recovery maneuvers
+            if(gamepad2.dpad_left) {
+                dcBackLeft.setPower(strafeSpeed * speedLimit);
+                dcFrontLeft.setPower(-strafeSpeed * speedLimit);
+            }
+            if(gamepad2.dpad_right) {
+                dcBackRight.setPower(strafeSpeed * speedLimit);
+                dcFrontRight.setPower(-strafeSpeed * speedLimit);
+            }
+            if(gamepad2.dpad_up) {
+                dcBackLeft.setPower(strafeSpeed * speedLimit);
+                dcFrontLeft.setPower(-strafeSpeed * speedLimit);
+                dcBackRight.setPower(strafeSpeed * speedLimit);
+                dcFrontRight.setPower(-strafeSpeed * speedLimit);
+            }
+            if(gamepad2.dpad_down) {
+                dcBackLeft.setPower(-strafeSpeed * speedLimit);
+                dcFrontLeft.setPower(strafeSpeed * speedLimit);
+                dcBackRight.setPower(-strafeSpeed * speedLimit);
+                dcFrontRight.setPower(strafeSpeed * speedLimit);
+            }
 
             //Changes position of claim servo based on driver controller A or B
             if(gamepad1.a) {

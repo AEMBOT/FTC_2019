@@ -70,10 +70,8 @@ public class W3DeAuto extends LinearOpMode {
         tetHookLift.setPower(1);
         sleep(9000);
         tetHookLift.setPower(0);
-        
-        // driveInches(1, motorSpeed);
+
         // turnDegrees(180, 0.4, direction.RIGHT);
-        strafe(1, turnSpeed, direction.RIGHT);
 
         // Drive to claim site
         // driveInches(72, motorSpeed);
@@ -147,33 +145,15 @@ public class W3DeAuto extends LinearOpMode {
     */
     //endregion
 
-    private void strafeLeftSideOut(double inches, double speed){
-        //Converts degrees into ticks
+    private void strafeRightSideOut(long milliseconds, double speed){
+        dcBackRight.setPower(speed);
+        dcFrontRight.setPower(-speed);
 
-        double totalDistance = (REV_TICK_COUNT / (Math.PI * 4)) * inches;
-
-        //Resets motor encoders
-        dcFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        dcFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dcBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        dcFrontLeft.setTargetPosition((int)totalDistance);
-        dcBackLeft.setTargetPosition(-(int)totalDistance);
-
-        dcBackLeft.setPower(-speed);
-        dcFrontLeft.setPower(speed);
-
-
-        //Stalls until motors are done
-        while (opModeIsActive() && dcBackLeft.isBusy() && dcBackRight.isBusy() && dcFrontLeft.isBusy() && dcFrontRight.isBusy()) {
-            idle();
-        }
+        sleep(milliseconds);
 
         //Brake all motors
-        dcBackLeft.setPower(0);
-        dcFrontLeft.setPower(0);
+        dcBackRight.setPower(0);
+        dcFrontRight.setPower(0);
 
     }
 
