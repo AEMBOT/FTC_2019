@@ -1,7 +1,9 @@
-/*
-Code Stolen From Will Richards by Troy Lopez for the DeLorean robot.
-Made for 2019 FTC Rover Ruckus
- */
+/**
+ * Program written by Zane Othman for DeLorean 4.0 as one of two
+ * variants of automode to be used at qualifiers
+ * 8 January, 2019
+*/
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -61,101 +63,9 @@ public class MainAutoMode extends LinearOpMode {
 
         waitForStart();
 
-        // Brings down wheels for landing
-        // landWheels(1,2,tuckSpeed,strafeSpeed);
+        // Code that does stuff goes here
 
-        // Sets flipper arm perpendicular to mat
-        svFlipper.setPosition(0.5);
-
-        // Unhooks from lander
-        //driveInches(2,motorSpeed);
-
-        // Lines up with first mineral
-        turnOnTheSpot(70, turnSpeed, direction.RIGHT);
-
-        // Drives up to mineral
-        driveInches(35.5, motorSpeed);
-
-        // Checks what color it is and moves it
-        if(isItYellow()) {
-            svFlipper.setPosition(.8);
-            svFlipper.setPosition(.2);
-        }
-
-        // Aligns with claim site and drops element
-        turnOnTheSpot(40, turnSpeed, direction.RIGHT);
-        driveInches(28, motorSpeed);
-
-        // Drop element
-
-        // Aligns with second (center) mineral and drives up to it
-        turnOnTheSpot(145, turnSpeed, direction.RIGHT);
-        driveInches(25.5, motorSpeed);
-
-        if ((isItYellow())) {
-            //Pickup-move cube
-            svFlipper.setPosition(0.8);
-            svFlipper.setPosition(0.5);
-        }
-
-        //Third Mineral
-        turnOnTheSpot(85, turnSpeed, direction.LEFT);
-        driveInches(15, motorSpeed);
-
-        if ((isItYellow())) {
-            //Pickup-move cube
-            svFlipper.setPosition(0.8);
-            svFlipper.setPosition(0.5);
-        }
-
-        //Second set, first mineral
-        turnOnTheSpot(45, turnSpeed, direction.RIGHT);
-        driveInches(48.5, motorSpeed);
-
-        //Last mineral
-        if ((isItYellow())) {
-            //Pickup-move cube
-            svFlipper.setPosition(.8);
-            svFlipper.setPosition(.5);
-        }
-
-        //Parks
-        turnOnTheSpot(90, turnSpeed, direction.LEFT);
-        driveInches(4, motorSpeed);
-        turnOnTheSpot(90, turnSpeed, direction.RIGHT);
-        driveInches(10, motorSpeed);
-
-        //Wait for teleop to start
     }
-
-
-    //region Old Intake
-    //Intake function
-    //private void IntakeObject(double motorPower, double intakeTime, double rotations, direction liftDirection) {
-        /* Function pseudocode
-         *
-         * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
-         * Check which direction to move lift with liftDirection parameter
-         * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
-         */
-    //}
-
-
-
-
-    /*
-    //Intake function
-    private void IntakeObject (double motorPower, double intakeTime, double rotations, direction liftDirection) {
-        /* Function pseudocode
-
-         * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
-         * Check which direction to move lift with liftDirection parameter
-         * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
-         *
-    }
-    */
-   //endregion
-
     private void strafe(double distance, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
 

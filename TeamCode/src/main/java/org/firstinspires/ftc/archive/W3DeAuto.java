@@ -1,19 +1,12 @@
-/*
-Code Stolen From Will Richards by Troy Lopez for the DeLorean robot.
-Made for 2019 FTC Rover Ruckus
- */
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "MainAutoMode", group = "DeLorean")
-
-public class MainAutoMode extends LinearOpMode {
+@Autonomous(name = "W3DeAuto", group = "DeLorean")
+public class W3DeAuto extends LinearOpMode {
     // Declares Motor Variables
     private DcMotor dcBackLeft;
     private DcMotor dcBackRight;
@@ -21,15 +14,22 @@ public class MainAutoMode extends LinearOpMode {
     private DcMotor dcFrontRight;
     private DcMotor dcTuckRight;
     private DcMotor dcTuckLeft;
+    private DcMotor tetHookLift;
 
     // Declare servos
-    private Servo svFlipper;
+    // private Servo svFlipper;
+    private Servo svClaim;
 
     // Declare color sensor(s) here
-    private ColorSensor csMain;
+    // private ColorSensor csMain;
 
     // Used to specify direction for strafing, turning, or later arch screw intake
-    public enum direction { UP, DOWN, LEFT, RIGHT }
+    public enum direction {
+        LEFT, RIGHT
+    }
+
+    // Used to skip future scannings
+    // private boolean sensedGold;
 
     // Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
@@ -41,13 +41,16 @@ public class MainAutoMode extends LinearOpMode {
         dcFrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         dcFrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
-        dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        //dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        //dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        tetHookLift = hardwareMap.get(DcMotor.class, "HookLift");
 
-        //Servos
-        svFlipper = hardwareMap.get(Servo.class, "Flipper");
+        // Servos
+        // svFlipper = hardwareMap.get(Servo.class, "Flipper");
+        svClaim = hardwareMap.get(Servo.class, "svClaim");
 
         // Sensors
-        csMain = hardwareMap.get(ColorSensor.class, "ColorSensor");
+        // csMain = hardwareMap.get(ColorSensor.class, "ColorSensor");
 
         // Reverse motors on one side so all rotate in same direction
         dcBackLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -55,111 +58,109 @@ public class MainAutoMode extends LinearOpMode {
 
         //Sets up speeds for different actions
         double motorSpeed = 0.7;
-        double turnSpeed = .8;
-        double tuckSpeed = 0.75;
-        double strafeSpeed = 1;
+        double turnSpeed = 0.8;
+        double tuckSpeed = 1;
+        // double strafeSpeed = 1; Impractical; we only use it once
 
         waitForStart();
 
-        // Brings down wheels for landing
-        // landWheels(1,2,tuckSpeed,strafeSpeed);
+        // Get off hook
+        liftWheels(500, tuckSpeed);
+        sleep(500);
+        tetHookLift.setPower(1);
+        sleep(9000);
+        tetHookLift.setPower(0);
 
-        // Sets flipper arm perpendicular to mat
-        svFlipper.setPosition(0.5);
+        // turnDegrees(180, 0.4, direction.RIGHT);
 
-        // Unhooks from lander
-        //driveInches(2,motorSpeed);
+        // Drive to claim site
+        // driveInches(72, motorSpeed);
 
-        // Lines up with first mineral
-        turnOnTheSpot(70, turnSpeed, direction.RIGHT);
+        // Turn and drop claim piece
+        // turnDegrees(90, turnSpeed, direction.RIGHT);
+        // svClaim.setPosition(0.7);
 
-        // Drives up to mineral
-        driveInches(35.5, motorSpeed);
+        // Turn, approach crater (maybe?)
 
-        // Checks what color it is and moves it
+        //region Old Code
+        /*
+        turnDegrees(15, turnSpeed, direction.RIGHT);
+
+        driveInches(39.5, motorSpeed);
+
         if(isItYellow()) {
-            svFlipper.setPosition(.8);
-            svFlipper.setPosition(.2);
+            hitGold();
+            sensedGold = true;
+        }
+        turnDegrees(110, turnSpeed, direction.LEFT);
+        driveInches(14.5, motorSpeed);
+        if (isItYellow() && !sensedGold) {
+            hitGold();
+            sensedGold = true;
+        }
+        driveInches(14.5, motorSpeed);
+        if(!sensedGold) {
+            hitGold();
         }
 
-        // Aligns with claim site and drops element
-        turnOnTheSpot(40, turnSpeed, direction.RIGHT);
-        driveInches(28, motorSpeed);
+        // Go to claim site
+        turnDegrees(20, turnSpeed, direction.RIGHT);
+        driveInches(30, motorSpeed);
 
-        // Drop element
+        // Drop claim piece
+        svClaim.setPosition(0.8);
+        svClaim.setPosition(0);
 
-        // Aligns with second (center) mineral and drives up to it
-        turnOnTheSpot(145, turnSpeed, direction.RIGHT);
-        driveInches(25.5, motorSpeed);
+        // Park on crater
+        turnDegrees(110, turnSpeed, direction.RIGHT);
+        driveInches(60, motorSpeed);
 
-        if ((isItYellow())) {
-            //Pickup-move cube
-            svFlipper.setPosition(0.8);
-            svFlipper.setPosition(0.5);
-        }
+        //endregion
 
-        //Third Mineral
-        turnOnTheSpot(85, turnSpeed, direction.LEFT);
-        driveInches(15, motorSpeed);
-
-        if ((isItYellow())) {
-            //Pickup-move cube
-            svFlipper.setPosition(0.8);
-            svFlipper.setPosition(0.5);
-        }
-
-        //Second set, first mineral
-        turnOnTheSpot(45, turnSpeed, direction.RIGHT);
-        driveInches(48.5, motorSpeed);
-
-        //Last mineral
-        if ((isItYellow())) {
-            //Pickup-move cube
-            svFlipper.setPosition(.8);
-            svFlipper.setPosition(.5);
-        }
-
-        //Parks
-        turnOnTheSpot(90, turnSpeed, direction.LEFT);
-        driveInches(4, motorSpeed);
-        turnOnTheSpot(90, turnSpeed, direction.RIGHT);
-        driveInches(10, motorSpeed);
-
-        //Wait for teleop to start
+        //region Pseudocode
+        /* Pseudocode
+         * 1. Land
+         * 2. Turn and approach right mineral of first set
+         * START IF/ELSEIF/ELSE STATEMENT
+         * 3. Scan it & intake if gold
+         *    a. If it is, intake via Archimedes screw & skip 4 + 5
+         *   4. Turn and move above next (center) mineral & scan
+         *     a. Intake if yellow & skip 5
+         *   5. Approach last mineral & intake if other two weren't yellow
+         * END
+         * 6. Turn toward and approach claim site
+         * 7. Drop claim piece (and gold if picked up)
+         * 8. Turn towards crater and drive
+         * 9. Park on (NOT IN) crater
+         */
+        //endregion
     }
 
-
-    //region Old Intake
-    //Intake function
-    //private void IntakeObject(double motorPower, double intakeTime, double rotations, direction liftDirection) {
-        /* Function pseudocode
-         *
-         * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
-         * Check which direction to move lift with liftDirection parameter
-         * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
-         */
-    //}
-
-
-
-
+    //region We don't have a flipper
     /*
-    //Intake function
-    private void IntakeObject (double motorPower, double intakeTime, double rotations, direction liftDirection) {
-        /* Function pseudocode
-
-         * Reset lift and screw encoders and set to run to position (possibly don't do if using intakeTime)
-         * Check which direction to move lift with liftDirection parameter
-         * Start running IntakeServo as a continuous rotation servo ("servoName".setPower(x))
-         *
+    private void hitGold() {
+        svFlipper.setPosition(0.7);
+        svFlipper.setPosition(0.4);
     }
     */
-   //endregion
+    //endregion
 
-    private void strafe(double distance, double motorSpeed, direction strafeDirection){
+    private void strafeRightSideOut(long milliseconds, double speed){
+        dcBackRight.setPower(speed);
+        dcFrontRight.setPower(-speed);
+
+        sleep(milliseconds);
+
+        //Brake all motors
+        dcBackRight.setPower(0);
+        dcFrontRight.setPower(0);
+
+    }
+
+    private void strafe(double inches, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
 
-        double totalDistance = (REV_TICK_COUNT / (Math.PI * 4)) * distance;
+        double totalDistance = (REV_TICK_COUNT / (Math.PI * 4)) * inches;
 
         //Resets motor encoders
         dcBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -210,9 +211,9 @@ public class MainAutoMode extends LinearOpMode {
 
     }
 
-    private void turnOnTheSpot(double degrees, double turnSpeed, direction turnDirection){
+    private void turnDegrees(double degrees, double turnSpeed, direction turnDirection){
         //Converts degrees into ticks
-        final double CONVERSION_FACTOR = 5;
+        final double CONVERSION_FACTOR = 10; // Double to 10? 180 degrees was only 90
         double ticks = (degrees * CONVERSION_FACTOR);
 
         //Reset encoders and make motors run to # of ticks
@@ -261,70 +262,36 @@ public class MainAutoMode extends LinearOpMode {
         dcBackLeft.setPower(0);
         dcFrontRight.setPower(0);
         dcFrontLeft.setPower(0);
+
+
     }
-    private void landWheels(double rotations, double strafeRotations, double tuckSpeed, double strafeSpeed){
-        final int TUCK_TICK_COUNT = 1120;
-        double totalRotations = TUCK_TICK_COUNT * rotations;
-        double strafeRotaions = TUCK_TICK_COUNT * strafeRotations;
 
-        //Reset encoders and make motors run to # of ticks
-        dcTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcTuckRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    // Landing code
+    private void liftWheels (long milliseconds, double tuckSpeed){
 
-        dcTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dcTuckRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dcFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dcBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dcBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // final int HD_40_1_TICK_COUNT = 1120;
+        // double totalRotations = HD_40_1_TICK_COUNT * rotations;
 
-        //region Tucking code not necessary
-        /*
-        //Check which direction to move wheels
-        if (speedTuck < 0) {
-            dcTuckLeft.setTargetPosition(-(int)totalRotations);
-            sleep(1000);
-            dcTuckRight.setTargetPosition(-(int)totalRotations);
-        }
-        else {
-            dcTuckLeft.setTargetPosition((int)totalRotations);
-            sleep(1000);
-            dcTuckRight.setTargetPosition((int)totalRotations);
-        }
-        */
-        //endregion
-
-        //Define target position and run motors
-        dcTuckLeft.setTargetPosition((int)totalRotations);
-        dcTuckRight.setTargetPosition(-(int)totalRotations);
-        dcFrontRight.setTargetPosition(-(int)strafeRotations);
-        dcBackRight.setTargetPosition(-(int)strafeRotations);
-        dcFrontLeft.setTargetPosition((int)strafeRotations);
-        dcBackLeft.setTargetPosition((int)strafeRotations);
-
+        // dcTuckLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // dcTuckLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // dcTuckLeft.setTargetPosition((int)totalRotations);
         dcTuckLeft.setPower(tuckSpeed);
-        dcTuckRight.setPower(-tuckSpeed);
-        dcFrontLeft.setPower(strafeSpeed);
-        dcFrontRight.setPower(-strafeSpeed);
-        dcBackLeft.setPower(strafeSpeed);
-        dcBackRight.setPower(-strafeSpeed);
-        //Wait until wheels finish tucking
-        while (opModeIsActive() && dcTuckLeft.isBusy()) {
-            idle();
-        }
+        sleep(milliseconds);
 
-        //Keep wheels down and don't let robot collapse
-        dcTuckLeft.setPower(0.2);
-        dcTuckRight.setPower(-0.2);
+        // while(opModeIsActive() && dcTuckLeft.isBusy()) {
+        //     idle();
+        // }
+
+        // dcTuckLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        // dcTuckLeft.setPower(0.2);
+        // sleep(2000);
+        dcTuckLeft.setPower(0);
     }
-    //Drives distance in INCHES
-    private void driveInches(double distance, double motorSpeed){
+
+    private void driveInches(double inches, double motorSpeed){
         //Convert inches to ticks
-        double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
+        double totalDistance = (REV_TICK_COUNT / 12.566) * inches;
 
         //Reset encoders and make motors run for ticks
         dcBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -368,8 +335,10 @@ public class MainAutoMode extends LinearOpMode {
         dcFrontLeft.setPower(0);
         dcFrontRight.setPower(0);
     }
-    //Function to sense yellow that returns boolean
-    private boolean isItYellow(){
+
+    //Function to sense yellow that returns a boolean
+    //region We don't have a color sensor
+    /*private boolean isItYellow(){
         //Declare boolean isYellow and initialize it to false
         boolean isYellow = false;
 
@@ -381,4 +350,6 @@ public class MainAutoMode extends LinearOpMode {
         //Return boolean value isYellow
         return isYellow;
     }
+    */
+    //endregion
 }
