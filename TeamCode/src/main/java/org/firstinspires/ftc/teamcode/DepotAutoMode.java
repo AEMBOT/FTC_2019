@@ -13,9 +13,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "MainAutoMode", group = "DeLorean")
+@Autonomous(name = "DepotAutoMode", group = "DeLorean")
 
-public class MainAutoMode extends LinearOpMode {
+public class DepotAutoMode extends LinearOpMode {
     // Declares Motor Variables
     private DcMotor dcBackLeft;
     private DcMotor dcBackRight;
