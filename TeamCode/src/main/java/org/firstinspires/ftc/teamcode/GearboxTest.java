@@ -10,6 +10,9 @@ public class GearboxTest extends LinearOpMode {
     private DcMotor motorR;
 
     public void runOpMode() {
+        motorL = hardwareMap.get(DcMotor.class, "motorL");
+        motorR = hardwareMap.get(DcMotor.class, "motorR");
+        waitForStart();
         while (opModeIsActive()) {
             motorR.setPower(gamepad1.left_stick_y);
             motorL.setPower(gamepad1.left_stick_y);
