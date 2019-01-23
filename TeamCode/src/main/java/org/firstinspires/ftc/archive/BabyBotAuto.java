@@ -9,7 +9,7 @@ Also if you have alot of unorganized code somewhere insert //region [NAME HERE] 
 Try to keep use of regions to a minimal
 */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.archive;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
