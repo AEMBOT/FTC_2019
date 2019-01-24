@@ -2,7 +2,7 @@
  * Program written by Zane Othman for DeLorean 4.0 as one of two
  * variants of automode to be used at qualifiers
  * 8 January, 2019
-*/
+ */
 
 package org.firstinspires.ftc.teamcode;
 
@@ -23,9 +23,14 @@ public class DepotAutoMode extends LinearOpMode {
     private DcMotor dcFrontRight;
     private DcMotor dcTuckRight;
     private DcMotor dcTuckLeft;
+    private DcMotor dcIntake;
+    private DcMotor dcConveyor;
+    private DcMotor dcLift;
 
     // Declare servos
-    private Servo svFlipper;
+    private Servo svClaim;
+    private Servo svConveyor;
+    private Servo svSweeper;
 
     // Declare color sensor(s) here
     private ColorSensor csMain;
@@ -42,14 +47,14 @@ public class DepotAutoMode extends LinearOpMode {
         dcBackRight = hardwareMap.get(DcMotor.class, "BackRight");
         dcFrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         dcFrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
-        dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
-        dcTuckRight = hardwareMap.get(DcMotor.class, "WheelTuckRight");
+        dcIntake = hardwareMap.get(DcMotor.class, "Intake");
+        dcConveyor = hardwareMap.get(DcMotor.class, "Conveyor");
+        dcLift = hardwareMap.get(DcMotor.class, "Lift");
 
-        //Servos
-        svFlipper = hardwareMap.get(Servo.class, "Flipper");
-
-        // Sensors
-        csMain = hardwareMap.get(ColorSensor.class, "ColorSensor");
+        //Servo
+        svClaim = hardwareMap.get(Servo.class, "svClaim");
+        svConveyor = hardwareMap.get(Servo.class, "svConveyor");
+        svSweeper = hardwareMap.get(Servo.class, "svSweeper");
 
         // Reverse motors on one side so all rotate in same direction
         dcBackLeft.setDirection(DcMotor.Direction.REVERSE);

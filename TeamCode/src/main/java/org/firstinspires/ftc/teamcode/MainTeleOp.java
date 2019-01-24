@@ -32,7 +32,6 @@ public class MainTeleOp extends LinearOpMode {
         dcBackRight = hardwareMap.get(DcMotor.class, "BackRight");
         dcFrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         dcFrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
-        //dcTuckLeft = hardwareMap.get(DcMotor.class, "WheelTuckLeft");
         dcIntake = hardwareMap.get(DcMotor.class, "Intake");
         dcConveyor = hardwareMap.get(DcMotor.class, "Conveyor");
         dcLift = hardwareMap.get(DcMotor.class, "Lift");
@@ -46,9 +45,7 @@ public class MainTeleOp extends LinearOpMode {
         dcBackLeft.setDirection(DcMotor.Direction.REVERSE);
         dcFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        //Declare strafeSpeed variable
-        double strafeSpeed = .75;
-
+        //TODO: Implement speed limit for drivers
         // Initialize speed limit
         speedLimit = 0.75;
 
