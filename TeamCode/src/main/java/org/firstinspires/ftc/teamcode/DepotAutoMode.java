@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "DepotAutoMode", group = "DeLorean")
-
+@Disabled
 public class DepotAutoMode extends LinearOpMode {
     // Declares Motor Variables
     private DcMotor dcBackLeft;

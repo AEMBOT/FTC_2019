@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "GearboxTest", group = "DeLorean")
 @Disabled
-public class GearboxTest extends LinearOpMode {
+public class GearboxTest1 extends LinearOpMode {
     private DcMotor motorL;
     private DcMotor motorR;
 
