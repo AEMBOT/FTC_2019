@@ -84,6 +84,8 @@ public class CraterAutoMode extends LinearOpMode {
         driveInches(80, 1f);
 
     }
+    //region We can't strafe
+    /*
     private void strafe(double distance, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
 
@@ -101,28 +103,31 @@ public class CraterAutoMode extends LinearOpMode {
         dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Check which direction to strafe
-        if(strafeDirection == direction.RIGHT)
-        {
-            dcBackLeft.setTargetPosition((int)totalDistance);
-            dcBackRight.setTargetPosition(-(int)totalDistance);
-            dcFrontLeft.setTargetPosition(-(int)totalDistance);
-            dcFrontRight.setTargetPosition((int)totalDistance);
+        switch(strafeDirection) {
+            default:
+            case RIGHT:
+                dcBackLeft.setTargetPosition((int)totalDistance);
+                dcBackRight.setTargetPosition(-(int)totalDistance);
+                dcFrontLeft.setTargetPosition(-(int)totalDistance);
+                dcFrontRight.setTargetPosition((int)totalDistance);
 
-            dcBackLeft.setPower(motorSpeed);
-            dcBackRight.setPower(-motorSpeed);
-            dcFrontLeft.setPower(-motorSpeed);
-            dcFrontRight.setPower(motorSpeed);
-        }
-        else {
-            dcBackLeft.setTargetPosition((int)totalDistance);
-            dcBackRight.setTargetPosition(-(int)totalDistance);
-            dcFrontLeft.setTargetPosition(-(int)totalDistance);
-            dcFrontRight.setTargetPosition((int)totalDistance);
+                dcBackLeft.setPower(motorSpeed);
+                dcBackRight.setPower(-motorSpeed);
+                dcFrontLeft.setPower(-motorSpeed);
+                dcFrontRight.setPower(motorSpeed);
+                break;
 
-            dcBackLeft.setPower(motorSpeed);
-            dcBackRight.setPower(-motorSpeed);
-            dcFrontLeft.setPower(-motorSpeed);
-            dcFrontRight.setPower(motorSpeed);
+            case LEFT:
+                dcBackLeft.setTargetPosition((int)totalDistance);
+                dcBackRight.setTargetPosition(-(int)totalDistance);
+                dcFrontLeft.setTargetPosition(-(int)totalDistance);
+                dcFrontRight.setTargetPosition((int)totalDistance);
+
+                dcBackLeft.setPower(motorSpeed);
+                dcBackRight.setPower(-motorSpeed);
+                dcFrontLeft.setPower(-motorSpeed);
+                dcFrontRight.setPower(motorSpeed);
+                break;
         }
 
         //Stalls until motors are done
@@ -137,6 +142,8 @@ public class CraterAutoMode extends LinearOpMode {
         dcFrontLeft.setPower(0);
 
     }
+    */
+    //endregion
 
     private void turnOnTheSpot(double degrees, double turnSpeed, direction turnDirection){
         //Converts degrees into ticks
@@ -155,28 +162,31 @@ public class CraterAutoMode extends LinearOpMode {
         dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Check which direction to turn
-        if(turnDirection == direction.RIGHT)
-        {
-            dcBackLeft.setTargetPosition((int)ticks );
-            dcBackRight.setTargetPosition(-(int)ticks);
-            dcFrontLeft.setTargetPosition((int)ticks );
-            dcFrontRight.setTargetPosition(-(int)ticks);
+        switch(turnDirection) {
+            default:
+            case RIGHT:
+                dcBackLeft.setTargetPosition((int)ticks );
+                dcBackRight.setTargetPosition(-(int)ticks);
+                dcFrontLeft.setTargetPosition((int)ticks );
+                dcFrontRight.setTargetPosition(-(int)ticks);
 
-            dcBackLeft.setPower(turnSpeed);
-            dcBackRight.setPower(-turnSpeed);
-            dcFrontLeft.setPower(turnSpeed);
-            dcFrontRight.setPower(-turnSpeed);
-        }
-        else {
-            dcBackLeft.setTargetPosition(-(int)ticks);
-            dcBackRight.setTargetPosition((int)ticks);
-            dcFrontLeft.setTargetPosition(-(int)ticks);
-            dcFrontRight.setTargetPosition((int)ticks);
+                dcBackLeft.setPower(turnSpeed);
+                dcBackRight.setPower(-turnSpeed);
+                dcFrontLeft.setPower(turnSpeed);
+                dcFrontRight.setPower(-turnSpeed);
+                break;
 
-            dcBackLeft.setPower(-turnSpeed);
-            dcBackRight.setPower(turnSpeed);
-            dcFrontLeft.setPower(-turnSpeed);
-            dcFrontRight.setPower(turnSpeed);
+            case LEFT:
+                dcBackLeft.setTargetPosition(-(int)ticks);
+                dcBackRight.setTargetPosition((int)ticks);
+                dcFrontLeft.setTargetPosition(-(int)ticks);
+                dcFrontRight.setTargetPosition((int)ticks);
+
+                dcBackLeft.setPower(-turnSpeed);
+                dcBackRight.setPower(turnSpeed);
+                dcFrontLeft.setPower(-turnSpeed);
+                dcFrontRight.setPower(turnSpeed);
+                break;
         }
 
         //Wait until turning is done

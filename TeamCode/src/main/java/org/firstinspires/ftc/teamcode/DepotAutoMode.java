@@ -36,7 +36,9 @@ public class DepotAutoMode extends LinearOpMode {
     private ColorSensor csMain;
 
     // Used to specify direction for strafing, turning, or later arch screw intake
-    public enum direction { UP, DOWN, LEFT, RIGHT }
+    public enum direction {
+        UP, DOWN, LEFT, RIGHT
+    }
 
     // Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
@@ -82,6 +84,8 @@ public class DepotAutoMode extends LinearOpMode {
         turnOnTheSpot(45, turnSpeed, direction.LEFT);
         driveInches(50, 1f);
     }
+    //region We can't strafe
+    /*
     private void strafe(double distance, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
 
@@ -99,28 +103,31 @@ public class DepotAutoMode extends LinearOpMode {
         dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Check which direction to strafe
-        if(strafeDirection == direction.RIGHT)
-        {
-            dcBackLeft.setTargetPosition((int)totalDistance);
-            dcBackRight.setTargetPosition(-(int)totalDistance);
-            dcFrontLeft.setTargetPosition(-(int)totalDistance);
-            dcFrontRight.setTargetPosition((int)totalDistance);
+        switch(strafeDirection) {
+            default:
+            case RIGHT:
+                dcBackLeft.setTargetPosition((int)totalDistance);
+                dcBackRight.setTargetPosition(-(int)totalDistance);
+                dcFrontLeft.setTargetPosition(-(int)totalDistance);
+                dcFrontRight.setTargetPosition((int)totalDistance);
 
-            dcBackLeft.setPower(motorSpeed);
-            dcBackRight.setPower(-motorSpeed);
-            dcFrontLeft.setPower(-motorSpeed);
-            dcFrontRight.setPower(motorSpeed);
-        }
-        else {
-            dcBackLeft.setTargetPosition((int)totalDistance);
-            dcBackRight.setTargetPosition(-(int)totalDistance);
-            dcFrontLeft.setTargetPosition(-(int)totalDistance);
-            dcFrontRight.setTargetPosition((int)totalDistance);
+                dcBackLeft.setPower(motorSpeed);
+                dcBackRight.setPower(-motorSpeed);
+                dcFrontLeft.setPower(-motorSpeed);
+                dcFrontRight.setPower(motorSpeed);
+                break;
 
-            dcBackLeft.setPower(motorSpeed);
-            dcBackRight.setPower(-motorSpeed);
-            dcFrontLeft.setPower(-motorSpeed);
-            dcFrontRight.setPower(motorSpeed);
+            case LEFT:
+                dcBackLeft.setTargetPosition((int)totalDistance);
+                dcBackRight.setTargetPosition(-(int)totalDistance);
+                dcFrontLeft.setTargetPosition(-(int)totalDistance);
+                dcFrontRight.setTargetPosition((int)totalDistance);
+
+                dcBackLeft.setPower(motorSpeed);
+                dcBackRight.setPower(-motorSpeed);
+                dcFrontLeft.setPower(-motorSpeed);
+                dcFrontRight.setPower(motorSpeed);
+                break;
         }
 
         //Stalls until motors are done
@@ -135,8 +142,10 @@ public class DepotAutoMode extends LinearOpMode {
         dcFrontLeft.setPower(0);
 
     }
+    */
+    //endregion
 
-    private void turnOnTheSpot(double degrees, double turnSpeed, direction turnDirection){
+    private void turnOnTheSpot(double degrees, double turnSpeed, direction turnDirection) {
         //Converts degrees into ticks
         final double CONVERSION_FACTOR = 5;
         double ticks = (degrees * CONVERSION_FACTOR);
@@ -153,28 +162,31 @@ public class DepotAutoMode extends LinearOpMode {
         dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Check which direction to turn
-        if(turnDirection == direction.RIGHT)
-        {
-            dcBackLeft.setTargetPosition((int)ticks );
-            dcBackRight.setTargetPosition(-(int)ticks);
-            dcFrontLeft.setTargetPosition((int)ticks );
-            dcFrontRight.setTargetPosition(-(int)ticks);
+        switch (turnDirection) {
+            default:
+            case RIGHT:
+                dcBackLeft.setTargetPosition((int) ticks);
+                dcBackRight.setTargetPosition(-(int) ticks);
+                dcFrontLeft.setTargetPosition((int) ticks);
+                dcFrontRight.setTargetPosition(-(int) ticks);
 
-            dcBackLeft.setPower(turnSpeed);
-            dcBackRight.setPower(-turnSpeed);
-            dcFrontLeft.setPower(turnSpeed);
-            dcFrontRight.setPower(-turnSpeed);
-        }
-        else {
-            dcBackLeft.setTargetPosition(-(int)ticks);
-            dcBackRight.setTargetPosition((int)ticks);
-            dcFrontLeft.setTargetPosition(-(int)ticks);
-            dcFrontRight.setTargetPosition((int)ticks);
+                dcBackLeft.setPower(turnSpeed);
+                dcBackRight.setPower(-turnSpeed);
+                dcFrontLeft.setPower(turnSpeed);
+                dcFrontRight.setPower(-turnSpeed);
+                break;
 
-            dcBackLeft.setPower(-turnSpeed);
-            dcBackRight.setPower(turnSpeed);
-            dcFrontLeft.setPower(-turnSpeed);
-            dcFrontRight.setPower(turnSpeed);
+            case LEFT:
+                dcBackLeft.setTargetPosition(-(int) ticks);
+                dcBackRight.setTargetPosition((int) ticks);
+                dcFrontLeft.setTargetPosition(-(int) ticks);
+                dcFrontRight.setTargetPosition((int) ticks);
+
+                dcBackLeft.setPower(-turnSpeed);
+                dcBackRight.setPower(turnSpeed);
+                dcFrontLeft.setPower(-turnSpeed);
+                dcFrontRight.setPower(turnSpeed);
+                break;
         }
 
         //Wait until turning is done
@@ -253,7 +265,7 @@ public class DepotAutoMode extends LinearOpMode {
     //endregion
 
     //Drives distance in INCHES
-    private void driveInches(double distance, double motorSpeed){
+    private void driveInches(double distance, double motorSpeed) {
         //Convert inches to ticks
         double totalDistance = (REV_TICK_COUNT / 12.566) * distance;
 
@@ -269,17 +281,16 @@ public class DepotAutoMode extends LinearOpMode {
         dcFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Check whether to drive forward or backward
-        if(motorSpeed < 0){
-            dcBackLeft.setTargetPosition(-(int)totalDistance);
-            dcBackRight.setTargetPosition(-(int)totalDistance);
-            dcFrontLeft.setTargetPosition(-(int)totalDistance);
-            dcFrontRight.setTargetPosition(-(int)totalDistance);
-        }
-        else {
-            dcBackLeft.setTargetPosition((int)totalDistance);
-            dcBackRight.setTargetPosition((int)totalDistance);
-            dcFrontLeft.setTargetPosition((int)totalDistance);
-            dcFrontRight.setTargetPosition((int)totalDistance);
+        if (motorSpeed < 0) {
+            dcBackLeft.setTargetPosition(-(int) totalDistance);
+            dcBackRight.setTargetPosition(-(int) totalDistance);
+            dcFrontLeft.setTargetPosition(-(int) totalDistance);
+            dcFrontRight.setTargetPosition(-(int) totalDistance);
+        } else {
+            dcBackLeft.setTargetPosition((int) totalDistance);
+            dcBackRight.setTargetPosition((int) totalDistance);
+            dcFrontLeft.setTargetPosition((int) totalDistance);
+            dcFrontRight.setTargetPosition((int) totalDistance);
         }
 
         //Run motors
@@ -299,13 +310,14 @@ public class DepotAutoMode extends LinearOpMode {
         dcFrontLeft.setPower(0);
         dcFrontRight.setPower(0);
     }
+
     //Function to sense yellow that returns boolean
-    private boolean isItYellow(){
+    private boolean isItYellow() {
         //Declare boolean isYellow and initialize it to false
         boolean isYellow = false;
 
         //Senses yellow
-        if (csMain.red() > csMain.green() && csMain.blue() < (2 * csMain.green())  / 3) {
+        if (csMain.red() > csMain.green() && csMain.blue() < (2 * csMain.green()) / 3) {
             isYellow = true;
         }
 
