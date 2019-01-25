@@ -53,8 +53,8 @@ public class MainTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
             dcBackLeft.setPower(gamepad1.left_stick_y);
-            dcBackRight.setPower(gamepad1.left_stick_y);
-            dcFrontLeft.setPower(gamepad1.right_stick_y);
+            dcBackRight.setPower(gamepad1.right_stick_y);
+            dcFrontLeft.setPower(gamepad1.left_stick_y);
             dcFrontRight.setPower(gamepad1.right_stick_y);
 
             dcIntake.setPower(gamepad2.left_trigger);
@@ -82,7 +82,7 @@ public class MainTeleOp extends LinearOpMode {
             else {
                 svClaim.setPosition(0);
             }
-
+            /*
             if (gamepad1.dpad_left){
                 dcFrontLeft.setPower(-1);
                 dcBackLeft.setPower(1);
@@ -95,7 +95,7 @@ public class MainTeleOp extends LinearOpMode {
                 dcFrontRight.setPower(1);
                 dcBackRight.setPower(-1);
             }
-
+            */
         }
     }
 }

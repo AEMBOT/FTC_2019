@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "DepotAutoMode", group = "DeLorean")
-@Disabled
+
 public class DepotAutoMode extends LinearOpMode {
     // Declares Motor Variables
     private DcMotor dcBackLeft;
@@ -67,8 +67,9 @@ public class DepotAutoMode extends LinearOpMode {
         double strafeSpeed = 1;
 
         waitForStart();
-
         // Code that does stuff goes here
+
+
 
     }
     private void strafe(double distance, double motorSpeed, direction strafeDirection){
