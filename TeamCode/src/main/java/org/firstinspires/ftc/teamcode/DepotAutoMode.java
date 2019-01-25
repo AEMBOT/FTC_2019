@@ -1,5 +1,5 @@
 /**
- * Program written by Zane Othman for DeLorean 4.0 as one of two
+ * Program written by Zane Othman and Troy Lopez (kind of) for DeLorean 4.0 as one of two
  * variants of automode to be used at qualifiers
  * 8 January, 2019
  */

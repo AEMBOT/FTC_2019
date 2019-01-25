@@ -1,3 +1,8 @@
+/**
+ * Program written by Troy Lopez for DeLorean 4.0 as one of two
+ * variants of automode to be used at qualifiers
+ * 8 January, 2019
+ */
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
