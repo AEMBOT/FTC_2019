@@ -21,8 +21,8 @@ public class CraterAutoMode extends LinearOpMode {
     private DcMotor dcBackRight;
     private DcMotor dcFrontLeft;
     private DcMotor dcFrontRight;
-    private DcMotor dcTuckRight;
-    private DcMotor dcTuckLeft;
+    //private DcMotor dcTuckRight;
+    //private DcMotor dcTuckLeft;
     private DcMotor dcIntake;
     private DcMotor dcConveyor;
     private DcMotor dcLift;
@@ -69,6 +69,19 @@ public class CraterAutoMode extends LinearOpMode {
         waitForStart();
 
         // Code that does stuff goes here
+
+        //Approach center mineral
+        driveInches(35, motorSpeed);
+        turnOnTheSpot(90, turnSpeed, direction.RIGHT);
+
+        //Scan and sample code goes here
+
+        driveInches(17, motorSpeed);
+
+        //Scan and sample code again if not already picked up
+
+        turnOnTheSpot(35, turnSpeed, direction.RIGHT);
+        driveInches(80, 1f);
 
     }
     private void strafe(double distance, double motorSpeed, direction strafeDirection){
@@ -177,6 +190,8 @@ public class CraterAutoMode extends LinearOpMode {
         dcFrontRight.setPower(0);
         dcFrontLeft.setPower(0);
     }
+    //region we don't have tucking motors
+    /*
     private void landWheels(double rotations, double strafeRotations, double tuckSpeed, double strafeSpeed){
         final int TUCK_TICK_COUNT = 1120;
         double totalRotations = TUCK_TICK_COUNT * rotations;
@@ -210,8 +225,8 @@ public class CraterAutoMode extends LinearOpMode {
             sleep(1000);
             dcTuckRight.setTargetPosition((int)totalRotations);
         }
-        */
-        //endregion
+
+
 
         //Define target position and run motors
         dcTuckLeft.setTargetPosition((int)totalRotations);
@@ -236,6 +251,9 @@ public class CraterAutoMode extends LinearOpMode {
         dcTuckLeft.setPower(0.2);
         dcTuckRight.setPower(-0.2);
     }
+    */
+    //endregion
+
     //Drives distance in INCHES
     private void driveInches(double distance, double motorSpeed){
         //Convert inches to ticks
