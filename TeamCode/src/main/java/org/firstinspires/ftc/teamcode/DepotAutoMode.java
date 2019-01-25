@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "DepotAutoMode", group = "DeLorean")
-@Disabled
+
 public class DepotAutoMode extends LinearOpMode {
     // Declares Motor Variables
     private DcMotor dcBackLeft;
@@ -67,7 +67,6 @@ public class DepotAutoMode extends LinearOpMode {
         double strafeSpeed = 1;
 
         waitForStart();
-
         // Code that does stuff goes here
 
         //Approach center mineral
@@ -83,7 +82,6 @@ public class DepotAutoMode extends LinearOpMode {
         turnOnTheSpot(45, turnSpeed, direction.LEFT);
         driveInches(50, 1f);
     }
-    //TODO: Use switch statements instead of if statements to check turn/strafe direction
     private void strafe(double distance, double motorSpeed, direction strafeDirection){
         //Converts degrees into ticks
 
