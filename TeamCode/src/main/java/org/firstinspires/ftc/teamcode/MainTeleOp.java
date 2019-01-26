@@ -7,8 +7,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
+
 
 @TeleOp(name = "MainTeleOp", group = "DeLorean")
 public class MainTeleOp extends LinearOpMode {
@@ -23,8 +26,8 @@ public class MainTeleOp extends LinearOpMode {
 
     //Declare any other motors (servos, etc.)
     private Servo svClaim;
-    private Servo svConveyor;
-    private Servo svSweeper;
+    private CRServo svConveyor;
+    private CRServo svSweeper;
 
     // Max turn speed variable
     private double speedLimit;
@@ -43,42 +46,46 @@ public class MainTeleOp extends LinearOpMode {
 
         //Servo
         svClaim = hardwareMap.get(Servo.class, "svClaim");
-        svConveyor = hardwareMap.get(Servo.class, "svConveyor");
-        svSweeper = hardwareMap.get(Servo.class, "svSweeper");
+        svConveyor = hardwareMap.get(CRServo.class, "svConveyor");
+        svSweeper = hardwareMap.get(CRServo.class, "svSweeper");
 
         //Reverse left motors so forward is the same for all motors
-        dcBackLeft.setDirection(DcMotor.Direction.REVERSE);
-        dcFrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        dcBackRight.setDirection(DcMotor.Direction.REVERSE);
+        dcFrontRight.setDirection(DcMotor.Direction.REVERSE);
 
         //TODO: Implement speed limit for drivers
         // Initialize speed limit
-        speedLimit = 0.75;
+        speedLimit = 0.7;
 
         waitForStart();
 
         while (opModeIsActive()) {
-            dcBackLeft.setPower(gamepad1.left_stick_y);
-            dcBackRight.setPower(gamepad1.right_stick_y);
-            dcFrontLeft.setPower(gamepad1.left_stick_y);
-            dcFrontRight.setPower(gamepad1.right_stick_y);
+            dcBackLeft.setPower(speedLimit * gamepad1.left_stick_y);
+            dcBackRight.setPower(speedLimit * gamepad1.right_stick_y);
+            dcFrontLeft.setPower(speedLimit * gamepad1.left_stick_y);
+            dcFrontRight.setPower(speedLimit * gamepad1.right_stick_y);
 
             dcIntake.setPower(gamepad2.left_trigger);
-            dcConveyor.setPower(gamepad2.right_trigger);
             dcLift.setPower(gamepad2.left_stick_y);
 
+            if(gamepad2.left_bumper) {
+                dcConveyor.setPower(0.75);
+            }
+            else if(gamepad2.right_bumper) {
+                dcConveyor.setPower(-0.75);
+            }
 
             if(gamepad1.a) {
-                svSweeper.setPosition(1);
+                svSweeper.setPower(1);
             }
             else {
-                svSweeper.setPosition(0.5);
+                svSweeper.setPower(0);
             }
-
             if(gamepad1.b) {
-                svConveyor.setPosition(1);
+                svConveyor.setPower(1);
             }
             else {
-                svConveyor.setPosition(0.5);
+                svConveyor.setPower(0);
             }
 
             if(gamepad1.x){
@@ -87,20 +94,7 @@ public class MainTeleOp extends LinearOpMode {
             else {
                 svClaim.setPosition(0);
             }
-            /*
-            if (gamepad1.dpad_left){
-                dcFrontLeft.setPower(-1);
-                dcBackLeft.setPower(1);
-                dcFrontRight.setPower(-1);
-                dcBackRight.setPower(1);
-            }
-            if (gamepad1.dpad_right){
-                dcFrontLeft.setPower(1);
-                dcBackLeft.setPower(-1);
-                dcFrontRight.setPower(1);
-                dcBackRight.setPower(-1);
-            }
-            */
+
         }
     }
 }
