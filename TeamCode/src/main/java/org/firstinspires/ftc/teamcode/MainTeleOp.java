@@ -65,8 +65,9 @@ public class MainTeleOp extends LinearOpMode {
             dcFrontLeft.setPower(speedLimit * gamepad1.left_stick_y);
             dcFrontRight.setPower(speedLimit * gamepad1.right_stick_y*1.05);
 
+            dcIntake.setPower(-gamepad2.right_trigger);
             dcIntake.setPower(gamepad2.left_trigger);
-            dcLift.setPower(gamepad2.left_stick_y);
+            dcLift.setPower(-gamepad2.right_stick_y);
 
             if(gamepad2.left_bumper) {
                 dcConveyor.setPower(0.75);
@@ -74,25 +75,39 @@ public class MainTeleOp extends LinearOpMode {
             else if(gamepad2.right_bumper) {
                 dcConveyor.setPower(-0.75);
             }
+            else {
+                dcConveyor.setPower(0);
+            }
 
-            if(gamepad1.a) {
+            if(gamepad1.right_trigger > 0) {
+                svSweeper.setPower(-1);
+            }
+            else if(gamepad1.left_trigger > 0) {
                 svSweeper.setPower(1);
             }
             else {
                 svSweeper.setPower(0);
             }
-            if(gamepad1.b) {
+
+            if(gamepad1.right_bumper) {
+                dcIntake.setPower(-1);
+                svConveyor.setPower(-1);
+            }
+            else if(gamepad1.left_bumper) {
+                dcIntake.setPower(1);
                 svConveyor.setPower(1);
             }
             else {
+                dcIntake.setPower(0);
                 svConveyor.setPower(0);
             }
 
+
             if(gamepad1.x){
-                svClaim.setPosition(1);
+                svClaim.setPosition(0);
             }
             else {
-                svClaim.setPosition(0);
+                svClaim.setPosition(1);
             }
 
         }
