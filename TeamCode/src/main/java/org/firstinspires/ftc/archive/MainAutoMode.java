@@ -2,7 +2,7 @@
 Code Stolen From Will Richards by Troy Lopez for the DeLorean robot.
 Made for 2019 FTC Rover Ruckus
  */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.archive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "MainAutoMode", group = "DeLorean")
+@Disabled
 
 public class MainAutoMode extends LinearOpMode {
     // Declares Motor Variables
