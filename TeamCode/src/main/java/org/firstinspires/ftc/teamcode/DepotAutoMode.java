@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 @Autonomous(name = "DepotAutoMode", group = "DeLorean")
 
@@ -26,11 +27,13 @@ public class DepotAutoMode extends LinearOpMode {
     private DcMotor dcIntake;
     private DcMotor dcConveyor;
     private DcMotor dcLift;
+    private DcMotor dcHook;
 
     // Declare servos
     private Servo svClaim;
-    private Servo svConveyor;
-    private Servo svSweeper;
+    private CRServo svConveyor;
+    private CRServo svSweeper;
+    private Servo svLock;
 
     // Declare color sensor(s) here
     private ColorSensor csMain;
@@ -42,6 +45,7 @@ public class DepotAutoMode extends LinearOpMode {
 
     // Number of ticks per rotation for drive motors
     private final int REV_TICK_COUNT = 560;
+    private final int REV_40_1_TICKS = 1120;
 
     public void runOpMode() {
         // Map variables to robot hardware (via config profile on phone)
@@ -52,11 +56,14 @@ public class DepotAutoMode extends LinearOpMode {
         dcIntake = hardwareMap.get(DcMotor.class, "Intake");
         dcConveyor = hardwareMap.get(DcMotor.class, "Conveyor");
         dcLift = hardwareMap.get(DcMotor.class, "Lift");
+        dcHook = hardwareMap.get(DcMotor.class, "Hook");
+
 
         //Servo
         svClaim = hardwareMap.get(Servo.class, "svClaim");
-        svConveyor = hardwareMap.get(Servo.class, "svConveyor");
-        svSweeper = hardwareMap.get(Servo.class, "svSweeper");
+        svConveyor = hardwareMap.get(CRServo.class, "svConveyor");
+        svSweeper = hardwareMap.get(CRServo.class, "svSweeper");
+        svLock = hardwareMap.get(Servo.class, "svLock");
 
         // Reverse motors on one side so all rotate in same direction
         dcBackLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -64,25 +71,28 @@ public class DepotAutoMode extends LinearOpMode {
 
         //Sets up speeds for different actions
         double motorSpeed = 0.7;
-        double turnSpeed = .8;
-        double tuckSpeed = 0.75;
-        double strafeSpeed = 1;
+        double turnSpeed = 0.8;
 
         waitForStart();
         // Code that does stuff goes here
 
-        //Approach center mineral
-        driveInches(35, motorSpeed);
-        turnOnTheSpot(90, turnSpeed, direction.LEFT);
+        //Get off hook
+        svLock.setPosition(0);
+        sleep(500);
+        moveHook(direction.UP);
 
-        //Scan and sample code goes here
+        driveInches(2, motorSpeed);
+        turnOnTheSpot(90, turnSpeed, direction.RIGHT);
 
-        driveInches(17, motorSpeed);
+        //Approach depot & claim
+        driveInches(63, motorSpeed);
+        svClaim.setPosition(1);
+        svClaim.setPosition(0);
+        turnOnTheSpot(45, turnSpeed, direction.LEFT);
 
         //Scan and sample code again if not already picked up
 
-        turnOnTheSpot(45, turnSpeed, direction.LEFT);
-        driveInches(50, 1f);
+        driveInches(70, -1.0);
     }
     //region We can't strafe
     /*
@@ -323,5 +333,28 @@ public class DepotAutoMode extends LinearOpMode {
 
         //Return boolean value isYellow
         return isYellow;
+    }
+
+    private void moveHook(direction direction) {
+        dcHook.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        dcHook.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        switch(direction) {
+            default:
+            case UP:
+                dcHook.setTargetPosition((int)4 * REV_40_1_TICKS);
+
+                dcHook.setPower(1);
+
+            case DOWN:
+                dcHook.setTargetPosition(-(int)4 * REV_40_1_TICKS);
+
+                dcHook.setPower(-1);
+        }
+        while(opModeIsActive() && dcHook.isBusy()) {
+            idle();
+        }
+        dcHook.setPower(0);
     }
 }

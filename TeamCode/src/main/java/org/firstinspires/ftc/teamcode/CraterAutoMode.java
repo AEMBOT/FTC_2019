@@ -9,12 +9,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "CraterAutoMode", group = "DeLorean")
-
+@Disabled
 public class CraterAutoMode extends LinearOpMode {
     // Declares Motor Variables
     private DcMotor dcBackLeft;
@@ -29,8 +30,8 @@ public class CraterAutoMode extends LinearOpMode {
 
     // Declare servos
     private Servo svClaim;
-    private Servo svConveyor;
-    private Servo svSweeper;
+    private CRServo svConveyor;
+    private CRServo svSweeper;
     private Servo svLock;
     // Declare color sensor(s) here
     //private ColorSensor csMain;
@@ -53,8 +54,8 @@ public class CraterAutoMode extends LinearOpMode {
 
         //Servo
         svClaim = hardwareMap.get(Servo.class, "svClaim");
-        svConveyor = hardwareMap.get(Servo.class, "svConveyor");
-        svSweeper = hardwareMap.get(Servo.class, "svSweeper");
+        svConveyor = hardwareMap.get(CRServo.class, "svConveyor");
+        svSweeper = hardwareMap.get(CRServo.class, "svSweeper");
         svLock = hardwareMap.get (Servo.class, "svLock");
 
         // Reverse motors on one side so all rotate in same direction
@@ -63,9 +64,7 @@ public class CraterAutoMode extends LinearOpMode {
 
         //Sets up speeds for different actions
         double motorSpeed = 0.7;
-        double turnSpeed = .8;
-        double tuckSpeed = 0.75;
-        double strafeSpeed = 1;
+        double turnSpeed = 0.8;
 
         waitForStart();
 

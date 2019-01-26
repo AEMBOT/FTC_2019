@@ -1,6 +1,6 @@
 /**
- * Program written by Troy Lopez for DeLorean 4.0 as one of two
- * variants of automode to be used at qualifiers
+ * Program written by Zane Othman and Troy Lopez for DeLorean 4.0 as teleop
+ * to be used at qualifiers
  * 8 January, 2019
  */
 package org.firstinspires.ftc.teamcode;
@@ -22,11 +22,13 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor dcIntake;
     private DcMotor dcConveyor;
     private DcMotor dcLift;
+    private DcMotor dcHook;
 
     //Declare any other motors (servos, etc.)
     private Servo svClaim;
     private CRServo svConveyor;
     private CRServo svSweeper;
+    private Servo svLock;
 
     // Max turn speed variable
     private double speedLimit;
@@ -42,11 +44,13 @@ public class MainTeleOp extends LinearOpMode {
         dcIntake = hardwareMap.get(DcMotor.class, "Intake");
         dcConveyor = hardwareMap.get(DcMotor.class, "Conveyor");
         dcLift = hardwareMap.get(DcMotor.class, "Lift");
+        dcHook = hardwareMap.get(DcMotor.class, "Hook");
 
         //Servo
         svClaim = hardwareMap.get(Servo.class, "svClaim");
         svConveyor = hardwareMap.get(CRServo.class, "svConveyor");
         svSweeper = hardwareMap.get(CRServo.class, "svSweeper");
+        svLock = hardwareMap.get(Servo.class, "svLock");
 
         //Reverse left motors so forward is the same for all motors
         dcBackRight.setDirection(DcMotor.Direction.REVERSE);
@@ -67,6 +71,7 @@ public class MainTeleOp extends LinearOpMode {
             dcIntake.setPower(-gamepad2.right_trigger);
             dcIntake.setPower(gamepad2.left_trigger);
             dcLift.setPower(-gamepad2.right_stick_y);
+            dcHook.setPower(gamepad2.left_stick_y);
 
             if(gamepad2.left_bumper) {
                 dcConveyor.setPower(0.75);
@@ -101,7 +106,6 @@ public class MainTeleOp extends LinearOpMode {
                 svConveyor.setPower(0);
             }
 
-
             if(gamepad1.x){
                 svClaim.setPosition(0);
             }
@@ -109,6 +113,12 @@ public class MainTeleOp extends LinearOpMode {
                 svClaim.setPosition(1);
             }
 
+            if(gamepad2.x) {
+                svLock.setPosition(1);
+            }
+            else if(gamepad2.b) {
+                svLock.setPosition(0);
+            }
         }
     }
 }
