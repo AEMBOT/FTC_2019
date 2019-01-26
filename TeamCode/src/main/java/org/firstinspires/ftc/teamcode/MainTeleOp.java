@@ -101,6 +101,16 @@ public class MainTeleOp extends LinearOpMode {
                 dcIntake.setPower(1);
                 svConveyor.setPower(1);
             }
+            /*
+            else if(gamepad1.left_bumper){
+            svConveyor.setPosition(0.7);
+            }
+            else if(gamepad1.right_bumper){
+            svConveyor.setPosition(0.5);
+            else{
+            svConveyor.setPosition(0);
+            }
+             */
             else {
                 dcIntake.setPower(0);
                 svConveyor.setPower(0);

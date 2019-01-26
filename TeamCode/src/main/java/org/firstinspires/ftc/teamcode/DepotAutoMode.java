@@ -76,23 +76,45 @@ public class DepotAutoMode extends LinearOpMode {
         waitForStart();
         // Code that does stuff goes here
 
-        //Get off hook
-        svLock.setPosition(0);
-        sleep(500);
+        // Get off hook
+        svLock.setPosition(1);
+
+        // Spaz out wheels
+        for(int i = 0; i < 4; i++) {
+            dcBackLeft.setPower(0.5);
+            dcBackRight.setPower(0.5);
+            dcFrontLeft.setPower(0.5);
+            dcFrontRight.setPower(0.5);
+
+            sleep(200);
+
+            dcBackLeft.setPower(-0.5);
+            dcBackRight.setPower(-0.5);
+            dcFrontLeft.setPower(-0.5);
+            dcFrontRight.setPower(-0.5);
+
+            sleep(200);
+        }
+
+        sleep(1000);
+
         moveHook(direction.UP);
 
+        //region Old code
+        /*
         driveInches(2, motorSpeed);
         turnOnTheSpot(90, turnSpeed, direction.RIGHT);
 
-        //Approach depot & claim
+        // Approach depot & claim
         driveInches(63, motorSpeed);
         svClaim.setPosition(1);
         svClaim.setPosition(0);
+
+        // Drive to crater
         turnOnTheSpot(45, turnSpeed, direction.LEFT);
-
-        //Scan and sample code again if not already picked up
-
         driveInches(70, -1.0);
+        */
+        //endregion
     }
     //region We can't strafe
     /*
