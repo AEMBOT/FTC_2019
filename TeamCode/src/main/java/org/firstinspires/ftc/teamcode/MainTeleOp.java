@@ -7,7 +7,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -63,7 +62,7 @@ public class MainTeleOp extends LinearOpMode {
             dcBackLeft.setPower(speedLimit * gamepad1.left_stick_y);
             dcBackRight.setPower(speedLimit * gamepad1.right_stick_y);
             dcFrontLeft.setPower(speedLimit * gamepad1.left_stick_y);
-            dcFrontRight.setPower(speedLimit * gamepad1.right_stick_y*1.05);
+            dcFrontRight.setPower(speedLimit * gamepad1.right_stick_y);
 
             dcIntake.setPower(-gamepad2.right_trigger);
             dcIntake.setPower(gamepad2.left_trigger);

@@ -300,7 +300,7 @@ public class CraterAutoMode extends LinearOpMode {
 
         //Run motors
         dcBackLeft.setPower(motorSpeed);
-        dcBackRight.setPower(motorSpeed*1.05);
+        dcBackRight.setPower(motorSpeed);
         dcFrontLeft.setPower(motorSpeed);
         dcFrontRight.setPower(motorSpeed);
 

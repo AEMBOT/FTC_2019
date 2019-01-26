@@ -297,7 +297,7 @@ public class DepotAutoMode extends LinearOpMode {
         dcBackLeft.setPower(motorSpeed);
         dcBackRight.setPower(motorSpeed);
         dcFrontLeft.setPower(motorSpeed);
-        dcFrontRight.setPower(motorSpeed*1.05);
+        dcFrontRight.setPower(motorSpeed);
 
         //Wait for moving to finish
         while (opModeIsActive() && dcBackLeft.isBusy() && dcBackRight.isBusy()) {
