@@ -63,7 +63,7 @@ public class MainTeleOp extends LinearOpMode {
             dcBackLeft.setPower(speedLimit * gamepad1.left_stick_y);
             dcBackRight.setPower(speedLimit * gamepad1.right_stick_y);
             dcFrontLeft.setPower(speedLimit * gamepad1.left_stick_y);
-            dcFrontRight.setPower(speedLimit * gamepad1.right_stick_y);
+            dcFrontRight.setPower(speedLimit * gamepad1.right_stick_y*1.1);
 
             dcIntake.setPower(gamepad2.left_trigger);
             dcLift.setPower(gamepad2.left_stick_y);

@@ -31,9 +31,9 @@ public class CraterAutoMode extends LinearOpMode {
     private Servo svClaim;
     private Servo svConveyor;
     private Servo svSweeper;
-
+    private Servo svLock;
     // Declare color sensor(s) here
-    private ColorSensor csMain;
+    //private ColorSensor csMain;
 
     // Used to specify direction for strafing, turning, or later arch screw intake
     public enum direction { UP, DOWN, LEFT, RIGHT }
@@ -55,6 +55,7 @@ public class CraterAutoMode extends LinearOpMode {
         svClaim = hardwareMap.get(Servo.class, "svClaim");
         svConveyor = hardwareMap.get(Servo.class, "svConveyor");
         svSweeper = hardwareMap.get(Servo.class, "svSweeper");
+        svLock = hardwareMap.get (Servo.class, "svLock");
 
         // Reverse motors on one side so all rotate in same direction
         dcBackLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -69,14 +70,17 @@ public class CraterAutoMode extends LinearOpMode {
         waitForStart();
 
         // Code that does stuff goes here
+        svLock.setPosition(1);
 
         //Approach center mineral
         driveInches(35, motorSpeed);
         turnOnTheSpot(90, turnSpeed, direction.RIGHT);
-
         //Scan and sample code goes here
-
         driveInches(17, motorSpeed);
+        driveInches(20, motorSpeed);
+        turnOnTheSpot(45, turnSpeed, direction.RIGHT);
+        driveInches(60, motorSpeed);
+        svClaim.setPosition(1);
 
         //Scan and sample code again if not already picked up
 
@@ -296,7 +300,7 @@ public class CraterAutoMode extends LinearOpMode {
 
         //Run motors
         dcBackLeft.setPower(motorSpeed);
-        dcBackRight.setPower(motorSpeed);
+        dcBackRight.setPower(motorSpeed*1.1);
         dcFrontLeft.setPower(motorSpeed);
         dcFrontRight.setPower(motorSpeed);
 
@@ -311,6 +315,7 @@ public class CraterAutoMode extends LinearOpMode {
         dcFrontLeft.setPower(0);
         dcFrontRight.setPower(0);
     }
+    /*
     //Function to sense yellow that returns boolean
     private boolean isItYellow(){
         //Declare boolean isYellow and initialize it to false
@@ -324,4 +329,5 @@ public class CraterAutoMode extends LinearOpMode {
         //Return boolean value isYellow
         return isYellow;
     }
+    */
 }
