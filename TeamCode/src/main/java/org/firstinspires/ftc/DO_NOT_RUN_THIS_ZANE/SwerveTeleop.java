@@ -3,7 +3,7 @@
  * to be used at qualifiers
  * 8 January, 2019
  */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.DO_NOT_RUN_THIS_ZANE;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 
 @TeleOp(name = "SwerveTeleop", group = "DeLorean")
-public class MainTeleOp extends LinearOpMode {
+public class SwerveTeleop extends LinearOpMode {
     private DcMotor dcBackLeft;
     private DcMotor dcBackRight;
     private DcMotor dcFrontLeft;
