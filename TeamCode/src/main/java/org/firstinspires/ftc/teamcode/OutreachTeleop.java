@@ -8,6 +8,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
@@ -58,49 +59,52 @@ public class OutreachTeleop extends LinearOpMode {
 
         //TODO: Implement speed limit for drivers
         // Initialize speed limit
-        speedLimit = 1.0;
+        speedLimit = .75;
 
         waitForStart();
 
         while (opModeIsActive()) {
-            dcBackLeft.setPower(speedLimit * gamepad1.left_stick_y);
-            dcBackRight.setPower(speedLimit * gamepad1.right_stick_y);
-            dcFrontLeft.setPower(speedLimit * gamepad1.left_stick_y);
-            dcFrontRight.setPower(speedLimit * gamepad1.right_stick_y);
+            while(gamepad2.right_trigger > 0){
+                dcBackRight.setPower(speedLimit * gamepad2.right_stick_y);
+                dcFrontRight.setPower(speedLimit * gamepad2.right_stick_y);
+                dcBackLeft.setPower(speedLimit * gamepad2.left_stick_y);
 
-            dcIntake.setPower(-gamepad2.right_trigger);
-            dcIntake.setPower(gamepad2.left_trigger);
-            dcLift.setPower(-gamepad2.right_stick_y);
-            dcHook.setPower(gamepad2.left_stick_y);
+                dcFrontLeft.setPower(speedLimit * gamepad2.left_stick_y);
 
-            if(gamepad2.left_bumper) {
-                dcConveyor.setPower(1.0);
-            }
-            else if(gamepad2.right_bumper) {
-                dcConveyor.setPower(-1.0);
-            }
-            else {
-                dcConveyor.setPower(0);
-            }
 
-            if(gamepad1.right_trigger > 0) {
-                svSweeper.setPower(-1);
-            }
-            else if(gamepad1.left_trigger > 0) {
-                svSweeper.setPower(1);
-            }
-            else {
-                svSweeper.setPower(0);
-            }
+               // dcIntake.setPower(-gamepad2.right_trigger);
+                //dcIntake.setPower(gamepad2.left_trigger);
+                //dcLift.setPower(-gamepad2.right_stick_y);
+                //dcHook.setPower(gamepad2.left_stick_y);
 
-            if(gamepad1.right_bumper) {
-                dcIntake.setPower(-1);
-                svConveyor.setPower(-1);
-            }
-            else if(gamepad1.left_bumper) {
-                dcIntake.setPower(1);
-                svConveyor.setPower(1);
-            }
+                //if(gamepad2.left_bumper) {
+                  //  dcConveyor.setPower(1.0);
+                //}
+                //else if(gamepad2.right_bumper) {
+                //    dcConveyor.setPower(-1.0);
+                //}
+                //else {
+                 //   dcConveyor.setPower(0);
+                //}
+
+                if(gamepad1.right_trigger > 0) {
+                    svSweeper.setPower(-1);
+                }
+                else if(gamepad1.left_trigger > 0) {
+                    svSweeper.setPower(1);
+                }
+                else {
+                    svSweeper.setPower(0);
+                }
+
+                if(gamepad1.right_bumper) {
+                    dcIntake.setPower(-1);
+                    svConveyor.setPower(-1);
+                }
+                else if(gamepad1.left_bumper) {
+                    dcIntake.setPower(1);
+                    svConveyor.setPower(1);
+                }
             /*
             else if(gamepad1.left_bumper){
             svConveyor.setPosition(0.7);
@@ -111,24 +115,82 @@ public class OutreachTeleop extends LinearOpMode {
             svConveyor.setPosition(0);
             }
              */
-            else {
-                dcIntake.setPower(0);
-                svConveyor.setPower(0);
+                else {
+                    dcIntake.setPower(0);
+                    svConveyor.setPower(0);
+                }
+
+                if(gamepad1.x){
+                    svClaim.setPosition(0);
+                }
+                else {
+                    svClaim.setPosition(1);
+                }
+            }
+            while(gamepad2.right_trigger < 0){
+                dcBackRight.setPower(speedLimit * gamepad1.right_stick_y);
+                dcFrontRight.setPower(speedLimit * gamepad1.right_stick_y);
+                dcBackLeft.setPower(speedLimit * gamepad1.left_stick_y);
+
+                dcFrontLeft.setPower(speedLimit * gamepad1.left_stick_y);
+
+
+                dcIntake.setPower(-gamepad2.right_trigger);
+                dcIntake.setPower(gamepad2.left_trigger);
+                dcLift.setPower(-gamepad2.right_stick_y);
+                dcHook.setPower(gamepad2.left_stick_y);
+
+                //if(gamepad2.left_bumper) {
+                  //  dcConveyor.setPower(1.0);
+                //}
+                //else if(gamepad2.right_bumper) {
+                //    dcConveyor.setPower(-1.0);
+                //}
+                //else {
+                //    dcConveyor.setPower(0);
+                //}
+
+                //if(gamepad1.right_trigger > 0) {
+                 //   svSweeper.setPower(-1);
+                //}
+                //else if(gamepad1.left_trigger > 0) {
+                 //   svSweeper.setPower(1);
+                //}
+                //else {
+                   // svSweeper.setPower(0);
+                //}
+
+                if(gamepad1.right_bumper) {
+                    dcIntake.setPower(-1);
+                    svConveyor.setPower(-1);
+                }
+                else if(gamepad1.left_bumper) {
+                    dcIntake.setPower(1);
+                    svConveyor.setPower(1);
+                }
+            /*
+            else if(gamepad1.left_bumper){
+            svConveyor.setPosition(0.7);
+            }
+            else if(gamepad1.right_bumper){
+            svConveyor.setPosition(0.5);
+            else{
+            svConveyor.setPosition(0);
+            }
+             */
+                else {
+                    dcIntake.setPower(0);
+                    svConveyor.setPower(0);
+                }
+
+                if(gamepad1.x){
+                    svClaim.setPosition(0);
+                }
+                else {
+                    svClaim.setPosition(1);
+                }
             }
 
-            if(gamepad1.x){
-                svClaim.setPosition(0);
-            }
-            else {
-                svClaim.setPosition(1);
-            }
-
-            if(gamepad2.x) {
-                svLock.setPosition(1);
-            }
-            else if(gamepad2.b) {
-                svLock.setPosition(0);
-            }
         }
     }
 }
