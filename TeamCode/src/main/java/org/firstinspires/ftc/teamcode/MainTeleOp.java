@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 
-@Disabled
+
 @TeleOp(name = "MainTeleOp", group = "DeLorean")
 public class MainTeleOp extends LinearOpMode {
     private DcMotor dcBackLeft;
