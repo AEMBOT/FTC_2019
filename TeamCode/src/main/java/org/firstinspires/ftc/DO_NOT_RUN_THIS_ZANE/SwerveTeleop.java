@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-
+@Disable
 @TeleOp(name = "SwerveTeleop", group = "DeLorean")
 public class SwerveTeleop extends LinearOpMode {
     private DcMotor dcBackLeft;
