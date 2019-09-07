@@ -1,5 +1,5 @@
 /**
- * Program written by Zane Othman and Troy Lopez for DeLorean 4.0 as teleop
+ * Program written by Zane Othman and Troy Lopez for The DeLorean 4.0 as teleop
  * to be used at qualifiers
  * 8 January, 2019
  */
